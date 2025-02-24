@@ -1,3 +1,4 @@
+import { isEqual } from "lodash";
 import {
     privateVisiblity,
     publicVisibility,
@@ -13,7 +14,6 @@ import {
 } from '../api/savedFilters'
 import { sGetNamedItemFilters } from '../reducers/itemFilters'
 import { acAddItemFilter, acClearItemFilters } from './itemFilters'
-import { deepEqual } from "../modules/util";
 
 // actions
 
@@ -35,7 +35,7 @@ export const tSelectSavedFilter = (filterId) => async (dispatch, getState) => {
         const appliedFilters = sGetNamedItemFilters(getState())
         const filter = savedFilters.find((f) => f.id === filterId) || {}
 
-        if (!deepEqual(filter.values, appliedFilters)) {
+        if (!isEqual(filter.values, appliedFilters)) {
             await dispatch(acClearItemFilters())
             await Promise.all(
                 filter.values.map(({ id, values: value }) =>

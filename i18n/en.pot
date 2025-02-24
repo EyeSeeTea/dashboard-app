@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-02-14T10:25:08.172Z\n"
-"PO-Revision-Date: 2025-02-14T10:25:08.173Z\n"
+"POT-Creation-Date: 2025-02-24T04:41:20.011Z\n"
+"PO-Revision-Date: 2025-02-24T04:41:20.011Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
@@ -568,21 +568,6 @@ msgstr "Cannot edit filters while offline"
 msgid "Cannot edit filters on a small screen"
 msgstr "Cannot edit filters on a small screen"
 
-msgid "Rename"
-msgstr "Rename"
-
-msgid "Save"
-msgstr "Save"
-
-msgid "Save as new filter"
-msgstr "Save as new filter"
-
-msgid "Make it public"
-msgstr "Make it public"
-
-msgid "Make it private"
-msgstr "Make it private"
-
 msgid "Removing filters while offline"
 msgstr "Removing filters while offline"
 
@@ -595,6 +580,21 @@ msgstr ""
 
 msgid "Yes, remove filters"
 msgstr "Yes, remove filters"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Rename"
+msgstr "Rename"
+
+msgid "Save as new filter"
+msgstr "Save as new filter"
+
+msgid "Make it public"
+msgstr "Make it public"
+
+msgid "Make it private"
+msgstr "Make it private"
 
 msgid "Save Filter"
 msgstr "Save Filter"

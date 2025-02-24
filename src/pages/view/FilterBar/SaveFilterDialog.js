@@ -57,8 +57,8 @@ const SaveFilterDialog = ({
                         selected={visibility}
                         onChange={handleVisibilityChange}
                     >
-                        {filterVisibility.map((f) => (
-                            <SingleSelectOption key={f} value={f} label={f} />
+                        {filterVisibility.map((filter) => (
+                            <SingleSelectOption key={filter} value={filter} label={filter} />
                         ))}
                     </SingleSelectField>
                 )}
@@ -66,11 +66,11 @@ const SaveFilterDialog = ({
             <ModalActions>
                 <ButtonStrip>
                     <Button key="cancel" secondary onClick={onCancel}>
-                        {'Cancel'}
+                        {i18n.t('Cancel')}
                     </Button>
 
-                    <Button key="confirm" destructive onClick={handleConfirm}>
-                        {'Confirm'}
+                    <Button key="confirm" primary onClick={handleConfirm}>
+                        {i18n.t('Confirm')}
                     </Button>
                 </ButtonStrip>
             </ModalActions>
