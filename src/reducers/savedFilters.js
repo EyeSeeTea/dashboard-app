@@ -28,13 +28,13 @@ export default (state = DEFAULT_STATE, action) => {
         case SET_SAVED_FILTERS: {
             return {
                 ...state,
-                filters: action.value,
+                filters: action.filters,
             }
         }
         case SET_ACTIVE_FILTER: {
             return {
                 ...state,
-                active: action.value ?? DEFAULT_ACTIVE_FILTER,
+                active: action.filter ?? DEFAULT_ACTIVE_FILTER,
             }
         }
         default:

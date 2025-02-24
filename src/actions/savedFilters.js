@@ -1,4 +1,4 @@
-import { isEqual } from 'lodash'
+import _, { isEqual } from 'lodash'
 import {
     apiDeleteFilter,
     apiGetSavedFilters,
@@ -13,18 +13,18 @@ import {
     sGetActiveFilter,
     sGetSavedFiltersList,
 } from '../reducers/savedFilters.js'
-import { acAddItemFilter, acClearItemFilters } from './itemFilters.js'
+import { acClearItemFilters, acSetItemFilters } from './itemFilters.js'
 
 // actions
 
 export const acSetFilters = (filters) => ({
     type: SET_SAVED_FILTERS,
-    value: filters,
+    filters,
 })
 
 export const acSetActiveFilter = (filter) => ({
     type: SET_ACTIVE_FILTER,
-    value: filter,
+    filter,
 })
 
 // thunks
@@ -36,12 +36,8 @@ export const tSelectSavedFilter = (filterId) => async (dispatch, getState) => {
         const filter = savedFilters.find((f) => f.id === filterId) || {}
 
         if (!isEqual(filter.values, appliedFilters)) {
-            await dispatch(acClearItemFilters())
-            await Promise.all(
-                filter.values.map(({ id, values: value }) =>
-                    dispatch(acAddItemFilter({ id, value }))
-                )
-            )
+            const filters = _.mapValues(_.keyBy(filter.values, 'id'), 'values')
+            await dispatch(acSetItemFilters(filters))
         }
 
         await dispatch(acSetActiveFilter(filter))
@@ -84,7 +80,6 @@ export const tDeleteActiveFilter =
             const filter = sGetActiveFilter(getState())
             await apiDeleteFilter(filter, currentUser)
             await dispatch(tFetchSavedFilters())
-            await dispatch(acClearItemFilters())
             await dispatch(tSelectSavedFilter(null))
             return true
         } catch (error) {

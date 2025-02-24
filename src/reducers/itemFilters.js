@@ -3,6 +3,7 @@ import { sGetDimensions } from './dimensions.js'
 
 export const CLEAR_ITEM_FILTERS = 'CLEAR_ITEM_FILTERS'
 export const ADD_ITEM_FILTER = 'ADD_ITEM_FILTER'
+export const SET_ITEM_FILTERS = 'SET_ITEM_FILTERS'
 export const REMOVE_ITEM_FILTER = 'REMOVE_ITEM_FILTER'
 
 export const DEFAULT_STATE_ITEM_FILTERS = {}
@@ -14,6 +15,9 @@ export default (state = DEFAULT_STATE_ITEM_FILTERS, action) => {
                 ...state,
                 [action.filter.id]: action.filter.value,
             }
+        }
+        case SET_ITEM_FILTERS: {
+            return action.filter
         }
         case REMOVE_ITEM_FILTER: {
             const newState = { ...state }
@@ -46,7 +50,7 @@ export const sGetNamedItemFilters = createSelector(
                 values: filters[id].map((value) => ({
                     id: value.id,
                     name: value.displayName || value.name,
-                    ...(value.path && {path: value.path})
+                    ...(value.path && { path: value.path }),
                 })),
             })
 
