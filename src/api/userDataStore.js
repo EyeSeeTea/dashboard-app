@@ -2,7 +2,7 @@ import { getInstance } from 'd2'
 import {
     apiGetGenericDataStoreValue,
     apiPostGenericDataStoreValue,
-} from './dataStore'
+} from './dataStore.js'
 
 export const apiPostUserDataStoreValue = async (key, value) => {
     const d2 = await getInstance()

@@ -9,10 +9,10 @@ import {
 } from '../../../actions/itemFilters.js'
 import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
+import { sGetActiveFilter } from '../../../reducers/savedFilters.js'
 import FilterBadge from './FilterBadge.js'
+import SavedFiltersBlock from './SavedFilterBlock.js'
 import classes from './styles/FilterBar.module.css'
-import { sGetActiveFilter } from '../../../reducers/savedFilters'
-import SavedFiltersBlock from './SavedFilterBlock'
 
 const FilterBar = ({
     filters,
@@ -62,8 +62,8 @@ const FilterBar = ({
 }
 
 FilterBar.propTypes = {
+    activeFilter: PropTypes.object.isRequired,
     filters: PropTypes.array.isRequired,
-    activeFilter: PropTypes.object,
     removeAllFilters: PropTypes.func.isRequired,
     removeFilter: PropTypes.func.isRequired,
 }
@@ -73,8 +73,8 @@ FilterBar.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
-    filters: sGetNamedItemFilters(state),
     activeFilter: sGetActiveFilter(state),
+    filters: sGetNamedItemFilters(state),
 })
 
 export default connect(mapStateToProps, {

@@ -1,3 +1,4 @@
+import i18n from '@dhis2/d2-i18n'
 import {
     Button,
     Modal,
@@ -11,10 +12,10 @@ import {
 } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React from 'react'
-import i18n from '@dhis2/d2-i18n'
 import {
-    filterVisibility, privateVisiblity,
-} from '../../../reducers/savedFilters'
+    filterVisibility,
+    privateVisiblity,
+} from '../../../reducers/savedFilters.js'
 
 const SaveFilterDialog = ({
     onCancel,
@@ -22,7 +23,9 @@ const SaveFilterDialog = ({
     filter = {},
     showScope = true,
 }) => {
-    const [visibility, setVisibility] = React.useState(filter.visibility || privateVisiblity)
+    const [visibility, setVisibility] = React.useState(
+        filter.visibility || privateVisiblity
+    )
     const [name, setName] = React.useState(filter.id ? filter.name : '')
 
     const handleVisibilityChange = ({ selected }) => {
@@ -58,7 +61,11 @@ const SaveFilterDialog = ({
                         onChange={handleVisibilityChange}
                     >
                         {filterVisibility.map((filter) => (
-                            <SingleSelectOption key={filter} value={filter} label={filter} />
+                            <SingleSelectOption
+                                key={filter}
+                                value={filter}
+                                label={filter}
+                            />
                         ))}
                     </SingleSelectField>
                 )}
@@ -79,11 +86,10 @@ const SaveFilterDialog = ({
 }
 
 SaveFilterDialog.propTypes = {
-    open: PropTypes.bool,
-    onCancel: PropTypes.func,
-    onConfirm: PropTypes.func,
     filter: PropTypes.object,
     showScope: PropTypes.bool,
+    onCancel: PropTypes.func,
+    onConfirm: PropTypes.func,
 }
 
 export default SaveFilterDialog

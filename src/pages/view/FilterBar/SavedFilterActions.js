@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
 import i18n from '@dhis2/d2-i18n'
-import { privateVisiblity } from '../../../reducers/savedFilters'
-import DropdownButton from '../../../components/DropdownButton/DropdownButton'
+import { colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
 import { isEqual } from 'lodash'
-import { isFilterActionAllowed } from '../../../api/savedFilters'
+import PropTypes from 'prop-types'
+import React, { useCallback, useMemo, useState } from 'react'
+import { isFilterActionAllowed } from '../../../api/savedFilters.js'
+import DropdownButton from '../../../components/DropdownButton/DropdownButton.js'
+import { privateVisiblity } from '../../../reducers/savedFilters.js'
 
 export const SavedFilterActions = ({
     openDialogForRename,
@@ -28,13 +29,10 @@ export const SavedFilterActions = ({
         setMoreOptionsIsOpen((prev) => !prev)
     }
 
-    const handleSaveFilter = useCallback(
-        async (filter = {}) => {
-            await doSaveFilter(currentUser, { ...activeFilter, ...filter })
-            setMoreOptionsIsOpen(false)
-        },
-        [currentUser, activeFilter, doSaveFilter]
-    )
+    const handleSaveFilter = useCallback(async () => {
+        await doSaveFilter(activeFilter)
+        setMoreOptionsIsOpen(false)
+    }, [activeFilter, doSaveFilter])
 
     const handleSaveNewFilter = useCallback(() => {
         openDialogForNewFilter()
@@ -132,4 +130,16 @@ export const SavedFilterActions = ({
             </DropdownButton>
         )
     )
+}
+
+SavedFilterActions.propTypes = {
+    activeFilter: PropTypes.object.isRequired,
+    currentUser: PropTypes.object.isRequired,
+    deleteFilter: PropTypes.func.isRequired,
+    doSaveFilter: PropTypes.func.isRequired,
+    filters: PropTypes.array.isRequired,
+    hasActiveSavedFilter: PropTypes.bool.isRequired,
+    openDialogForNewFilter: PropTypes.func.isRequired,
+    openDialogForRename: PropTypes.func.isRequired,
+    toggleFilterVisibility: PropTypes.func.isRequired,
 }

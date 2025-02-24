@@ -49,7 +49,7 @@ export const sGetSavedFiltersVisibilityMap = (state) =>
     state.savedFilters.filters
 
 export const sGetSavedFiltersList = (state) =>
-    Object.values(state.savedFilters.filters).flat()
+    Object.values(sGetSavedFiltersVisibilityMap(state)).flat()
 
 //{id: uid, name: string, visibility: "private"|"public", userId: string, userName: string, values: [{id: dimensionId, name: dimensionName, values: []}]}
 export const sGetActiveFilter = (state) => {

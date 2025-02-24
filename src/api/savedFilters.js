@@ -1,10 +1,10 @@
+import { generateUid } from 'd2/uid'
+import { privateVisiblity, publicVisibility } from '../reducers/savedFilters.js'
+import { apiGetDataStoreValue, apiPostDataStoreValue } from './dataStore.js'
 import {
     apiGetUserDataStoreValue,
     apiPostUserDataStoreValue,
 } from './userDataStore.js'
-import { apiGetDataStoreValue, apiPostDataStoreValue } from './dataStore'
-import { generateUid } from 'd2/uid'
-import { privateVisiblity, publicVisibility } from '../reducers/savedFilters'
 
 const KEY_SAVED_FILTERS = 'savedFilters'
 const DEFAULT_VALUE_SAVED_FILTERS = []
@@ -54,8 +54,10 @@ export const apiDeleteFilter = async (filter, currentUser) => {
 }
 
 export const isFilterActionAllowed = (filter, currentUser) => {
-    return currentUser.authorities?.includes('ALL') ||
+    return (
+        currentUser.authorities?.includes('ALL') ||
         filter.userId === currentUser.id
+    )
 }
 
 const getDataStoreFn = (visibility) => {

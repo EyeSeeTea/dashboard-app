@@ -10,20 +10,20 @@ import {
     acClearActiveModalDimension,
     acSetActiveModalDimension,
 } from '../../../actions/activeModalDimension.js'
+import { tSelectSavedFilter } from '../../../actions/savedFilters.js'
 import useDimensions from '../../../modules/useDimensions.js'
 import { sGetActiveModalDimension } from '../../../reducers/activeModalDimension.js'
 import { sGetItemFiltersRoot } from '../../../reducers/itemFilters.js'
-import DropdownButton from '../../DropdownButton/DropdownButton.js'
-import FilterDialog from './FilterDialog.js'
-import classes from './styles/FilterSelector.module.css'
-import { tSelectSavedFilter } from '../../../actions/savedFilters'
 import {
     privateVisiblity,
     publicVisibility,
     sGetActiveFilter,
     sGetSavedFiltersVisibilityMap,
-} from '../../../reducers/savedFilters'
-import MenuItem from '../../MenuItemWithTooltip'
+} from '../../../reducers/savedFilters.js'
+import DropdownButton from '../../DropdownButton/DropdownButton.js'
+import MenuItem from '../../MenuItemWithTooltip.js'
+import FilterDialog from './FilterDialog.js'
+import classes from './styles/FilterSelector.module.css'
 
 const FilterSelector = (props) => {
     const [savedFiltersIsOpen, setSavedFiltersIsOpen] = useState(false)
@@ -116,22 +116,19 @@ const FilterSelector = (props) => {
 
     return props.restrictFilters && !props.allowedFilters?.length ? null : (
         <>
-            {(hasPublicFilters || hasPrivateFilters) &&
-                props.activeFilter && (
-                    <DropdownButton
-                        dataTest="saved-filters-button"
-                        secondary
-                        small
-                        open={savedFiltersIsOpen}
-                        onClick={() =>
-                            setSavedFiltersIsOpen(!savedFiltersIsOpen)
-                        }
-                        icon={<IconFilter24 color={colors.grey700} />}
-                        component={getSavedFilters()}
-                    >
-                        <div>{props.activeFilter.name}</div>
-                    </DropdownButton>
-                )}
+            {(hasPublicFilters || hasPrivateFilters) && props.activeFilter && (
+                <DropdownButton
+                    dataTest="saved-filters-button"
+                    secondary
+                    small
+                    open={savedFiltersIsOpen}
+                    onClick={() => setSavedFiltersIsOpen(!savedFiltersIsOpen)}
+                    icon={<IconFilter24 color={colors.grey700} />}
+                    component={getSavedFilters()}
+                >
+                    <div>{props.activeFilter.name}</div>
+                </DropdownButton>
+            )}
             <DropdownButton
                 secondary
                 small
@@ -162,16 +159,16 @@ const mapStateToProps = (state) => ({
 })
 
 FilterSelector.propTypes = {
+    activeFilter: PropTypes.object,
     allowedFilters: PropTypes.array,
     clearActiveModalDimension: PropTypes.func,
     dimension: PropTypes.object,
     initiallySelectedItems: PropTypes.object,
-    restrictFilters: PropTypes.bool,
-    setActiveModalDimension: PropTypes.func,
     privateFilters: PropTypes.array,
     publicFilters: PropTypes.array,
-    activeFilter: PropTypes.object,
+    restrictFilters: PropTypes.bool,
     selectSavedFilter: PropTypes.func,
+    setActiveModalDimension: PropTypes.func,
 }
 
 export default connect(mapStateToProps, {

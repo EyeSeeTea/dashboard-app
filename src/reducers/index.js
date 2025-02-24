@@ -10,11 +10,11 @@ import itemFilters from './itemFilters.js'
 import messages from './messages.js'
 import passiveViewRegistered from './passiveViewRegistered.js'
 import printDashboard from './printDashboard.js'
+import savedFilters from './savedFilters.js'
 import selected from './selected.js'
 import showDescription from './showDescription.js'
 import slideshow from './slideshow.js'
 import visualizations from './visualizations.js'
-import savedFilters from "./savedFilters.js";
 
 export default combineReducers({
     dashboards,

@@ -1,21 +1,21 @@
-import { Button } from '@dhis2/ui'
+import { useCachedDataQuery } from '@dhis2/analytics'
+import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import { sGetNamedItemFilters } from '../../../reducers/itemFilters'
-import { sGetActiveFilter } from '../../../reducers/savedFilters'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import {
     acSetActiveFilter,
     tDeleteActiveFilter,
     tSaveFilter,
     tToggleActiveFilterVisibility,
-} from '../../../actions/savedFilters'
-import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
-import SaveFilterDialog from './SaveFilterDialog'
-import { useCachedDataQuery } from '@dhis2/analytics'
-import { useSaveFitlerDialog } from './useSaveFilterDialog'
-import { SavedFilterActions } from './SaveFilterActions'
+} from '../../../actions/savedFilters.js'
+import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
+import { sGetActiveFilter } from '../../../reducers/savedFilters.js'
+import { SavedFilterActions } from './SavedFilterActions.js'
+import SaveFilterDialog from './SaveFilterDialog.js'
+import { useSaveFitlerDialog } from './useSaveFilterDialog.js'
 
 const SavedFilterBlock = ({
     filters,
@@ -60,11 +60,8 @@ const SavedFilterBlock = ({
             openDialogForRename,
             openDialogForNewFilter,
             doSaveFilter,
-            deleteFilter,
-            toggleFilterVisibility,
             activeFilter,
             filters,
-            hasActiveSavedFilter,
             currentUser,
         ]
     )
@@ -89,11 +86,12 @@ const SavedFilterBlock = ({
 }
 
 SavedFilterBlock.propTypes = {
-    filters: PropTypes.array.isRequired,
-    updateActiveFilter: PropTypes.func.isRequired,
+    activeFilter: PropTypes.object.isRequired,
     deleteFilter: PropTypes.func.isRequired,
+    filters: PropTypes.array.isRequired,
+    saveFilter: PropTypes.func.isRequired,
     toggleFilterVisibility: PropTypes.func.isRequired,
-    activeFilter: PropTypes.object,
+    updateActiveFilter: PropTypes.func.isRequired,
 }
 
 SavedFilterBlock.defaultProps = {

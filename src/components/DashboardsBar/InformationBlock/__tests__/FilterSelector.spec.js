@@ -13,7 +13,11 @@ jest.mock('@dhis2/app-runtime', () => ({
 jest.mock('../../../../modules/useDimensions', () => jest.fn())
 useDimensions.mockImplementation(() => ['Moomin', 'Snorkmaiden'])
 
-const baseState = { activeModalDimension: {}, itemFilters: {} }
+const baseState = {
+    activeModalDimension: {},
+    itemFilters: {},
+    savedFilters: { filters: { private: [], public: [] } },
+}
 const createMockStore = (state) =>
     createStore(() => ({ ...baseState, ...state }))
 

@@ -11,6 +11,7 @@ import { acClearEditDashboard } from '../actions/editDashboard.js'
 import { acClearItemActiveTypes } from '../actions/itemActiveTypes.js'
 import { acClearItemFilters } from '../actions/itemFilters.js'
 import { acClearPrintDashboard } from '../actions/printDashboard.js'
+import { tFetchSavedFilters } from '../actions/savedFilters.js'
 import { acSetSelected } from '../actions/selected.js'
 import { tSetShowDescription } from '../actions/showDescription.js'
 import { acClearVisualizations } from '../actions/visualizations.js'
@@ -23,7 +24,6 @@ import './styles/App.css'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 import './styles/ItemGrid.css'
-import { tFetchSavedFilters } from '../actions/savedFilters'
 
 const App = (props) => {
     const { systemSettings } = useSystemSettings()
@@ -116,9 +116,9 @@ const App = (props) => {
 
 App.propTypes = {
     fetchDashboards: PropTypes.func,
+    fetchSavedFilters: PropTypes.func,
     resetState: PropTypes.func,
     setShowDescription: PropTypes.func,
-    fetchSavedFilters: PropTypes.func,
 }
 
 const mapDispatchToProps = {

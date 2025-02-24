@@ -1,4 +1,10 @@
-import { isEqual } from "lodash";
+import { isEqual } from 'lodash'
+import {
+    apiDeleteFilter,
+    apiGetSavedFilters,
+    apiSaveFilter,
+} from '../api/savedFilters.js'
+import { sGetNamedItemFilters } from '../reducers/itemFilters.js'
 import {
     privateVisiblity,
     publicVisibility,
@@ -7,13 +13,7 @@ import {
     sGetActiveFilter,
     sGetSavedFiltersList,
 } from '../reducers/savedFilters.js'
-import {
-    apiDeleteFilter,
-    apiGetSavedFilters,
-    apiSaveFilter,
-} from '../api/savedFilters'
-import { sGetNamedItemFilters } from '../reducers/itemFilters'
-import { acAddItemFilter, acClearItemFilters } from './itemFilters'
+import { acAddItemFilter, acClearItemFilters } from './itemFilters.js'
 
 // actions
 
