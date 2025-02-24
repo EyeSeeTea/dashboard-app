@@ -9,6 +9,7 @@ import {
     privateVisiblity,
     publicVisibility,
     SET_ACTIVE_FILTER,
+    SET_LOADING_SAVED_FILTERS,
     SET_SAVED_FILTERS,
     sGetActiveFilter,
     sGetSavedFiltersList,
@@ -25,6 +26,11 @@ export const acSetFilters = (filters) => ({
 export const acSetActiveFilter = (filter) => ({
     type: SET_ACTIVE_FILTER,
     filter,
+})
+
+export const acSetLoadingSavedFilters = (loading) => ({
+    type: SET_LOADING_SAVED_FILTERS,
+    loading,
 })
 
 // thunks

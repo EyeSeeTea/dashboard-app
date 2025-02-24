@@ -2,6 +2,7 @@ import i18n from '@dhis2/d2-i18n'
 
 export const SET_SAVED_FILTERS = 'SET_SAVED_FILTERS'
 export const SET_ACTIVE_FILTER = 'SET_ACTIVE_FILTER'
+export const SET_LOADING_SAVED_FILTERS = 'SET_LOADING_SAVED_FILTERS'
 
 export const privateVisiblity = 'private'
 export const publicVisibility = 'public'
@@ -21,6 +22,7 @@ const DEFAULT_FILTERS = {
 export const DEFAULT_STATE = {
     filters: DEFAULT_FILTERS,
     active: DEFAULT_ACTIVE_FILTER,
+    loading: false,
 }
 
 export default (state = DEFAULT_STATE, action) => {
@@ -37,6 +39,11 @@ export default (state = DEFAULT_STATE, action) => {
                 active: action.filter ?? DEFAULT_ACTIVE_FILTER,
             }
         }
+        case SET_LOADING_SAVED_FILTERS:
+            return {
+                ...state,
+                loading: action.loading,
+            }
         default:
             return state
     }
@@ -59,3 +66,5 @@ export const sGetActiveFilter = (state) => {
     )
     return { ...filter, ...activeFilter }
 }
+
+export const sGetLoadingSavedFilters = (state) => state.savedFilters.loading

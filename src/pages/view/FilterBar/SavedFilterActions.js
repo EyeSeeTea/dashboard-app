@@ -11,8 +11,8 @@ export const SavedFilterActions = ({
     openDialogForRename,
     openDialogForNewFilter,
     doSaveFilter,
-    deleteFilter,
-    toggleFilterVisibility,
+    doDeleteFilter,
+    doToggleFilterVisibility,
     activeFilter,
     filters,
     hasActiveSavedFilter,
@@ -45,12 +45,12 @@ export const SavedFilterActions = ({
     }, [openDialogForRename])
 
     const handleDeleteFilter = useCallback(async () => {
-        await deleteFilter(currentUser)
+        await doDeleteFilter(currentUser)
         setMoreOptionsIsOpen(false)
     }, [currentUser])
 
     const handleToggleVisibility = useCallback(async () => {
-        await toggleFilterVisibility(currentUser)
+        await doToggleFilterVisibility(currentUser)
         setMoreOptionsIsOpen(false)
     }, [currentUser])
 
@@ -135,11 +135,11 @@ export const SavedFilterActions = ({
 SavedFilterActions.propTypes = {
     activeFilter: PropTypes.object.isRequired,
     currentUser: PropTypes.object.isRequired,
-    deleteFilter: PropTypes.func.isRequired,
+    doDeleteFilter: PropTypes.func.isRequired,
     doSaveFilter: PropTypes.func.isRequired,
+    doToggleFilterVisibility: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     hasActiveSavedFilter: PropTypes.bool.isRequired,
     openDialogForNewFilter: PropTypes.func.isRequired,
     openDialogForRename: PropTypes.func.isRequired,
-    toggleFilterVisibility: PropTypes.func.isRequired,
 }

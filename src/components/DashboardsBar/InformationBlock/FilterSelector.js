@@ -18,6 +18,7 @@ import {
     privateVisiblity,
     publicVisibility,
     sGetActiveFilter,
+    sGetLoadingSavedFilters,
     sGetSavedFiltersVisibilityMap,
 } from '../../../reducers/savedFilters.js'
 import DropdownButton from '../../DropdownButton/DropdownButton.js'
@@ -118,6 +119,7 @@ const FilterSelector = (props) => {
         <>
             {(hasPublicFilters || hasPrivateFilters) && props.activeFilter && (
                 <DropdownButton
+                    loading={props.loadingSavedFilters}
                     dataTest="saved-filters-button"
                     secondary
                     small
@@ -126,7 +128,11 @@ const FilterSelector = (props) => {
                     icon={<IconFilter24 color={colors.grey700} />}
                     component={getSavedFilters()}
                 >
-                    <div>{props.activeFilter.name}</div>
+                    <div>
+                        {props.loadingSavedFilters
+                            ? i18n.t('Saving...')
+                            : props.activeFilter.name}
+                    </div>
                 </DropdownButton>
             )}
             <DropdownButton
@@ -151,11 +157,12 @@ const FilterSelector = (props) => {
 }
 
 const mapStateToProps = (state) => ({
+    activeFilter: sGetActiveFilter(state),
     dimension: sGetActiveModalDimension(state),
     initiallySelectedItems: sGetItemFiltersRoot(state),
+    loadingSavedFilters: sGetLoadingSavedFilters(state),
     privateFilters: sGetSavedFiltersVisibilityMap(state)[privateVisiblity],
     publicFilters: sGetSavedFiltersVisibilityMap(state)[publicVisibility],
-    activeFilter: sGetActiveFilter(state),
 })
 
 FilterSelector.propTypes = {
@@ -164,6 +171,7 @@ FilterSelector.propTypes = {
     clearActiveModalDimension: PropTypes.func,
     dimension: PropTypes.object,
     initiallySelectedItems: PropTypes.object,
+    loadingSavedFilters: PropTypes.bool,
     privateFilters: PropTypes.array,
     publicFilters: PropTypes.array,
     restrictFilters: PropTypes.bool,

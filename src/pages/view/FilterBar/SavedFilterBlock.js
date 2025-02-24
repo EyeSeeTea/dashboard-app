@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import { connect } from 'react-redux'
 import {
     acSetActiveFilter,
+    acSetLoadingSavedFilters,
     tDeleteActiveFilter,
     tSaveFilter,
     tToggleActiveFilterVisibility,
@@ -18,9 +19,10 @@ import SaveFilterDialog from './SaveFilterDialog.js'
 import { useSaveFitlerDialog } from './useSaveFilterDialog.js'
 
 const SavedFilterBlock = ({
-    filters,
     activeFilter,
+    filters,
     saveFilter,
+    setLoadingSavedFilters,
     updateActiveFilter,
     deleteFilter,
     toggleFilterVisibility,
@@ -30,11 +32,27 @@ const SavedFilterBlock = ({
 
     const hasActiveSavedFilter = Boolean(activeFilter.id)
 
+    const handleFilterAction = async (actionFn) => {
+        setLoadingSavedFilters(true)
+        return actionFn().finally(() => setLoadingSavedFilters(false))
+    }
+
     const doSaveFilter = useCallback(
-        (filter = {}) => {
-            return saveFilter(currentUser, { ...activeFilter, ...filter })
-        },
+        (filter = {}) =>
+            handleFilterAction(() =>
+                saveFilter(currentUser, { ...activeFilter, ...filter })
+            ),
         [currentUser, activeFilter]
+    )
+
+    const doDeleteFilter = useCallback(
+        () => handleFilterAction(() => deleteFilter(currentUser)),
+        [currentUser]
+    )
+
+    const doToggleFilterVisibility = useCallback(
+        () => handleFilterAction(() => toggleFilterVisibility(currentUser)),
+        [currentUser]
     )
 
     const {
@@ -49,8 +67,8 @@ const SavedFilterBlock = ({
             openDialogForRename,
             openDialogForNewFilter,
             doSaveFilter,
-            deleteFilter,
-            toggleFilterVisibility,
+            doDeleteFilter,
+            doToggleFilterVisibility,
             activeFilter,
             filters,
             hasActiveSavedFilter,
@@ -60,6 +78,8 @@ const SavedFilterBlock = ({
             openDialogForRename,
             openDialogForNewFilter,
             doSaveFilter,
+            doDeleteFilter,
+            doToggleFilterVisibility,
             activeFilter,
             filters,
             currentUser,
@@ -90,6 +110,7 @@ SavedFilterBlock.propTypes = {
     deleteFilter: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     saveFilter: PropTypes.func.isRequired,
+    setLoadingSavedFilters: PropTypes.func.isRequired,
     toggleFilterVisibility: PropTypes.func.isRequired,
     updateActiveFilter: PropTypes.func.isRequired,
 }
@@ -99,13 +120,14 @@ SavedFilterBlock.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
-    filters: sGetNamedItemFilters(state),
     activeFilter: sGetActiveFilter(state),
+    filters: sGetNamedItemFilters(state),
 })
 
 export default connect(mapStateToProps, {
     saveFilter: tSaveFilter,
     updateActiveFilter: acSetActiveFilter,
     deleteFilter: tDeleteActiveFilter,
+    setLoadingSavedFilters: acSetLoadingSavedFilters,
     toggleFilterVisibility: tToggleActiveFilterVisibility,
 })(SavedFilterBlock)
