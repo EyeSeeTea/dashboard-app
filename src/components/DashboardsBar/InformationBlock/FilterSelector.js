@@ -9,7 +9,6 @@ import {
     FlyoutMenu,
     IconFilter24,
     Menu,
-    Tooltip,
 } from '@dhis2/ui'
 import isEmpty from 'lodash/isEmpty.js'
 import PropTypes from 'prop-types'
@@ -132,17 +131,11 @@ const FilterSelector = (props) => {
                     icon={<IconFilter24 color={colors.grey700} />}
                     component={getSavedFilters()}
                 >
-                    <Tooltip
-                        content={props.activeFilter.name}
-                        openDelay={200}
-                        closeDelay={100}
-                    >
-                        <div className={classes.savedFilters}>
-                            {props.loadingSavedFilters
-                                ? i18n.t('Saving...')
-                                : props.activeFilter.name}
-                        </div>
-                    </Tooltip>
+                    <div className={classes.savedFilters}>
+                        {props.loadingSavedFilters
+                            ? i18n.t('Saving...')
+                            : props.activeFilter.name}
+                    </div>
                 </DropdownButton>
             )}
             <DropdownButton
