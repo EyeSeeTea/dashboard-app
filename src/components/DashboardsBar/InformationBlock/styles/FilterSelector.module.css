@@ -1,5 +1,5 @@
 .selectionContainer {
-    min-height: 36px;
+    min-block-size: 36px;
 }
 
 .selection {
@@ -16,7 +16,7 @@
 }
 
 .savedFilters {
-    width: 100px;
+    inline-size: 100px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
