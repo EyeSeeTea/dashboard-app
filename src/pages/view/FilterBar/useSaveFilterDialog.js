@@ -1,6 +1,10 @@
 import { useCallback, useState } from 'react'
 
-export const useSaveFitlerDialog = ({ activeFilter, doSaveFilter }) => {
+export const useSaveFitlerDialog = ({
+    activeFilter,
+    doSaveFilter,
+    isLoading,
+}) => {
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
     const [filterDialogData, setFilterDialogData] = useState(activeFilter)
     const [showScope, setShowScope] = useState(true)
@@ -20,6 +24,7 @@ export const useSaveFitlerDialog = ({ activeFilter, doSaveFilter }) => {
         setDialogIsOpen(false)
         setShowScope(true)
     }, [])
+
     const onConfirm = useCallback(
         async ({ name, visibility, id }) => {
             await doSaveFilter({ ...activeFilter, name, visibility, id })
@@ -38,6 +43,7 @@ export const useSaveFitlerDialog = ({ activeFilter, doSaveFilter }) => {
             showScope,
             onCancel: onClose,
             onConfirm,
+            isLoading,
         },
     }
 }

@@ -13,7 +13,10 @@ import {
     tToggleActiveFilterVisibility,
 } from '../../../actions/savedFilters.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
-import { sGetActiveFilter } from '../../../reducers/savedFilters.js'
+import {
+    sGetActiveFilter,
+    sGetLoadingSavedFilters,
+} from '../../../reducers/savedFilters.js'
 import { SavedFilterActions } from './SavedFilterActions.js'
 import SaveFilterDialog from './SaveFilterDialog.js'
 import { useSaveFitlerDialog } from './useSaveFilterDialog.js'
@@ -21,6 +24,7 @@ import { useSaveFitlerDialog } from './useSaveFilterDialog.js'
 const SavedFilterBlock = ({
     activeFilter,
     filters,
+    isLoading,
     saveFilter,
     setLoadingSavedFilters,
     updateActiveFilter,
@@ -60,7 +64,7 @@ const SavedFilterBlock = ({
         openDialogForRename,
         filterDialogIsOpen,
         dialogProps,
-    } = useSaveFitlerDialog({ activeFilter, doSaveFilter })
+    } = useSaveFitlerDialog({ activeFilter, doSaveFilter, isLoading })
 
     const savedFilterActionProps = useMemo(
         () => ({
@@ -109,6 +113,7 @@ SavedFilterBlock.propTypes = {
     activeFilter: PropTypes.object.isRequired,
     deleteFilter: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     saveFilter: PropTypes.func.isRequired,
     setLoadingSavedFilters: PropTypes.func.isRequired,
     toggleFilterVisibility: PropTypes.func.isRequired,
@@ -122,6 +127,7 @@ SavedFilterBlock.defaultProps = {
 const mapStateToProps = (state) => ({
     activeFilter: sGetActiveFilter(state),
     filters: sGetNamedItemFilters(state),
+    isLoading: sGetLoadingSavedFilters(state),
 })
 
 export default connect(mapStateToProps, {

@@ -21,7 +21,7 @@ export const SavedFilterActions = ({
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false)
     const savedFilterHasChanges = useMemo(
         () => hasActiveSavedFilter && !isEqual(activeFilter.values, filters),
-        [activeFilter, filters]
+        [hasActiveSavedFilter, activeFilter, filters]
     )
     const showFilterAction = isFilterActionAllowed(activeFilter, currentUser)
 
@@ -47,12 +47,12 @@ export const SavedFilterActions = ({
     const handleDeleteFilter = useCallback(async () => {
         await doDeleteFilter(currentUser)
         setMoreOptionsIsOpen(false)
-    }, [currentUser])
+    }, [currentUser, doDeleteFilter])
 
     const handleToggleVisibility = useCallback(async () => {
         await doToggleFilterVisibility(currentUser)
         setMoreOptionsIsOpen(false)
-    }, [currentUser])
+    }, [currentUser, doToggleFilterVisibility])
 
     const savedFilterActions = useMemo(
         () => (

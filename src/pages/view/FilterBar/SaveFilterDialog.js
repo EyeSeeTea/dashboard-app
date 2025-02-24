@@ -22,6 +22,7 @@ const SaveFilterDialog = ({
     onConfirm,
     filter = {},
     showScope = true,
+    isLoading = false,
 }) => {
     const [visibility, setVisibility] = React.useState(
         filter.visibility || privateVisiblity
@@ -72,12 +73,22 @@ const SaveFilterDialog = ({
             </ModalContent>
             <ModalActions>
                 <ButtonStrip>
-                    <Button key="cancel" secondary onClick={onCancel}>
+                    <Button
+                        key="cancel"
+                        secondary
+                        onClick={onCancel}
+                        disabled={isLoading}
+                    >
                         {i18n.t('Cancel')}
                     </Button>
 
-                    <Button key="confirm" primary onClick={handleConfirm}>
-                        {i18n.t('Confirm')}
+                    <Button
+                        key="confirm"
+                        primary
+                        onClick={handleConfirm}
+                        loading={isLoading}
+                    >
+                        {isLoading ? i18n.t('Saving...') : i18n.t('Confirm')}
                     </Button>
                 </ButtonStrip>
             </ModalActions>
@@ -87,6 +98,7 @@ const SaveFilterDialog = ({
 
 SaveFilterDialog.propTypes = {
     filter: PropTypes.object,
+    isLoading: PropTypes.bool,
     showScope: PropTypes.bool,
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,

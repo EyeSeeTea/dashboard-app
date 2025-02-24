@@ -1,7 +1,16 @@
 import { DimensionsPanel } from '@dhis2/analytics'
 import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
-import { Card, colors, FlyoutMenu, IconFilter24, Menu } from '@dhis2/ui'
+import {
+    Card,
+    CenteredContent,
+    CircularLoader,
+    colors,
+    FlyoutMenu,
+    IconFilter24,
+    Menu,
+    Tooltip,
+} from '@dhis2/ui'
 import isEmpty from 'lodash/isEmpty.js'
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
@@ -78,39 +87,33 @@ const FilterSelector = (props) => {
     const hasPrivateFilters = props.privateFilters.length > 0
     const hasPublicFilters = props.publicFilters.length > 0
 
+    const renderSavedFilter = (filters, label) =>
+        filters.length > 0 && (
+            <Menu className={classes.selection}>
+                <span className={classes.selectionLabel}>{i18n.t(label)}</span>
+                {filters.map(({ id, name }) => (
+                    <MenuItem
+                        key={id}
+                        dense
+                        active={props.activeFilter.id === id}
+                        label={name}
+                        onClick={() => handleSelectSavedFilter(id)}
+                    />
+                ))}
+            </Menu>
+        )
+
     const getSavedFilters = () => (
-        <FlyoutMenu>
-            {hasPublicFilters && (
-                <Menu className={classes.selection}>
-                    <span className={classes.selectionLabel}>
-                        {i18n.t('Shared filters')}
-                    </span>
-                    {props.publicFilters.map((filter) => (
-                        <MenuItem
-                            key={filter.id}
-                            dense
-                            active={props.activeFilter.id === filter.id}
-                            label={filter.name}
-                            onClick={() => handleSelectSavedFilter(filter.id)}
-                        />
-                    ))}
-                </Menu>
-            )}
-            {hasPrivateFilters && (
-                <Menu className={classes.selection}>
-                    <span className={classes.selectionLabel}>
-                        {i18n.t('My filters')}
-                    </span>
-                    {props.privateFilters.map((filter) => (
-                        <MenuItem
-                            key={filter.id}
-                            dense
-                            active={props.activeFilter.id === filter.id}
-                            label={filter.name}
-                            onClick={() => handleSelectSavedFilter(filter.id)}
-                        />
-                    ))}
-                </Menu>
+        <FlyoutMenu className={classes.selectionContainer}>
+            {dimensions.length === 0 ? (
+                <CenteredContent>
+                    <CircularLoader small />
+                </CenteredContent>
+            ) : (
+                <>
+                    {renderSavedFilter(props.publicFilters, 'Shared filters')}
+                    {renderSavedFilter(props.privateFilters, 'My filters')}
+                </>
             )}
         </FlyoutMenu>
     )
@@ -121,6 +124,7 @@ const FilterSelector = (props) => {
                 <DropdownButton
                     loading={props.loadingSavedFilters}
                     dataTest="saved-filters-button"
+                    disabled={offline}
                     secondary
                     small
                     open={savedFiltersIsOpen}
@@ -128,11 +132,17 @@ const FilterSelector = (props) => {
                     icon={<IconFilter24 color={colors.grey700} />}
                     component={getSavedFilters()}
                 >
-                    <div>
-                        {props.loadingSavedFilters
-                            ? i18n.t('Saving...')
-                            : props.activeFilter.name}
-                    </div>
+                    <Tooltip
+                        content={props.activeFilter.name}
+                        openDelay={200}
+                        closeDelay={100}
+                    >
+                        <div className={classes.savedFilters}>
+                            {props.loadingSavedFilters
+                                ? i18n.t('Saving...')
+                                : props.activeFilter.name}
+                        </div>
+                    </Tooltip>
                 </DropdownButton>
             )}
             <DropdownButton
