@@ -3,7 +3,7 @@ import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { connect } from 'react-redux'
 import {
     acSetActiveFilter,
@@ -27,7 +27,6 @@ const SavedFilterBlock = ({
     isLoading,
     saveFilter,
     setLoadingSavedFilters,
-    updateActiveFilter,
     deleteFilter,
     toggleFilterVisibility,
 }) => {
@@ -36,27 +35,30 @@ const SavedFilterBlock = ({
 
     const hasActiveSavedFilter = Boolean(activeFilter.id)
 
-    const handleFilterAction = async (actionFn) => {
-        setLoadingSavedFilters(true)
-        return actionFn().finally(() => setLoadingSavedFilters(false))
-    }
+    const handleFilterAction = useCallback(
+        async (actionFn) => {
+            setLoadingSavedFilters(true)
+            return actionFn().finally(() => setLoadingSavedFilters(false))
+        },
+        [setLoadingSavedFilters]
+    )
 
     const doSaveFilter = useCallback(
         (filter = {}) =>
             handleFilterAction(() =>
                 saveFilter(currentUser, { ...activeFilter, ...filter })
             ),
-        [currentUser, activeFilter]
+        [currentUser, activeFilter, saveFilter, handleFilterAction]
     )
 
     const doDeleteFilter = useCallback(
         () => handleFilterAction(() => deleteFilter(currentUser)),
-        [currentUser]
+        [currentUser, deleteFilter, handleFilterAction]
     )
 
     const doToggleFilterVisibility = useCallback(
         () => handleFilterAction(() => toggleFilterVisibility(currentUser)),
-        [currentUser]
+        [currentUser, toggleFilterVisibility, handleFilterAction]
     )
 
     const {
@@ -87,14 +89,9 @@ const SavedFilterBlock = ({
             activeFilter,
             filters,
             currentUser,
+            hasActiveSavedFilter,
         ]
     )
-
-    useEffect(() => {
-        if (!filters.length) {
-            updateActiveFilter(null)
-        }
-    }, [filters])
 
     return (
         <>
@@ -117,7 +114,6 @@ SavedFilterBlock.propTypes = {
     saveFilter: PropTypes.func.isRequired,
     setLoadingSavedFilters: PropTypes.func.isRequired,
     toggleFilterVisibility: PropTypes.func.isRequired,
-    updateActiveFilter: PropTypes.func.isRequired,
 }
 
 SavedFilterBlock.defaultProps = {

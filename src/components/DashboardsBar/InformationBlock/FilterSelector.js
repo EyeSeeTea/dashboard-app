@@ -9,16 +9,21 @@ import {
     FlyoutMenu,
     IconFilter24,
     Menu,
+    MenuItem as Dhis2MenuItem,
 } from '@dhis2/ui'
+import { isEqual } from 'lodash'
 import isEmpty from 'lodash/isEmpty.js'
 import PropTypes from 'prop-types'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import {
     acClearActiveModalDimension,
     acSetActiveModalDimension,
 } from '../../../actions/activeModalDimension.js'
-import { tSelectSavedFilter } from '../../../actions/savedFilters.js'
+import {
+    tSelectSavedFilter,
+    acSetActiveFilter,
+} from '../../../actions/savedFilters.js'
 import useDimensions from '../../../modules/useDimensions.js'
 import { sGetActiveModalDimension } from '../../../reducers/activeModalDimension.js'
 import { sGetItemFiltersRoot } from '../../../reducers/itemFilters.js'
@@ -83,9 +88,6 @@ const FilterSelector = (props) => {
         setSavedFiltersIsOpen(false)
     }
 
-    const hasPrivateFilters = props.privateFilters.length > 0
-    const hasPublicFilters = props.publicFilters.length > 0
-
     const renderSavedFilter = (filters, label) =>
         filters.length > 0 && (
             <Menu className={classes.selection}>
@@ -102,6 +104,9 @@ const FilterSelector = (props) => {
             </Menu>
         )
 
+    const hasSavedFilter =
+        props.publicFilters?.length || props.privateFilters?.length
+
     const getSavedFilters = () => (
         <FlyoutMenu className={classes.selectionContainer}>
             {dimensions.length === 0 ? (
@@ -112,32 +117,49 @@ const FilterSelector = (props) => {
                 <>
                     {renderSavedFilter(props.publicFilters, 'Shared filters')}
                     {renderSavedFilter(props.privateFilters, 'My filters')}
+
+                    {!hasSavedFilter && (
+                        <Dhis2MenuItem
+                            disabled
+                            disabledWhenOffline={false}
+                            dense
+                            label={i18n.t('No saved filters available')}
+                        />
+                    )}
                 </>
             )}
         </FlyoutMenu>
     )
 
+    useEffect(() => {
+        if (
+            isEqual(props.initiallySelectedItems, {}) &&
+            props.activeFilter.id
+        ) {
+            props.updateActiveFilter(null)
+        }
+    }, [props])
+
     return props.restrictFilters && !props.allowedFilters?.length ? null : (
         <>
-            {(hasPublicFilters || hasPrivateFilters) && props.activeFilter && (
-                <DropdownButton
-                    loading={props.loadingSavedFilters}
-                    dataTest="saved-filters-button"
-                    disabled={offline}
-                    secondary
-                    small
-                    open={savedFiltersIsOpen}
-                    onClick={() => setSavedFiltersIsOpen(!savedFiltersIsOpen)}
-                    icon={<IconFilter24 color={colors.grey700} />}
-                    component={getSavedFilters()}
-                >
-                    <div className={classes.savedFilters}>
-                        {props.loadingSavedFilters
-                            ? i18n.t('Saving...')
-                            : props.activeFilter.name}
-                    </div>
-                </DropdownButton>
-            )}
+            <DropdownButton
+                loading={props.loadingSavedFilters}
+                dataTest="saved-filters-button"
+                disabled={offline}
+                secondary
+                small
+                open={savedFiltersIsOpen}
+                onClick={() => setSavedFiltersIsOpen(!savedFiltersIsOpen)}
+                icon={<IconFilter24 color={colors.grey700} />}
+                component={getSavedFilters()}
+            >
+                <div>
+                    {props.loadingSavedFilters
+                        ? i18n.t('Saving...')
+                        : props.activeFilter.name}
+                </div>
+            </DropdownButton>
+
             <DropdownButton
                 secondary
                 small
@@ -180,10 +202,12 @@ FilterSelector.propTypes = {
     restrictFilters: PropTypes.bool,
     selectSavedFilter: PropTypes.func,
     setActiveModalDimension: PropTypes.func,
+    updateActiveFilter: PropTypes.func,
 }
 
 export default connect(mapStateToProps, {
     clearActiveModalDimension: acClearActiveModalDimension,
+    updateActiveFilter: acSetActiveFilter,
     setActiveModalDimension: acSetActiveModalDimension,
     selectSavedFilter: tSelectSavedFilter,
 })(FilterSelector)
