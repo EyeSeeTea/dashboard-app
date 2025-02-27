@@ -20,6 +20,14 @@ import {
     FILTER_ORG_UNIT,
 } from './itemFilters.js'
 
+const isFilterAllowed = (orgUnitFilter, rootOrgUnits) => {
+    if (!orgUnitFilter) return true
+
+    return _.every(orgUnitFilter.values, ({ path }) =>
+        _.some(rootOrgUnits, ({ id }) => path.includes(id))
+    )
+}
+
 // actions
 
 export const acSetFilters = (filters) => ({
@@ -42,36 +50,33 @@ export const acSetLoadingSavedFilters = (loading) => ({
 export const tSelectSavedFilter =
     ({ filterId, rootOrgUnits } = {}) =>
     async (dispatch, getState) => {
-        if (filterId) {
-            const savedFilters = sGetSavedFiltersList(getState())
-            const appliedFilters = sGetNamedItemFilters(getState())
-            const filter = savedFilters.find((f) => f.id === filterId) || {}
-
-            if (!isEqual(filter.values, appliedFilters)) {
-                const orgUnitFilter = filter.values.find(
-                    ({ id }) => id === FILTER_ORG_UNIT
-                )
-                const isFilterAllowed =
-                    orgUnitFilter &&
-                    _.every(orgUnitFilter.values, ({ path }) =>
-                        _.some(rootOrgUnits, ({ id }) => path.includes(id))
-                    )
-
-                if (!isFilterAllowed) return false
-                else {
-                    const filters = _.mapValues(
-                        _.keyBy(filter.values, 'id'),
-                        'values'
-                    )
-                    await dispatch(acSetItemFilters(filters))
-                }
-            }
-
-            await dispatch(acSetActiveFilter(filter))
-        } else {
+        if (!filterId) {
             await dispatch(acClearItemFilters())
             await dispatch(acSetActiveFilter(null))
+            return true
         }
+
+        const savedFilters = sGetSavedFiltersList(getState())
+        const appliedFilters = sGetNamedItemFilters(getState())
+        const filter = savedFilters.find(({ id }) => id === filterId) || {}
+
+        if (isEqual(filter.values, appliedFilters)) {
+            await dispatch(acSetActiveFilter(filter))
+            return true
+        }
+
+        const orgUnitFilter = filter.values.find(
+            ({ id }) => id === FILTER_ORG_UNIT
+        )
+
+        if (!isFilterAllowed(orgUnitFilter, rootOrgUnits)) {
+            return false
+        }
+
+        const filters = _.mapValues(_.keyBy(filter.values, 'id'), 'values')
+        await dispatch(acSetItemFilters(filters))
+        await dispatch(acSetActiveFilter(filter))
+
         return true
     }
 
