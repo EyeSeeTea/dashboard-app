@@ -26,10 +26,12 @@ export const useSaveFitlerDialog = ({
     }, [])
 
     const onConfirm = useCallback(
-        async ({ name, visibility, id }) => {
-            await doSaveFilter({ ...activeFilter, name, visibility, id })
-            onClose()
-        },
+        ({ name, visibility, id }) =>
+            doSaveFilter({ ...activeFilter, name, visibility, id }).then(
+                (resp) => {
+                    if (resp) onClose()
+                }
+            ),
         [activeFilter, onClose, doSaveFilter]
     )
 

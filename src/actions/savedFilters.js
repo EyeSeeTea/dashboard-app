@@ -49,10 +49,10 @@ export const acSetLoadingSavedFilters = (loading) => ({
 
 export const tSelectSavedFilter =
     ({ filterId, rootOrgUnits } = {}) =>
-    async (dispatch, getState) => {
+    (dispatch, getState) => {
         if (!filterId) {
-            await dispatch(acClearItemFilters())
-            await dispatch(acSetActiveFilter(null))
+            dispatch(acClearItemFilters())
+            dispatch(acSetActiveFilter(null))
             return true
         }
 
@@ -61,7 +61,7 @@ export const tSelectSavedFilter =
         const filter = savedFilters.find(({ id }) => id === filterId) || {}
 
         if (isEqual(filter.values, appliedFilters)) {
-            await dispatch(acSetActiveFilter(filter))
+            dispatch(acSetActiveFilter(filter))
             return true
         }
 
@@ -74,8 +74,9 @@ export const tSelectSavedFilter =
         }
 
         const filters = _.mapValues(_.keyBy(filter.values, 'id'), 'values')
-        await dispatch(acSetItemFilters(filters))
-        await dispatch(acSetActiveFilter(filter))
+
+        dispatch(acSetItemFilters(filters))
+        dispatch(acSetActiveFilter(filter))
 
         return true
     }
@@ -99,7 +100,7 @@ export const tSaveFilter =
 
             const updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
             await dispatch(tFetchSavedFilters())
-            await dispatch(acSetActiveFilter(updatedFilter))
+            dispatch(acSetActiveFilter(updatedFilter))
             return true
         } catch (error) {
             console.log('Error (tSaveFilter): ', error)
@@ -113,7 +114,7 @@ export const tDeleteActiveFilter =
             const filter = sGetActiveFilter(getState())
             await apiDeleteFilter(filter, currentUser)
             await dispatch(tFetchSavedFilters())
-            await dispatch(tSelectSavedFilter())
+            dispatch(tSelectSavedFilter())
             return true
         } catch (error) {
             console.log('Error (tDeleteActiveFilter): ', error)
