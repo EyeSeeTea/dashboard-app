@@ -3,7 +3,7 @@ import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
 import {
     acSetActiveFilter,
@@ -68,33 +68,6 @@ const SavedFilterBlock = ({
         dialogProps,
     } = useSaveFitlerDialog({ activeFilter, doSaveFilter, isLoading })
 
-    const savedFilterActionProps = useMemo(
-        () => ({
-            openDialogForRename,
-            openDialogForNewFilter,
-            doSaveFilter,
-            doDeleteFilter,
-            doToggleFilterVisibility,
-            activeFilter,
-            filters,
-            hasActiveSavedFilter,
-            currentUser,
-            isLoading,
-        }),
-        [
-            openDialogForRename,
-            openDialogForNewFilter,
-            doSaveFilter,
-            doDeleteFilter,
-            doToggleFilterVisibility,
-            activeFilter,
-            filters,
-            currentUser,
-            hasActiveSavedFilter,
-            isLoading,
-        ]
-    )
-
     return (
         <>
             {online && !hasActiveSavedFilter && (
@@ -102,7 +75,18 @@ const SavedFilterBlock = ({
                     {i18n.t('Save')}
                 </Button>
             )}
-            <SavedFilterActions {...savedFilterActionProps} />
+            <SavedFilterActions
+                openDialogForRename={openDialogForRename}
+                openDialogForNewFilter={openDialogForNewFilter}
+                doSaveFilter={doSaveFilter}
+                doDeleteFilter={doDeleteFilter}
+                doToggleFilterVisibility={doToggleFilterVisibility}
+                activeFilter={activeFilter}
+                filters={filters}
+                hasActiveSavedFilter={hasActiveSavedFilter}
+                currentUser={currentUser}
+                isLoading={isLoading}
+            />
             {filterDialogIsOpen && <SaveFilterDialog {...dialogProps} />}
         </>
     )

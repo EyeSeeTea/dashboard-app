@@ -21,7 +21,9 @@ import {
 } from './itemFilters.js'
 
 const isFilterAllowed = (orgUnitFilter, rootOrgUnits) => {
-    if (!orgUnitFilter) return true
+    if (!orgUnitFilter) {
+        return true
+    }
 
     return _.every(orgUnitFilter.values, ({ path }) =>
         _.some(rootOrgUnits, ({ id }) => path.includes(id))

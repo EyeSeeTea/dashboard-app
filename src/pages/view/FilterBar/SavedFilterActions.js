@@ -2,11 +2,11 @@ import i18n from '@dhis2/d2-i18n'
 import { colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
 import { isEqual } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useState, useMemo, useCallback } from 'react'
 import { isFilterActionAllowed } from '../../../api/savedFilters.js'
+import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import DropdownButton from '../../../components/DropdownButton/DropdownButton.js'
 import { privateVisiblity } from '../../../reducers/savedFilters.js'
-import ConfirmActionDialog from '../../../components/ConfirmActionDialog'
 
 export const SavedFilterActions = ({
     openDialogForRename,
@@ -33,128 +33,104 @@ export const SavedFilterActions = ({
     )
     const showFilterAction = isFilterActionAllowed(activeFilter, currentUser)
 
-    const toggleMoreActions = () => {
-        setMoreOptionsIsOpen((prev) => !prev)
-    }
-
-    const closeDialog = useCallback(() => {
-        setDialogIsOpen(false)
-    }, [])
+    const toggleMoreActions = () => setMoreOptionsIsOpen((prev) => !prev)
+    const closeDialog = () => setDialogIsOpen(false)
 
     const handleAction = useCallback(
         ({ action, label, skipCheck, dialogAction }) =>
             () => {
                 if (skipCheck || currentUser.id === activeFilter.userId) {
-                    console.log('SKIP')
                     action()
                 } else {
-                    const messageAction = dialogAction || label.toLowerCase()
                     setDialogMessage(
                         i18n.t(
-                            `The Saved Filter you are attempting to ${messageAction} was created by ${activeFilter.userName}. Do you still want to proceed`
+                            `The Saved Filter you are attempting to ${
+                                dialogAction || label.toLowerCase()
+                            } was created by ${
+                                activeFilter.userName
+                            }. Do you still want to proceed?`
                         )
                     )
                     setConfirmDialogAction(() => () => {
-                        action().then(() => closeDialog())
+                        action().then(closeDialog)
                     })
                     setDialogIsOpen(true)
-                    setMoreOptionsIsOpen(false)
                 }
+                setMoreOptionsIsOpen(false)
             },
-        []
+        [activeFilter, currentUser]
     )
 
-    const handleSaveFilter = useCallback(
-        () => doSaveFilter(activeFilter),
-        [activeFilter, doSaveFilter]
-    )
-
-    const handleSaveNewFilter = useCallback(
-        () => Promise.resolve(openDialogForNewFilter()),
-        [openDialogForNewFilter]
-    )
-
-    const handleRenameFilter = useCallback(
-        () => Promise.resolve(openDialogForRename()),
-        [openDialogForRename]
-    )
-
-    const handleDeleteFilter = useCallback(
-        () => doDeleteFilter(currentUser),
-        [currentUser, doDeleteFilter]
-    )
-
-    const handleToggleVisibility = useCallback(
-        () => doToggleFilterVisibility(currentUser),
-        [currentUser, doToggleFilterVisibility]
-    )
-
-    const actionsMap = useMemo(
-        () => ({
-            rename: {
+    const savedFilterActions = useMemo(() => {
+        const actions = [
+            {
                 show: showFilterAction,
                 label: i18n.t('Rename'),
-                action: handleRenameFilter,
+                action: () => Promise.resolve(openDialogForRename()),
             },
-            delete: {
+            {
                 show: showFilterAction,
                 label: i18n.t('Delete'),
-                action: handleDeleteFilter,
+                action: () => doDeleteFilter(currentUser),
             },
-            save: {
+            {
                 show: savedFilterHasChanges && showFilterAction,
                 label: i18n.t('Save'),
-                action: handleSaveFilter,
+                action: () => doSaveFilter(activeFilter),
                 dialogAction: 'update',
             },
-            saveAsNew: {
+            {
                 show: savedFilterHasChanges,
                 label: i18n.t('Save as new filter'),
-                action: handleSaveNewFilter,
+                action: openDialogForNewFilter,
                 skipCheck: true,
             },
-            toggleVisibility: {
+            {
                 show: showFilterAction,
                 label:
                     activeFilter?.visibility === privateVisiblity
                         ? i18n.t('Make it public')
                         : i18n.t('Make it private'),
-                action: handleToggleVisibility,
+                action: () => doToggleFilterVisibility(currentUser),
                 dialogAction:
                     activeFilter?.visibility === privateVisiblity
                         ? i18n.t('make public')
                         : i18n.t('make private'),
             },
-        }),
-        [
-            savedFilterHasChanges,
-            handleRenameFilter,
-            handleDeleteFilter,
-            handleSaveNewFilter,
-            handleSaveFilter,
-            handleToggleVisibility,
-            activeFilter,
-            showFilterAction,
         ]
-    )
 
-    const savedFilterActions = useMemo(
-        () => (
+        return (
             <FlyoutMenu>
-                {Object.values(actionsMap).map(
-                    (actionItem) =>
-                        actionItem.show && (
+                {actions.map(
+                    ({ show, label, action, skipCheck, dialogAction }) =>
+                        show && (
                             <MenuItem
+                                key={label}
                                 dense
-                                label={actionItem.label}
-                                onClick={handleAction(actionItem)}
+                                label={label}
+                                onClick={handleAction({
+                                    action,
+                                    label,
+                                    skipCheck,
+                                    dialogAction,
+                                })}
                             />
                         )
                 )}
             </FlyoutMenu>
-        ),
-        [actionsMap]
-    )
+        )
+    }, [
+        savedFilterHasChanges,
+        showFilterAction,
+        activeFilter,
+        currentUser,
+        doDeleteFilter,
+        doSaveFilter,
+        doToggleFilterVisibility,
+        handleAction,
+        openDialogForNewFilter,
+        openDialogForRename,
+    ])
 
     return (
         hasActiveSavedFilter &&
@@ -166,17 +142,15 @@ export const SavedFilterActions = ({
                     small
                     showArrow={false}
                     open={moreOptionsIsOpen}
-                    disabledWhenOffline={true}
+                    disabledWhenOffline
                     onClick={toggleMoreActions}
                     icon={<IconMore16 color={colors.grey700} />}
                     component={savedFilterActions}
-                >
-                    <wbr />
-                </DropdownButton>
+                />
                 <ConfirmActionDialog
                     isLoading={isLoading}
                     open={dialogIsOpen}
-                    title={i18n.t('Saved Filter')}
+                    title={i18n.t('Modify Saved Filter?')}
                     message={dialogMessage}
                     cancelLabel={i18n.t('Cancel')}
                     confirmLabel={i18n.t('Confirm')}
@@ -196,6 +170,7 @@ SavedFilterActions.propTypes = {
     doToggleFilterVisibility: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     hasActiveSavedFilter: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     openDialogForNewFilter: PropTypes.func.isRequired,
     openDialogForRename: PropTypes.func.isRequired,
 }

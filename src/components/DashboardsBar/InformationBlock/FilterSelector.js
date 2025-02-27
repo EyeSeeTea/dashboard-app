@@ -170,7 +170,7 @@ const FilterSelector = (props) => {
                 <div>
                     {props.loadingSavedFilters
                         ? i18n.t('Saving...')
-                        : props.activeFilter.name}
+                        : i18n.t('Saved filters')}
                 </div>
             </DropdownButton>
 

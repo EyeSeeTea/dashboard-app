@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-02-25T10:19:44.419Z\n"
-"PO-Revision-Date: 2025-02-25T10:19:44.419Z\n"
+"POT-Creation-Date: 2025-02-27T12:06:52.736Z\n"
+"PO-Revision-Date: 2025-02-27T12:06:52.736Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
@@ -87,11 +87,23 @@ msgstr "Cancel"
 msgid "Confirm"
 msgstr "Confirm"
 
+msgid ""
+"The selected Saved Filter cannot be applied because it includes selections "
+"that the current user does not have permission to view. Please try a "
+"different filter."
+msgstr ""
+"The selected Saved Filter cannot be applied because it includes selections "
+"that the current user does not have permission to view. Please try a "
+"different filter."
+
 msgid "No saved filters available"
 msgstr "No saved filters available"
 
 msgid "Saving..."
 msgstr "Saving..."
+
+msgid "Saved filters"
+msgstr "Saved filters"
 
 msgid "Filter"
 msgstr "Filter"
@@ -593,6 +605,19 @@ msgstr "Name"
 msgid "Scope"
 msgstr "Scope"
 
+msgid ""
+"The Saved Filter you are attempting to ${\n"
+"                                dialogAction || label.toLowerCase()\n"
+"                            } was created by ${\n"
+"                                activeFilter.userName\n"
+"                            }. Do you still want to proceed?"
+msgstr ""
+"The Saved Filter you are attempting to ${\n"
+"                                dialogAction || label.toLowerCase()\n"
+"                            } was created by ${\n"
+"                                activeFilter.userName\n"
+"                            }. Do you still want to proceed?"
+
 msgid "Rename"
 msgstr "Rename"
 
@@ -607,6 +632,15 @@ msgstr "Make it public"
 
 msgid "Make it private"
 msgstr "Make it private"
+
+msgid "make public"
+msgstr "make public"
+
+msgid "make private"
+msgstr "make private"
+
+msgid "Modify Saved Filter?"
+msgstr "Modify Saved Filter?"
 
 msgid "Exit slideshow"
 msgstr "Exit slideshow"

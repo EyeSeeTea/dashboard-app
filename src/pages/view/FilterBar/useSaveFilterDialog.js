@@ -9,16 +9,16 @@ export const useSaveFitlerDialog = ({
     const [filterDialogData, setFilterDialogData] = useState(activeFilter)
     const [showScope, setShowScope] = useState(true)
 
-    const openDialogForNewFilter = () => {
+    const openDialogForNewFilter = useCallback(() => {
         setFilterDialogData({ id: 'new' })
         setDialogIsOpen(true)
-    }
+    }, [])
 
-    const openDialogForRename = () => {
+    const openDialogForRename = useCallback(() => {
         setShowScope(false)
         setFilterDialogData(activeFilter)
         setDialogIsOpen(true)
-    }
+    }, [activeFilter])
 
     const onClose = useCallback(() => {
         setDialogIsOpen(false)
@@ -26,12 +26,15 @@ export const useSaveFitlerDialog = ({
     }, [])
 
     const onConfirm = useCallback(
-        ({ name, visibility, id }) =>
-            doSaveFilter({ ...activeFilter, name, visibility, id }).then(
-                (resp) => {
-                    if (resp) onClose()
-                }
-            ),
+        ({ name, visibility, id }) => {
+            doSaveFilter({
+                ...activeFilter,
+                name,
+                visibility,
+                id,
+                ...(id === 'new' && { userName: null, userId: null }),
+            }).then((resp) => resp && onClose())
+        },
         [activeFilter, onClose, doSaveFilter]
     )
 
