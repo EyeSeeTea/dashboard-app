@@ -89,12 +89,8 @@ export const tFetchSavedFilters = () => async (dispatch) => {
 export const tSaveFilter =
     (currentUser, filter) => async (dispatch, getState) => {
         try {
-            const { id, name, visibility } = filter
-
             const filterUpdate = {
-                id,
-                name,
-                visibility,
+                ...filter,
                 values: sGetNamedItemFilters(getState()),
             }
 

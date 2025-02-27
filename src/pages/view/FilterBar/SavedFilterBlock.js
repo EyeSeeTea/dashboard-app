@@ -79,6 +79,7 @@ const SavedFilterBlock = ({
             filters,
             hasActiveSavedFilter,
             currentUser,
+            isLoading,
         }),
         [
             openDialogForRename,
@@ -90,6 +91,7 @@ const SavedFilterBlock = ({
             filters,
             currentUser,
             hasActiveSavedFilter,
+            isLoading,
         ]
     )
 

@@ -70,8 +70,8 @@ const insertNewFilter = (filter, savedFilters, currentUser) => {
     const newFilter = {
         ...filter,
         id: generateUid(),
-        userId: currentUser.id,
-        userName: currentUser.username,
+        userId: filter.userId || currentUser.id,
+        userName: filter.userName || currentUser.username,
     }
     return {
         filter: newFilter,

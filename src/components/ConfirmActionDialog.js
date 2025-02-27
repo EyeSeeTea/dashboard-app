@@ -18,6 +18,7 @@ const ConfirmActionDialog = ({
     message,
     cancelLabel,
     confirmLabel,
+    isLoading = false,
 }) => {
     return (
         open && (
@@ -37,7 +38,12 @@ const ConfirmActionDialog = ({
                             {cancelLabel}
                         </Button>
 
-                        <Button key="confirm" destructive onClick={onConfirm}>
+                        <Button
+                            key="confirm"
+                            destructive
+                            onClick={onConfirm}
+                            loading={isLoading}
+                        >
                             {confirmLabel}
                         </Button>
                     </ButtonStrip>
@@ -50,6 +56,7 @@ const ConfirmActionDialog = ({
 ConfirmActionDialog.propTypes = {
     cancelLabel: PropTypes.string,
     confirmLabel: PropTypes.string,
+    isLoading: PropTypes.bool,
     message: PropTypes.string,
     open: PropTypes.bool,
     title: PropTypes.string,
