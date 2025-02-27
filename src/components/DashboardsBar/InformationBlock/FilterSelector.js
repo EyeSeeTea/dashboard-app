@@ -1,5 +1,5 @@
 import { DimensionsPanel, useCachedDataQuery } from '@dhis2/analytics'
-import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
+import { useAlert, useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
     Card,
@@ -39,12 +39,20 @@ import MenuItem from '../../MenuItemWithTooltip.js'
 import FilterDialog from './FilterDialog.js'
 import classes from './styles/FilterSelector.module.css'
 
+const failedApplyFilerMessage = i18n.t(
+    'The selected Saved Filter cannot be applied because it includes selections that the current user does not have permission to view. Please try a different filter.'
+)
+
 const FilterSelector = (props) => {
+    const { isDisconnected: offline } = useDhis2ConnectionStatus()
+    const { rootOrgUnits } = useCachedDataQuery()
+    const failedApplyFilterAlert = useAlert(failedApplyFilerMessage, {
+        warning: true,
+    })
+
     const [savedFiltersIsOpen, setSavedFiltersIsOpen] = useState(false)
     const [filterDialogIsOpen, setFilterDialogIsOpen] = useState(false)
     const dimensions = useDimensions(filterDialogIsOpen || savedFiltersIsOpen)
-    const { isDisconnected: offline } = useDhis2ConnectionStatus()
-    const { rootOrgUnits } = useCachedDataQuery()
 
     const toggleFilterDialogIsOpen = () =>
         setFilterDialogIsOpen(!filterDialogIsOpen)
@@ -83,11 +91,15 @@ const FilterSelector = (props) => {
     )
 
     const handleSelectSavedFilter = (filterId) => {
-        props.selectSavedFilter({
+        const success = props.selectSavedFilter({
             filterId: filterId === props.activeFilter.id ? null : filterId,
             rootOrgUnits,
         })
-        setSavedFiltersIsOpen(false)
+        if (success) {
+            setSavedFiltersIsOpen(false)
+        } else {
+            failedApplyFilterAlert.show()
+        }
     }
 
     const renderSavedFilter = (filters, label) =>
