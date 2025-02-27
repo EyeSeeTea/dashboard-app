@@ -14,7 +14,11 @@ import {
     sGetActiveFilter,
     sGetSavedFiltersList,
 } from '../reducers/savedFilters.js'
-import { acClearItemFilters, acSetItemFilters } from './itemFilters.js'
+import {
+    acClearItemFilters,
+    acSetItemFilters,
+    FILTER_ORG_UNIT,
+} from './itemFilters.js'
 
 // actions
 
@@ -35,23 +39,41 @@ export const acSetLoadingSavedFilters = (loading) => ({
 
 // thunks
 
-export const tSelectSavedFilter = (filterId) => async (dispatch, getState) => {
-    if (filterId) {
-        const savedFilters = sGetSavedFiltersList(getState())
-        const appliedFilters = sGetNamedItemFilters(getState())
-        const filter = savedFilters.find((f) => f.id === filterId) || {}
+export const tSelectSavedFilter =
+    ({ filterId, rootOrgUnits } = {}) =>
+    async (dispatch, getState) => {
+        if (filterId) {
+            const savedFilters = sGetSavedFiltersList(getState())
+            const appliedFilters = sGetNamedItemFilters(getState())
+            const filter = savedFilters.find((f) => f.id === filterId) || {}
 
-        if (!isEqual(filter.values, appliedFilters)) {
-            const filters = _.mapValues(_.keyBy(filter.values, 'id'), 'values')
-            await dispatch(acSetItemFilters(filters))
+            if (!isEqual(filter.values, appliedFilters)) {
+                const orgUnitFilter = filter.values.find(
+                    ({ id }) => id === FILTER_ORG_UNIT
+                )
+                const isFilterAllowed =
+                    orgUnitFilter &&
+                    _.every(orgUnitFilter.values, ({ path }) =>
+                        _.some(rootOrgUnits, ({ id }) => path.includes(id))
+                    )
+
+                if (!isFilterAllowed) return false
+                else {
+                    const filters = _.mapValues(
+                        _.keyBy(filter.values, 'id'),
+                        'values'
+                    )
+                    await dispatch(acSetItemFilters(filters))
+                }
+            }
+
+            await dispatch(acSetActiveFilter(filter))
+        } else {
+            await dispatch(acClearItemFilters())
+            await dispatch(acSetActiveFilter(null))
         }
-
-        await dispatch(acSetActiveFilter(filter))
-    } else {
-        await dispatch(acClearItemFilters())
-        await dispatch(acSetActiveFilter(null))
+        return true
     }
-}
 
 export const tFetchSavedFilters = () => async (dispatch) => {
     const filters = await apiGetSavedFilters()
@@ -63,20 +85,20 @@ export const tSaveFilter =
         try {
             const { id, name, visibility } = filter
 
-            const updatedFilter = {
+            const filterUpdate = {
                 id,
                 name,
                 visibility,
                 values: sGetNamedItemFilters(getState()),
             }
 
-            const filterId = await apiSaveFilter(updatedFilter, currentUser)
+            const updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
             await dispatch(tFetchSavedFilters())
-            await dispatch(tSelectSavedFilter(filterId))
-            return filterId
+            await dispatch(acSetActiveFilter(updatedFilter))
+            return true
         } catch (error) {
             console.log('Error (tSaveFilter): ', error)
-            return error
+            return false
         }
     }
 
@@ -86,11 +108,11 @@ export const tDeleteActiveFilter =
             const filter = sGetActiveFilter(getState())
             await apiDeleteFilter(filter, currentUser)
             await dispatch(tFetchSavedFilters())
-            await dispatch(tSelectSavedFilter(null))
+            await dispatch(tSelectSavedFilter())
             return true
         } catch (error) {
             console.log('Error (tDeleteActiveFilter): ', error)
-            return error
+            return false
         }
     }
 
@@ -106,7 +128,5 @@ export const tToggleActiveFilterVisibility =
                 : privateVisiblity
         const updatedFilter = { ...filter, visibility: newVisibility }
 
-        await dispatch(tSaveFilter(currentUser, updatedFilter))
-
-        return updatedFilter
+        return dispatch(tSaveFilter(currentUser, updatedFilter))
     }

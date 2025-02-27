@@ -33,7 +33,7 @@ export const apiSaveFilter = async (filter, currentUser) => {
     }
 
     await save(KEY_SAVED_FILTERS, updatedFilters)
-    return updatedFilter.id
+    return updatedFilter
 }
 
 export const apiDeleteFilter = async (filter, currentUser) => {

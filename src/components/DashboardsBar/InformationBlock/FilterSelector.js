@@ -1,4 +1,4 @@
-import { DimensionsPanel } from '@dhis2/analytics'
+import { DimensionsPanel, useCachedDataQuery } from '@dhis2/analytics'
 import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
@@ -44,6 +44,7 @@ const FilterSelector = (props) => {
     const [filterDialogIsOpen, setFilterDialogIsOpen] = useState(false)
     const dimensions = useDimensions(filterDialogIsOpen || savedFiltersIsOpen)
     const { isDisconnected: offline } = useDhis2ConnectionStatus()
+    const { rootOrgUnits } = useCachedDataQuery()
 
     const toggleFilterDialogIsOpen = () =>
         setFilterDialogIsOpen(!filterDialogIsOpen)
@@ -82,9 +83,10 @@ const FilterSelector = (props) => {
     )
 
     const handleSelectSavedFilter = (filterId) => {
-        props.selectSavedFilter(
-            filterId === props.activeFilter.id ? null : filterId
-        )
+        props.selectSavedFilter({
+            filterId: filterId === props.activeFilter.id ? null : filterId,
+            rootOrgUnits,
+        })
         setSavedFiltersIsOpen(false)
     }
 
