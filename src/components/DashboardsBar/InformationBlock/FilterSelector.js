@@ -182,6 +182,7 @@ const FilterSelector = (props) => {
                 onClick={toggleFilterDialogIsOpen}
                 icon={<IconFilter24 color={colors.grey700} />}
                 component={getFilterSelector()}
+                dataTest="filter-button"
             >
                 {i18n.t('Filter')}
             </DropdownButton>
