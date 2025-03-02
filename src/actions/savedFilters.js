@@ -1,6 +1,8 @@
-import isEqual from 'lodash/isEqual'
-import some from 'lodash/isEqual'
-import every from 'lodash/isEqual'
+import every from 'lodash/every.js'
+import isEqual from 'lodash/isEqual.js'
+import keyBy from 'lodash/keyBy.js'
+import mapValues from 'lodash/mapValues.js'
+import some from 'lodash/some.js'
 import {
     apiDeleteFilter,
     apiGetSavedFilters,
@@ -77,7 +79,7 @@ export const tSelectSavedFilter =
             return false
         }
 
-        const filters = _.mapValues(_.keyBy(filter.values, 'id'), 'values')
+        const filters = mapValues(keyBy(filter.values, 'id'), 'values')
 
         dispatch(acSetItemFilters(filters))
         dispatch(acSetActiveFilter(filter))
