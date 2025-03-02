@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react'
 
+const NEW_FILTER_ID = 'new'
+
 export const useSaveFitlerDialog = ({
     activeFilter,
     doSaveFilter,
@@ -10,7 +12,7 @@ export const useSaveFitlerDialog = ({
     const [showScope, setShowScope] = useState(true)
 
     const openDialogForNewFilter = useCallback(() => {
-        setFilterDialogData({ id: 'new' })
+        setFilterDialogData({ id: NEW_FILTER_ID })
         setDialogIsOpen(true)
     }, [])
 
@@ -32,7 +34,7 @@ export const useSaveFitlerDialog = ({
                 name,
                 visibility,
                 id,
-                ...(id === 'new' && { userName: null, userId: null }),
+                ...(id === NEW_FILTER_ID && { userName: null, userId: null }),
             }).then((resp) => resp && onClose())
         },
         [activeFilter, onClose, doSaveFilter]

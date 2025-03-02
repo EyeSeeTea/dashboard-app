@@ -1,4 +1,6 @@
-import _, { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual'
+import some from 'lodash/isEqual'
+import every from 'lodash/isEqual'
 import {
     apiDeleteFilter,
     apiGetSavedFilters,
@@ -25,8 +27,8 @@ const isFilterAllowed = (orgUnitFilter, rootOrgUnits) => {
         return true
     }
 
-    return _.every(orgUnitFilter.values, ({ path }) =>
-        _.some(rootOrgUnits, ({ id }) => path.includes(id))
+    return every(orgUnitFilter.values, ({ path }) =>
+        some(rootOrgUnits, ({ id }) => path.includes(id))
     )
 }
 

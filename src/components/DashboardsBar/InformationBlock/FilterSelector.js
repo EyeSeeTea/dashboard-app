@@ -11,7 +11,7 @@ import {
     Menu,
     MenuItem as Dhis2MenuItem,
 } from '@dhis2/ui'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual.js'
 import isEmpty from 'lodash/isEmpty.js'
 import PropTypes from 'prop-types'
 import React, { useEffect, useState } from 'react'

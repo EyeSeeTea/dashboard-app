@@ -1,6 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
 import { colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual.js'
 import PropTypes from 'prop-types'
 import React, { useState, useMemo, useCallback } from 'react'
 import { isFilterActionAllowed } from '../../../api/savedFilters.js'
@@ -146,7 +146,9 @@ export const SavedFilterActions = ({
                     onClick={toggleMoreActions}
                     icon={<IconMore16 color={colors.grey700} />}
                     component={savedFilterActions}
-                />
+                >
+                    <wbr />
+                </DropdownButton>
                 <ConfirmActionDialog
                     isLoading={isLoading}
                     open={dialogIsOpen}
