@@ -41,7 +41,7 @@ const SaveFilterDialog = ({
                       ),
                   }
                 : null,
-        [name]
+        [name, isNameUpdated]
     )
 
     const handleVisibilityChange = ({ selected }) => {

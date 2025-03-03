@@ -91,10 +91,12 @@ export const tSelectSavedFilter =
 export const tFetchSavedFilters = () => async (dispatch) => {
     const filters = await apiGetSavedFilters()
 
-    return dispatch(acSetFilters({
-        [privateVisiblity]: sortBy(filters.private, 'name'),
-        [publicVisibility]: sortBy(filters.public, 'name')
-    }))
+    return dispatch(
+        acSetFilters({
+            [privateVisiblity]: sortBy(filters.private, 'name'),
+            [publicVisibility]: sortBy(filters.public, 'name'),
+        })
+    )
 }
 
 export const tSaveFilter =
