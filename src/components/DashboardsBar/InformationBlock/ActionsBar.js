@@ -211,7 +211,7 @@ const ActionsBar = ({
         setIsLoading(true)
         const isStarred = isFilterStarred(starredFilter)
         const value = isStarred ? false : STARRED_STATE
-        apiPostStarredDashboard(value)
+        apiPostStarredDashboard(value, dataEngine)
             .then(() => setStarredFilter(value))
             .finally(() => setIsLoading(false))
     }
