@@ -56,6 +56,9 @@ msgstr "No dashboard items to show in slideshow"
 msgid "Not available offline"
 msgstr "Not available offline"
 
+msgid "Saving..."
+msgstr "Saving..."
+
 msgid "Edit"
 msgstr "Edit"
 
@@ -80,6 +83,12 @@ msgstr "No, cancel"
 
 msgid "Yes, clear filters and sync"
 msgstr "Yes, clear filters and sync"
+
+msgid "Show all dashboards"
+msgstr "Show all dashboards"
+
+msgid "Show only starred dashboards"
+msgstr "Show only starred dashboards"
 
 msgid "Cancel"
 msgstr "Cancel"

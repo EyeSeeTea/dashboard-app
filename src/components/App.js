@@ -7,6 +7,7 @@ import { Redirect, HashRouter as Router, Route, Switch } from 'react-router-dom'
 import { acClearActiveModalDimension } from '../actions/activeModalDimension.js'
 import { tFetchDashboards } from '../actions/dashboards.js'
 import { acClearDashboardsFilter } from '../actions/dashboardsFilter.js'
+import { tSetStarredDashboard } from '../actions/dashboardsStarredFilter.js'
 import { acClearEditDashboard } from '../actions/editDashboard.js'
 import { acClearItemActiveTypes } from '../actions/itemActiveTypes.js'
 import { acClearItemFilters } from '../actions/itemFilters.js'
@@ -31,6 +32,7 @@ const App = (props) => {
     useEffect(() => {
         props.fetchDashboards()
         props.setShowDescription()
+        props.setStarredDashboard()
 
         // store the headerbar height for controlbar height calculations
         const headerbarHeight = document
@@ -116,10 +118,12 @@ App.propTypes = {
     fetchDashboards: PropTypes.func,
     resetState: PropTypes.func,
     setShowDescription: PropTypes.func,
+    setStarredDashboard: PropTypes.func,
 }
 
 const mapDispatchToProps = {
     fetchDashboards: tFetchDashboards,
+    setStarredDashboard: tSetStarredDashboard,
     setShowDescription: tSetShowDescription,
     resetState: () => (dispatch) => {
         dispatch(acSetSelected({}))

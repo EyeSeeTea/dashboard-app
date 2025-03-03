@@ -12,10 +12,12 @@ import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import { useHistory, Redirect } from 'react-router-dom'
+import { acSetDashboardsStarredFilter } from '../../../actions/dashboardsStarredFilter.js'
 import { acClearItemFilters } from '../../../actions/itemFilters.js'
 import { acSetShowDescription } from '../../../actions/showDescription.js'
 import { acSetSlideshow } from '../../../actions/slideshow.js'
 import { apiPostShowDescription } from '../../../api/description.js'
+import { apiPostStarredDashboard } from '../../../api/starred.js'
 import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import DropdownButton from '../../../components/DropdownButton/DropdownButton.js'
 import MenuItem from '../../../components/MenuItemWithTooltip.js'
@@ -24,6 +26,10 @@ import { itemTypeSupportsFullscreen } from '../../../modules/itemTypes.js'
 import { useCacheableSection } from '../../../modules/useCacheableSection.js'
 import { orObject } from '../../../modules/util.js'
 import { ROUTE_START_PATH } from '../../../pages/start/index.js'
+import {
+    sGetDashboardsStarredFilter,
+    STARRED_STATE,
+} from '../../../reducers/dashboardsStarredFilter.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
 import { sGetSelected } from '../../../reducers/selected.js'
 import { sGetShowDescription } from '../../../reducers/showDescription.js'
@@ -43,9 +49,12 @@ const ActionsBar = ({
     restrictFilters,
     allowedFilters,
     filtersLength,
+    starredFilter,
+    setStarredFilter,
     dashboardItems,
 }) => {
     const history = useHistory()
+    const [isLoading, setIsLoading] = useState(false)
     const dataEngine = useDataEngine()
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false)
     const [sharingDialogIsOpen, setSharingDialogIsOpen] = useState(false)
@@ -198,10 +207,30 @@ const ActionsBar = ({
 
     const slideshowTooltipContent = getSlideshowTooltipContent()
 
+    const updateStarredFilter = () => {
+        setIsLoading(true)
+        const isStarred = isFilterStarred(starredFilter)
+        const value = isStarred ? false : STARRED_STATE
+        apiPostStarredDashboard(value, dataEngine)
+            .then(() => setStarredFilter(value))
+            .finally(() => setIsLoading(false))
+    }
+
+    const starredButtonText = getStarredButtonText(starredFilter)
+
     return (
         <>
             <div className={classes.actions}>
                 <div className={classes.hideOnSmallScreen}>
+                    <Button
+                        loading={isLoading}
+                        primary={isFilterStarred(starredFilter)}
+                        onClick={updateStarredFilter}
+                        secondary
+                        small
+                    >
+                        {isLoading ? i18n.t('Saving...') : starredButtonText}
+                    </Button>
                     {userAccess.update ? (
                         <OfflineTooltip>
                             <Button
@@ -294,9 +323,11 @@ ActionsBar.propTypes = {
     removeAllFilters: PropTypes.func,
     restrictFilters: PropTypes.bool,
     setSlideshow: PropTypes.func,
+    setStarredFilter: PropTypes.func,
     showAlert: PropTypes.func,
     showDescription: PropTypes.bool,
     starred: PropTypes.bool,
+    starredFilter: PropTypes.bool,
     toggleDashboardStarred: PropTypes.func,
     updateShowDescription: PropTypes.func,
 }
@@ -308,6 +339,7 @@ const mapStateToProps = (state) => {
         ...dashboard,
         filtersLength: sGetNamedItemFilters(state).length,
         showDescription: sGetShowDescription(state),
+        starredFilter: sGetDashboardsStarredFilter(state),
     }
 }
 
@@ -315,4 +347,16 @@ export default connect(mapStateToProps, {
     setSlideshow: acSetSlideshow,
     removeAllFilters: acClearItemFilters,
     updateShowDescription: acSetShowDescription,
+    setStarredFilter: acSetDashboardsStarredFilter,
 })(ActionsBar)
+
+export function isFilterStarred(currentValue) {
+    return currentValue === STARRED_STATE
+}
+
+function getStarredButtonText(value) {
+    const isStarred = isFilterStarred(value)
+    return isStarred
+        ? i18n.t('Show all dashboards')
+        : i18n.t('Show only starred dashboards')
+}

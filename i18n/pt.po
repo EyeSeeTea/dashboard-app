@@ -647,3 +647,17 @@ msgstr ""
 
 msgid "Go to start page"
 msgstr "Ir para a página inicial"
+
+msgid "Load dashboard failed"
+msgstr "Falha ao carregar o painel"
+
+msgid "This dashboard could not be loaded. Please try again later."
+msgstr ""
+"Não foi possível carregar este painel de controlo. Por favor, tente "
+"novamente mais tarde."
+
+msgid "Show all dashboards"
+msgstr "Mostrar todos os painéis de instrumentos"
+
+msgid "Show only starred dashboards"
+msgstr "Mostrar apenas painéis marcados como favorito"

@@ -647,3 +647,16 @@ msgstr "Este tablero no puede cargarse mientras esté sin conexión a internet."
 
 msgid "Go to start page"
 msgstr "Ir a la página de inicio"
+
+msgid "Load dashboard failed"
+msgstr "No se pudo cargar el tablero"
+
+msgid "This dashboard could not be loaded. Please try again later."
+msgstr ""
+"No se pudo cargar este tablero. Por favor, inténtelo de nuevo más tarde."
+
+msgid "Show all dashboards"
+msgstr "Mostrar todos los tableros"
+
+msgid "Show only starred dashboards"
+msgstr "Mostrar solamente los tableros marcados"

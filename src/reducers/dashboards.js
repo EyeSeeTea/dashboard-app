@@ -94,7 +94,17 @@ const sGetUnstarredDashboards = (state) =>
 
 // selector level 3
 
-export const sGetDashboardsSortedByStarred = (state) => [
-    ...arraySort(sGetStarredDashboards(state), 'ASC', 'displayName'),
-    ...arraySort(sGetUnstarredDashboards(state), 'ASC', 'displayName'),
-]
+export const sGetDashboardsSortedByStarred = (state) => {
+    const showOnlyStarred = state.dashboardsStarredFilter
+
+    const starredDashboards = arraySort(
+        sGetStarredDashboards(state),
+        'ASC',
+        'displayName'
+    )
+
+    const unStarredDashboards = showOnlyStarred
+        ? []
+        : arraySort(sGetUnstarredDashboards(state), 'ASC', 'displayName')
+    return starredDashboards.concat(unStarredDashboards)
+}

@@ -646,3 +646,16 @@ msgstr "Impossible de charger ce tableau de bord en mode hors ligne."
 
 msgid "Go to start page"
 msgstr "Aller à la page d'accueil"
+
+msgid "Load dashboard failed"
+msgstr "Échec du chargement du tableau de bord"
+
+msgid "This dashboard could not be loaded. Please try again later."
+msgstr ""
+"Ce tableau de bord n'a pas pu être chargé. Veuillez réessayer plus tard."
+
+msgid "Show all dashboards"
+msgstr "Afficher tous les tableaux de bord"
+
+msgid "Show only starred dashboards"
+msgstr "Aficher seulement tableaux de bord à étoiles"
