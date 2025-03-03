@@ -10,8 +10,9 @@ import {
     SingleSelectOption,
     SingleSelectField,
 } from '@dhis2/ui'
+import capitalize from 'lodash/capitalize.js'
 import PropTypes from 'prop-types'
-import React from 'react'
+import React, { useMemo } from 'react'
 import {
     filterVisibility,
     privateVisiblity,
@@ -27,7 +28,21 @@ const SaveFilterDialog = ({
     const [visibility, setVisibility] = React.useState(
         filter.visibility || privateVisiblity
     )
-    const [name, setName] = React.useState(filter.id ? filter.name : '')
+    const [name, setName] = React.useState(filter.id ? filter.name : null)
+    const isNameUpdated = typeof name === 'string'
+
+    const error = useMemo(
+        () =>
+            isNameUpdated && name.length < 1
+                ? {
+                      error: true,
+                      validationText: i18n.t(
+                          'Please enter a name for the filter'
+                      ),
+                  }
+                : null,
+        [name]
+    )
 
     const handleVisibilityChange = ({ selected }) => {
         setVisibility(selected)
@@ -54,6 +69,8 @@ const SaveFilterDialog = ({
                     label={i18n.t('Name')}
                     value={name}
                     onChange={handleNameChange}
+                    required
+                    {...error}
                 />
                 {showScope && (
                     <SingleSelectField
@@ -65,7 +82,7 @@ const SaveFilterDialog = ({
                             <SingleSelectOption
                                 key={filter}
                                 value={filter}
-                                label={filter}
+                                label={capitalize(filter)}
                             />
                         ))}
                     </SingleSelectField>
@@ -87,6 +104,7 @@ const SaveFilterDialog = ({
                         primary
                         onClick={handleConfirm}
                         loading={isLoading}
+                        disabled={error || !isNameUpdated}
                     >
                         {isLoading ? i18n.t('Saving...') : i18n.t('Confirm')}
                     </Button>

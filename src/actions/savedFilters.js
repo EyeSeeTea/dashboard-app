@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual.js'
 import keyBy from 'lodash/keyBy.js'
 import mapValues from 'lodash/mapValues.js'
 import some from 'lodash/some.js'
+import sortBy from 'lodash/sortBy.js'
 import {
     apiDeleteFilter,
     apiGetSavedFilters,
@@ -89,7 +90,11 @@ export const tSelectSavedFilter =
 
 export const tFetchSavedFilters = () => async (dispatch) => {
     const filters = await apiGetSavedFilters()
-    return dispatch(acSetFilters(filters))
+
+    return dispatch(acSetFilters({
+        [privateVisiblity]: sortBy(filters.private, 'name'),
+        [publicVisibility]: sortBy(filters.public, 'name')
+    }))
 }
 
 export const tSaveFilter =

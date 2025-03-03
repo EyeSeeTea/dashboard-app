@@ -8,8 +8,10 @@ import {
     colors,
     FlyoutMenu,
     IconFilter24,
+    IconUser16,
     Menu,
-    MenuItem as Dhis2MenuItem,
+    MenuItem,
+    Tooltip,
 } from '@dhis2/ui'
 import isEmpty from 'lodash/isEmpty.js'
 import isEqual from 'lodash/isEqual.js'
@@ -35,7 +37,6 @@ import {
     sGetSavedFiltersVisibilityMap,
 } from '../../../reducers/savedFilters.js'
 import DropdownButton from '../../DropdownButton/DropdownButton.js'
-import MenuItem from '../../MenuItemWithTooltip.js'
 import FilterDialog from './FilterDialog.js'
 import classes from './styles/FilterSelector.module.css'
 
@@ -45,7 +46,7 @@ const failedApplyFilerMessage = i18n.t(
 
 const FilterSelector = (props) => {
     const { isDisconnected: offline } = useDhis2ConnectionStatus()
-    const { rootOrgUnits } = useCachedDataQuery()
+    const { currentUser, rootOrgUnits } = useCachedDataQuery()
     const failedApplyFilterAlert = useAlert(failedApplyFilerMessage, {
         warning: true,
     })
@@ -106,12 +107,29 @@ const FilterSelector = (props) => {
         filters.length > 0 && (
             <Menu className={classes.selection}>
                 <span className={classes.selectionLabel}>{i18n.t(label)}</span>
-                {filters.map(({ id, name }) => (
+                {filters.map(({ id, name, userId }) => (
                     <MenuItem
+                        className={classes.filterItem}
                         key={id}
                         dense
                         active={props.activeFilter.id === id}
-                        label={name}
+                        label={
+                            <div className={classes.filterItemLabel}>
+                                <span className={classes.icon}>
+                                    {currentUser.id === userId && (
+                                        <Tooltip
+                                            content={i18n.t(
+                                                'You are the owner of this filter'
+                                            )}
+                                            placement="left"
+                                        >
+                                            <IconUser16 />
+                                        </Tooltip>
+                                    )}
+                                </span>
+                                {name}
+                            </div>
+                        }
                         onClick={() => handleSelectSavedFilter(id)}
                     />
                 ))}
@@ -133,7 +151,7 @@ const FilterSelector = (props) => {
                     {renderSavedFilter(props.privateFilters, 'My filters')}
 
                     {!hasSavedFilter && (
-                        <Dhis2MenuItem
+                        <MenuItem
                             disabled
                             disabledWhenOffline={false}
                             dense

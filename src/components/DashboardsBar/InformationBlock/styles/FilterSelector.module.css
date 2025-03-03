@@ -14,3 +14,22 @@
     letter-spacing: 0.3px;
     font-weight: 400;
 }
+
+.filterItem {
+}
+
+.filterItem a {
+    padding: 0px 0px !important;
+}
+
+.filterItem .filterItemLabel {
+    display: flex;
+    gap: 4px;
+}
+
+.filterItem .filterItemLabel .icon {
+    width: 16px;
+}
+
+
+
