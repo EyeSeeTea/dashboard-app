@@ -1,17 +1,17 @@
 # 
 # Translators:
-# Viktor Varland <viktor@dhis2.org>, 2020
+# Viktor Varland <viktor@dhis2.org>, 2019
 # Wanda <wanda@frontlineaids.org>, 2021
 # Nadiia <semchuk@aph.org.ua>, 2023
-# Philip Larsen Donnelly, 2024
-# Éva Tamási, 2024
+# Philip Larsen Donnelly, 2025
+# Éva Tamási, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2024-03-19T12:31:03.302Z\n"
+"POT-Creation-Date: 2025-02-07T10:20:57.831Z\n"
 "PO-Revision-Date: 2019-06-25 12:37+0000\n"
-"Last-Translator: Éva Tamási, 2024\n"
+"Last-Translator: Éva Tamási, 2025\n"
 "Language-Team: Ukrainian (https://app.transifex.com/hisp-uio/teams/100509/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,26 +22,151 @@ msgstr ""
 msgid "Untitled dashboard"
 msgstr "Інформаційна панель без назви"
 
-msgid "Cannot create a dashboard while offline"
-msgstr "Неможливо створити інформаційну панель в автономному режимі"
+msgid "Dashboards"
+msgstr "Інформаційні панелі (дашборди)"
 
-msgid "Create new dashboard"
-msgstr "Створити нову інформаційну панель"
+msgid "The dashboard couldn't be made available offline. Try again."
+msgstr ""
+"Не вдалося зробити інформаційну панель доступною в автономному режимі. "
+"Спробуйте ще раз."
+
+msgid "Remove from offline storage"
+msgstr "Видалити з автономного сховища"
+
+msgid "Make available offline"
+msgstr "Зробити доступним в автономному режимі"
+
+msgid "Sync offline data now"
+msgstr "Синхронізувати автономні дані зараз"
+
+msgid "Unstar dashboard"
+msgstr "Зняти позначку зірочки з інформаційної панелі"
+
+msgid "Star dashboard"
+msgstr "Позначити інформаційну панель зірочкою"
+
+msgid "Hide description"
+msgstr "Приховати опис"
+
+msgid "Show description"
+msgstr "Показати опис"
+
+msgid "Print"
+msgstr "Друк"
+
+msgid "Dashboard layout"
+msgstr "Макет інформаційної панелі"
+
+msgid "One item per page"
+msgstr "Один елемент на сторінку"
+
+msgid "Close dashboard"
+msgstr "Закрити інформаційну панель"
+
+msgid "No dashboard items to show in slideshow"
+msgstr ""
+
+msgid "Not available offline"
+msgstr "Недоступно в автономному режимі"
+
+msgid "Edit"
+msgstr "Редагувати"
+
+msgid "Share"
+msgstr "Поділитися"
+
+msgid "Slideshow"
+msgstr ""
+
+msgid "Clear dashboard filters?"
+msgstr "Очистити фільтри інформаційної панелі?"
+
+msgid ""
+"A dashboard's filters can’t be saved offline. Do you want to remove the "
+"filters and make this dashboard available offline?"
+msgstr ""
+"Фільтри інформаційної панелі не можна зберегти в автономному режимі. "
+"Видалити фільтри та зробити цю інформаційну панель доступною в автономному "
+"режимі?"
+
+msgid "No, cancel"
+msgstr "Ні, скасувати"
+
+msgid "Yes, clear filters and sync"
+msgstr "Так, очистити фільтри та синхронізувати"
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Confirm"
+msgstr "Підтвердити"
+
+msgid "Filter"
+msgstr "Фільтр"
+
+msgid "Failed to unstar the dashboard"
+msgstr "Не вдалося зняти позначку зірочки з інформаційної панелі"
+
+msgid "Failed to star the dashboard"
+msgstr "Не вдалося позначити інформаційну панель зірочкою"
+
+msgid "Offline data last updated {{timeAgo}}"
+msgstr "Автономні дані востаннє оновлено {{timeAgo}}"
+
+msgid "Synced {{timeAgo}}"
+msgstr ""
+
+msgid "Cannot unstar this dashboard while offline"
+msgstr ""
+"Неможливо зняти позначку зірочки з цієї інформаційної панелі в автономному "
+"режимі"
+
+msgid "Cannot star this dashboard while offline"
+msgstr ""
+"Неможливо позначити зірочкою цю інформаційну панель в автономному режимі"
+
+msgid "No dashboards available."
+msgstr ""
+
+msgid "Create a new dashboard using the + button."
+msgstr ""
 
 msgid "Search for a dashboard"
 msgstr "Пошук інформаційної панелі"
 
-msgid "Show fewer dashboards"
-msgstr "Показати менше інформаційних панелей"
+msgid "No dashboards found for \"{{- filterText}}\""
+msgstr ""
 
-msgid "Show more dashboards"
-msgstr "Показати більше інформаційних панелей"
+msgid "There was a problem loading this dashboard item"
+msgstr ""
+"Під час завантаження цього елемента інформаційної панелі сталася помилка"
+
+msgid "Open menu"
+msgstr ""
+
+msgid "Open in {{appName}}"
+msgstr ""
+
+msgid "View fullscreen"
+msgstr "Перегляд у повноекранному режимі"
 
 msgid "Remove this item"
 msgstr "Видалити цей об'єкт"
 
 msgid "This item has been shortened to fit on one page"
 msgstr "Цей об'єкт скорочено для розміщення на одній сторінці"
+
+msgid "The plugin needed to display this item is not available"
+msgstr ""
+
+msgid "Install the {{pluginName}} plugin from the App Hub"
+msgstr ""
+
+msgid "There was an error loading data for this item"
+msgstr "Сталася помилка під час завантаження даних для цього елемента"
+
+msgid "Open this item in {{appName}}"
+msgstr "Відкрити цей елемент у {{appName}}"
 
 msgid "Remove"
 msgstr "Видалити"
@@ -92,10 +217,6 @@ msgstr ""
 msgid "Some filters not applied"
 msgstr ""
 
-msgid "There was a problem loading this dashboard item"
-msgstr ""
-"Під час завантаження цього елемента інформаційної панелі сталася помилка"
-
 msgid "Hide details and interpretations"
 msgstr "Приховати подробиці та інтерпретації"
 
@@ -104,9 +225,6 @@ msgstr "Показати подробиці та інтерпретації"
 
 msgid "Open in {{appName}} app"
 msgstr "Відкрити в додатку {{appName}}"
-
-msgid "View fullscreen"
-msgstr "Перегляд у повноекранному режимі"
 
 msgid "This map can't be displayed as a chart"
 msgstr "Цю мапу неможливо відобразити у вигляді діаграми"
@@ -132,42 +250,42 @@ msgstr "Переглянути як мапу"
 msgid "There was a problem loading interpretations for this item"
 msgstr "Під час завантаження інтерпретацій для цього об'єкта сталася помилка"
 
-msgid "The plugin for rendering this item is not available"
-msgstr "Плагін для відтворення цього елемента недоступний"
-
-msgid "Install the {{appName}} app from the App Hub"
-msgstr "Установіть програму {{appName}} із App Hub"
-
 msgid "No data to display"
 msgstr "Немає даних для відображення"
 
 msgid ""
-"Install Line Listing app version ${minLLVersion.join(\n"
-"                                '.'\n"
-"                            )} or higher in order to display this item."
+"Install Data Visualizer app ${minDVVersion.join(\n"
+"                            '.'\n"
+"                        )} or higher in order to display this item."
 msgstr ""
-"Встановіть версію програми Line Listing ${minLLVersion.join(\n"
-"                                '.'\n"
-"                            )} або вище, щоб відобразити цей елемент."
 
 msgid "Show without filters"
 msgstr "Показати без фільтрів"
+
+msgid ""
+"Install Line Listing app ${minLLVersion.join(\n"
+"                            '.'\n"
+"                        )} or higher in order to display this item."
+msgstr ""
 
 msgid "Maps with Earth Engine layers cannot be displayed when offline"
 msgstr ""
 "Мапи з шарами Earth Engine не можуть відображатися в автономному режимі"
 
+msgid ""
+"Install Maps app ${minMapsVersion.join(\n"
+"                            '.'\n"
+"                        )} or higher in order to display this item."
+msgstr ""
+
 msgid "Unable to load the plugin for this item"
 msgstr "Неможливо завантажити плагін для цього елемента"
 
-msgid "There was an error loading data for this item"
-msgstr "Сталася помилка під час завантаження даних для цього елемента"
+msgid "Resources"
+msgstr "Ресурси"
 
-msgid "Open this item in {{appName}}"
-msgstr "Відкрити цей елемент у {{appName}}"
-
-msgid "Not available offline"
-msgstr "Недоступно в автономному режимі"
+msgid "Reports"
+msgstr "Звіти"
 
 msgid "Visualizations"
 msgstr "Візуалізації"
@@ -192,12 +310,6 @@ msgstr "Списки рядків"
 
 msgid "Apps"
 msgstr "Додатки"
-
-msgid "Reports"
-msgstr "Звіти"
-
-msgid "Resources"
-msgstr "Ресурси"
 
 msgid "Users"
 msgstr "Користувачі"
@@ -259,16 +371,10 @@ msgid "Delete dashboard"
 msgstr "Видалити інформаційну панель"
 
 msgid ""
-"Deleting dashboard \"{{ dashboardName }}\" will remove it for all users. "
+"Deleting dashboard \"{{- dashboardName }}\" will remove it for all users. "
 "This action cannot be undone. Are you sure you want to permanently delete "
 "this dashboard?"
 msgstr ""
-"Після видалення інформаційної панелі \"{{ dashboardName }}\" її буде "
-"видалено для всіх користувачів. Цю дію неможливо скасувати. Ви дійсно хочете"
-" остаточно видалити цю інформаційну панель?"
-
-msgid "Cancel"
-msgstr "Скасувати"
 
 msgid "Discard changes"
 msgstr "Скасувати зміни"
@@ -325,9 +431,6 @@ msgstr "Доступні фільтри"
 msgid "Selected Filters"
 msgstr "Вибрані фільтри"
 
-msgid "Confirm"
-msgstr "Підтвердити"
-
 msgid "There are no items on this dashboard"
 msgstr "На цій інформаційній панелі немає елементів"
 
@@ -336,6 +439,9 @@ msgstr "Показати менше"
 
 msgid "Show more"
 msgstr "Показати більше"
+
+msgid "Open visualization in new tab"
+msgstr ""
 
 msgid "Insert"
 msgstr "Вставити"
@@ -351,9 +457,6 @@ msgstr "Неможливо знайти елементи інформаційн�
 
 msgid "Additional items"
 msgstr "Додаткові елементи"
-
-msgid "Dashboard layout"
-msgstr "Макет інформаційної панелі"
 
 msgid "Freeflow"
 msgstr "Вільний потік"
@@ -428,9 +531,6 @@ msgstr "Кінець інформаційної панелі"
 msgid "Start of dashboard"
 msgstr "Початок інформаційної панелі"
 
-msgid "Print"
-msgstr "Друк"
-
 msgid "dashboard layout"
 msgstr "макет інформаційної панелі"
 
@@ -484,6 +584,9 @@ msgstr ""
 msgid "Requested dashboard not found"
 msgstr "Потрібну інформаційну панель не знайдено"
 
+msgid "No description"
+msgstr "Без опису"
+
 msgid "{{count}} selected"
 msgid_plural "{{count}} selected"
 msgstr[0] "Вибрано {{count}}"
@@ -491,8 +594,11 @@ msgstr[1] "Вибрано {{count}}"
 msgstr[2] "Вибрано {{count}}"
 msgstr[3] "Вибрано {{count}}"
 
-msgid "Cannot remove filters while offline"
-msgstr "Неможливо видалити фільтри в автономному режимі"
+msgid "Cannot edit filters while offline"
+msgstr ""
+
+msgid "Cannot edit filters on a small screen"
+msgstr ""
 
 msgid "Removing filters while offline"
 msgstr "Видалення фільтрів в автономному режимі"
@@ -504,96 +610,40 @@ msgstr ""
 "Видалення цього фільтра в автономному режимі призведе до видалення всіх "
 "інших фільтрів. Видалити всі фільтри на цій інформаційній панелі?"
 
-msgid "No, cancel"
-msgstr "Ні, скасувати"
-
 msgid "Yes, remove filters"
 msgstr "Так, видалити фільтри"
 
-msgid "The dashboard couldn't be made available offline. Try again."
+msgid "Exit slideshow"
 msgstr ""
-"Не вдалося зробити інформаційну панель доступною в автономному режимі. "
-"Спробуйте ще раз."
 
-msgid "Failed to unstar the dashboard"
-msgstr "Не вдалося зняти позначку зірочки з інформаційної панелі"
-
-msgid "Failed to star the dashboard"
-msgstr "Не вдалося позначити інформаційну панель зірочкою"
-
-msgid "Remove from offline storage"
-msgstr "Видалити з автономного сховища"
-
-msgid "Make available offline"
-msgstr "Зробити доступним в автономному режимі"
-
-msgid "Sync offline data now"
-msgstr "Синхронізувати автономні дані зараз"
-
-msgid "Unstar dashboard"
-msgstr "Зняти позначку зірочки з інформаційної панелі"
-
-msgid "Star dashboard"
-msgstr "Позначити інформаційну панель зірочкою"
-
-msgid "Hide description"
-msgstr "Приховати опис"
-
-msgid "Show description"
-msgstr "Показати опис"
-
-msgid "One item per page"
-msgstr "Один елемент на сторінку"
-
-msgid "Close dashboard"
-msgstr "Закрити інформаційну панель"
-
-msgid "More"
-msgstr "Більше"
-
-msgid "Edit"
-msgstr "Редагувати"
-
-msgid "Share"
-msgstr "Поділитися"
-
-msgid "Clear dashboard filters?"
-msgstr "Очистити фільтри інформаційної панелі?"
-
-msgid ""
-"A dashboard's filters can’t be saved offline. Do you want to remove the "
-"filters and make this dashboard available offline?"
+msgid "Previous item"
 msgstr ""
-"Фільтри інформаційної панелі не можна зберегти в автономному режимі. "
-"Видалити фільтри та зробити цю інформаційну панель доступною в автономному "
-"режимі?"
 
-msgid "Yes, clear filters and sync"
-msgstr "Так, очистити фільтри та синхронізувати"
-
-msgid "No description"
-msgstr "Без опису"
-
-msgid "Add filter"
-msgstr "Додати фільтр"
-
-msgid "Offline data last updated {{time}}"
-msgstr "Автономні дані востаннє оновлено {{time}}"
-
-msgid "Cannot unstar this dashboard while offline"
+msgid "Next item"
 msgstr ""
-"Неможливо зняти позначку зірочки з цієї інформаційної панелі в автономному "
-"режимі"
 
-msgid "Cannot star this dashboard while offline"
+msgid "{{name}}: {{filter}}"
 msgstr ""
-"Неможливо позначити зірочкою цю інформаційну панель в автономному режимі"
+
+msgid "{{count}} filters active"
+msgid_plural "{{count}} filters active"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "Loading dashboard – {{name}}"
 msgstr "Завантаження інформаційної панелі – {{name}}"
 
 msgid "Loading dashboard"
 msgstr "Завантаження інформаційної панелі"
+
+msgid "Load dashboard failed"
+msgstr "Не вдалося завантажити інформаційну панель"
+
+msgid "This dashboard could not be loaded. Please try again later."
+msgstr ""
+"Не вдалося завантажити цю інформаційну панель. Повторіть спробу пізніше."
 
 msgid "Offline"
 msgstr "Офлайн"
@@ -603,10 +653,3 @@ msgstr "Цю інформаційну панель неможливо заван
 
 msgid "Go to start page"
 msgstr "Перейти на стартову сторінку"
-
-msgid "Load dashboard failed"
-msgstr "Не вдалося завантажити інформаційну панель"
-
-msgid "This dashboard could not be loaded. Please try again later."
-msgstr ""
-"Не вдалося завантажити цю інформаційну панель. Повторіть спробу пізніше."

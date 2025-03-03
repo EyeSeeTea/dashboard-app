@@ -1,15 +1,15 @@
 # 
 # Translators:
 # Viktor Varland <viktor@dhis2.org>, 2019
-# Philip Larsen Donnelly, 2020
-# Yury Rogachev <yury@dhis2.org>, 2024
+# Philip Larsen Donnelly, 2025
+# Yury Rogachev <yury@dhis2.org>, 2025
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2024-03-19T12:31:03.302Z\n"
+"POT-Creation-Date: 2025-02-07T10:20:57.831Z\n"
 "PO-Revision-Date: 2019-06-25 12:37+0000\n"
-"Last-Translator: Yury Rogachev <yury@dhis2.org>, 2024\n"
+"Last-Translator: Yury Rogachev <yury@dhis2.org>, 2025\n"
 "Language-Team: Russian (https://app.transifex.com/hisp-uio/teams/100509/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,26 +20,146 @@ msgstr ""
 msgid "Untitled dashboard"
 msgstr "Инфопанель без названия"
 
-msgid "Cannot create a dashboard while offline"
-msgstr "Невозможно создать инфопанель в автономном режиме"
+msgid "Dashboards"
+msgstr "Информационные панели"
 
-msgid "Create new dashboard"
-msgstr "Создать новую инфопанель"
+msgid "The dashboard couldn't be made available offline. Try again."
+msgstr ""
+"Не удалось сделать инфопанель доступной в автономном режиме. Попробуйте еще "
+"раз."
+
+msgid "Remove from offline storage"
+msgstr "Убрать из автономного хранилища"
+
+msgid "Make available offline"
+msgstr "Открыть доступ в автономном режиме"
+
+msgid "Sync offline data now"
+msgstr "Синхронизировать автономные данные"
+
+msgid "Unstar dashboard"
+msgstr "Удалить метку \"звезда\" с инфопанели"
+
+msgid "Star dashboard"
+msgstr "Добавить метку \"звезда\" на инфопанель"
+
+msgid "Hide description"
+msgstr "Скрыть описание"
+
+msgid "Show description"
+msgstr "Показать описание"
+
+msgid "Print"
+msgstr "Печать"
+
+msgid "Dashboard layout"
+msgstr "Дизайн инфопанели"
+
+msgid "One item per page"
+msgstr "Один элемент на страницу"
+
+msgid "Close dashboard"
+msgstr "Закрыть инфопанель"
+
+msgid "No dashboard items to show in slideshow"
+msgstr ""
+
+msgid "Not available offline"
+msgstr "Недоступно в автономном режиме"
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Share"
+msgstr "Поделиться"
+
+msgid "Slideshow"
+msgstr ""
+
+msgid "Clear dashboard filters?"
+msgstr "Очистить фильтры инфопанели?"
+
+msgid ""
+"A dashboard's filters can’t be saved offline. Do you want to remove the "
+"filters and make this dashboard available offline?"
+msgstr ""
+"Фильтры инфопанели не могут быть сохранены в автономном режиме. Хотите "
+"удалить фильтры и открыть доступ к данной инфопанели в автономном режиме?"
+
+msgid "No, cancel"
+msgstr "Нет, отменить"
+
+msgid "Yes, clear filters and sync"
+msgstr "Да, удалить фильтры и синхронизировать"
+
+msgid "Cancel"
+msgstr "Отменить"
+
+msgid "Confirm"
+msgstr "Подтвердить"
+
+msgid "Filter"
+msgstr "Фильтр"
+
+msgid "Failed to unstar the dashboard"
+msgstr "Не удалось удалить метку \"звезда\" с инфопанели"
+
+msgid "Failed to star the dashboard"
+msgstr "Не удалось добавить метку \"звезда\" к инфопанели"
+
+msgid "Offline data last updated {{timeAgo}}"
+msgstr "Последнее обновление данных в автономном режиме: {{timeAgo}}"
+
+msgid "Synced {{timeAgo}}"
+msgstr ""
+
+msgid "Cannot unstar this dashboard while offline"
+msgstr "Невозможно удалить метку \"звезда\" с инфопанели в автономном режиме"
+
+msgid "Cannot star this dashboard while offline"
+msgstr "Невозможно добавить метку \"звезда\" на инфопанель в автономном режиме"
+
+msgid "No dashboards available."
+msgstr ""
+
+msgid "Create a new dashboard using the + button."
+msgstr ""
 
 msgid "Search for a dashboard"
 msgstr "Поиск инфопанели"
 
-msgid "Show fewer dashboards"
-msgstr "Показать меньше инфопанелей"
+msgid "No dashboards found for \"{{- filterText}}\""
+msgstr ""
 
-msgid "Show more dashboards"
-msgstr "Показать больше инфопанелей"
+msgid "There was a problem loading this dashboard item"
+msgstr "Возникла проблема с загрузкой данного элемента инфопанели."
+
+msgid "Open menu"
+msgstr ""
+
+msgid "Open in {{appName}}"
+msgstr ""
+
+msgid "View fullscreen"
+msgstr "Просмотр в полноэкранном режиме"
 
 msgid "Remove this item"
 msgstr "Удалить данный элемент"
 
 msgid "This item has been shortened to fit on one page"
 msgstr "Данный элемент был укорочен, чтобы поместиться на одной странице"
+
+msgid "The plugin needed to display this item is not available"
+msgstr ""
+
+msgid "Install the {{pluginName}} plugin from the App Hub"
+msgstr ""
+
+msgid "There was an error loading data for this item"
+msgstr "Возникла ошибка при загрузке данных для данного элемента"
+
+msgid "Open this item in {{appName}}"
+msgstr "Откройте данный элемент в приложении {{appName}}"
 
 msgid "Remove"
 msgstr "Убрать"
@@ -91,9 +211,6 @@ msgstr ""
 msgid "Some filters not applied"
 msgstr "Некоторые фильтры не применяются"
 
-msgid "There was a problem loading this dashboard item"
-msgstr "Возникла проблема с загрузкой данного элемента инфопанели."
-
 msgid "Hide details and interpretations"
 msgstr "Скрыть детали и интерпретации"
 
@@ -102,9 +219,6 @@ msgstr "Показать детали и интерпретации"
 
 msgid "Open in {{appName}} app"
 msgstr "Открыть в приложении {{appName}} "
-
-msgid "View fullscreen"
-msgstr "Просмотр в полноэкранном режиме"
 
 msgid "This map can't be displayed as a chart"
 msgstr "Данная карта не может быть отображена в виде диаграммы"
@@ -130,42 +244,42 @@ msgstr "Просмотр в виде карты"
 msgid "There was a problem loading interpretations for this item"
 msgstr "Возникла проблема с загрузкой интерпретаций для данного элемента"
 
-msgid "The plugin for rendering this item is not available"
-msgstr "Плагин для рендеринга данного элемента недоступен"
-
-msgid "Install the {{appName}} app from the App Hub"
-msgstr "Установить приложение {{appName}} из Центра Приложений"
-
 msgid "No data to display"
 msgstr "Нет данных для отображения"
 
 msgid ""
-"Install Line Listing app version ${minLLVersion.join(\n"
-"                                '.'\n"
-"                            )} or higher in order to display this item."
+"Install Data Visualizer app ${minDVVersion.join(\n"
+"                            '.'\n"
+"                        )} or higher in order to display this item."
 msgstr ""
-"Установить версию ${minLLVersion.join(\n"
-"                                '.'\n"
-"                            )} приложения Построчные Списки или выше, чтобы отобразить данный элемент."
 
 msgid "Show without filters"
 msgstr "Показать без фильтров"
+
+msgid ""
+"Install Line Listing app ${minLLVersion.join(\n"
+"                            '.'\n"
+"                        )} or higher in order to display this item."
+msgstr ""
 
 msgid "Maps with Earth Engine layers cannot be displayed when offline"
 msgstr ""
 "Карты со слоями Earth Engine не могут отображаться в автономном режиме"
 
+msgid ""
+"Install Maps app ${minMapsVersion.join(\n"
+"                            '.'\n"
+"                        )} or higher in order to display this item."
+msgstr ""
+
 msgid "Unable to load the plugin for this item"
 msgstr "Невозможно загрузить плагин для данного элемента"
 
-msgid "There was an error loading data for this item"
-msgstr "Возникла ошибка при загрузке данных для данного элемента"
+msgid "Resources"
+msgstr "Ресурсы"
 
-msgid "Open this item in {{appName}}"
-msgstr "Откройте данный элемент в приложении {{appName}}"
-
-msgid "Not available offline"
-msgstr "Недоступно в автономном режиме"
+msgid "Reports"
+msgstr "Отчеты"
 
 msgid "Visualizations"
 msgstr "Визуализации"
@@ -190,12 +304,6 @@ msgstr "Построчные списки"
 
 msgid "Apps"
 msgstr "Приложения"
-
-msgid "Reports"
-msgstr "Отчеты"
-
-msgid "Resources"
-msgstr "Ресурсы"
 
 msgid "Users"
 msgstr "Пользователи"
@@ -255,16 +363,10 @@ msgid "Delete dashboard"
 msgstr "Удалить инфопанель"
 
 msgid ""
-"Deleting dashboard \"{{ dashboardName }}\" will remove it for all users. "
+"Deleting dashboard \"{{- dashboardName }}\" will remove it for all users. "
 "This action cannot be undone. Are you sure you want to permanently delete "
 "this dashboard?"
 msgstr ""
-"Удаление инфопанели \"{{ dashboardName }}\" удалит ее для всех "
-"пользователей. Это действие нельзя отменить. Вы уверены, что хотите навсегда"
-" удалить данную инфопанель?"
-
-msgid "Cancel"
-msgstr "Отменить"
 
 msgid "Discard changes"
 msgstr "Не сохранять изменения"
@@ -321,9 +423,6 @@ msgstr "Доступные фильтры"
 msgid "Selected Filters"
 msgstr "Выбранные фильтры"
 
-msgid "Confirm"
-msgstr "Подтвердить"
-
 msgid "There are no items on this dashboard"
 msgstr "Данная инфопанель не содержит элементов"
 
@@ -332,6 +431,9 @@ msgstr "Показать меньше"
 
 msgid "Show more"
 msgstr "Показать больше"
+
+msgid "Open visualization in new tab"
+msgstr ""
 
 msgid "Insert"
 msgstr "Вставить"
@@ -347,9 +449,6 @@ msgstr "Невозможно выполнить поиск элементов и
 
 msgid "Additional items"
 msgstr "Дополнительные элементы"
-
-msgid "Dashboard layout"
-msgstr "Дизайн инфопанели"
 
 msgid "Freeflow"
 msgstr "Свободный поток"
@@ -421,9 +520,6 @@ msgstr "Конец инфопанели"
 msgid "Start of dashboard"
 msgstr "Начало инфопанели"
 
-msgid "Print"
-msgstr "Печать"
-
 msgid "dashboard layout"
 msgstr "дизайн инфопанели"
 
@@ -475,6 +571,9 @@ msgstr ""
 msgid "Requested dashboard not found"
 msgstr "Запрашиваемая инфопанель не найдена"
 
+msgid "No description"
+msgstr "Нет описания"
+
 msgid "{{count}} selected"
 msgid_plural "{{count}} selected"
 msgstr[0] "{{count}} выбран"
@@ -482,8 +581,11 @@ msgstr[1] "{{count}} выбрано"
 msgstr[2] "{{count}} выбрано"
 msgstr[3] "{{count}} выбрано"
 
-msgid "Cannot remove filters while offline"
-msgstr "Невозможно удалить фильтры в автономном режиме"
+msgid "Cannot edit filters while offline"
+msgstr ""
+
+msgid "Cannot edit filters on a small screen"
+msgstr ""
 
 msgid "Removing filters while offline"
 msgstr "Удаление фильтров в автономном режиме"
@@ -495,92 +597,40 @@ msgstr ""
 "Удаление данного фильтра в автономном режиме приведет к удалению всех "
 "остальных фильтров. Вы хотите удалить все фильтры на данной инфопанели?"
 
-msgid "No, cancel"
-msgstr "Нет, отменить"
-
 msgid "Yes, remove filters"
 msgstr "Да, убрать фильтры"
 
-msgid "The dashboard couldn't be made available offline. Try again."
+msgid "Exit slideshow"
 msgstr ""
-"Не удалось сделать инфопанель доступной в автономном режиме. Попробуйте еще "
-"раз."
 
-msgid "Failed to unstar the dashboard"
-msgstr "Не удалось удалить метку \"звезда\" с инфопанели"
-
-msgid "Failed to star the dashboard"
-msgstr "Не удалось добавить метку \"звезда\" к инфопанели"
-
-msgid "Remove from offline storage"
-msgstr "Убрать из автономного хранилища"
-
-msgid "Make available offline"
-msgstr "Открыть доступ в автономном режиме"
-
-msgid "Sync offline data now"
-msgstr "Синхронизировать автономные данные"
-
-msgid "Unstar dashboard"
-msgstr "Удалить метку \"звезда\" с инфопанели"
-
-msgid "Star dashboard"
-msgstr "Добавить метку \"звезда\" на инфопанель"
-
-msgid "Hide description"
-msgstr "Скрыть описание"
-
-msgid "Show description"
-msgstr "Показать описание"
-
-msgid "One item per page"
-msgstr "Один элемент на страницу"
-
-msgid "Close dashboard"
-msgstr "Закрыть инфопанель"
-
-msgid "More"
-msgstr "Более"
-
-msgid "Edit"
-msgstr "Редактировать"
-
-msgid "Share"
-msgstr "Поделиться"
-
-msgid "Clear dashboard filters?"
-msgstr "Очистить фильтры инфопанели?"
-
-msgid ""
-"A dashboard's filters can’t be saved offline. Do you want to remove the "
-"filters and make this dashboard available offline?"
+msgid "Previous item"
 msgstr ""
-"Фильтры инфопанели не могут быть сохранены в автономном режиме. Хотите "
-"удалить фильтры и открыть доступ к данной инфопанели в автономном режиме?"
 
-msgid "Yes, clear filters and sync"
-msgstr "Да, удалить фильтры и синхронизировать"
+msgid "Next item"
+msgstr ""
 
-msgid "No description"
-msgstr "Нет описания"
+msgid "{{name}}: {{filter}}"
+msgstr ""
 
-msgid "Add filter"
-msgstr "Добавить фильтр"
-
-msgid "Offline data last updated {{time}}"
-msgstr "Последнее обновление данных в автономном режиме: {{time}}"
-
-msgid "Cannot unstar this dashboard while offline"
-msgstr "Невозможно удалить метку \"звезда\" с инфопанели в автономном режиме"
-
-msgid "Cannot star this dashboard while offline"
-msgstr "Невозможно добавить метку \"звезда\" на инфопанель в автономном режиме"
+msgid "{{count}} filters active"
+msgid_plural "{{count}} filters active"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
 
 msgid "Loading dashboard – {{name}}"
 msgstr "Загрузка инфопанели - {{name}}"
 
 msgid "Loading dashboard"
 msgstr "Загрузка инфопанели"
+
+msgid "Load dashboard failed"
+msgstr "Загрузка инфопанели не удалась"
+
+msgid "This dashboard could not be loaded. Please try again later."
+msgstr ""
+"Данную инфопанель не удалось загрузить. Пожалуйста, повторите попытку позже."
 
 msgid "Offline"
 msgstr "Автономный режим"
@@ -590,10 +640,3 @@ msgstr "Инфопанель не может быть загружена в ав
 
 msgid "Go to start page"
 msgstr "Перейти на стартовую страницу"
-
-msgid "Load dashboard failed"
-msgstr "Загрузка инфопанели не удалась"
-
-msgid "This dashboard could not be loaded. Please try again later."
-msgstr ""
-"Данную инфопанель не удалось загрузить. Пожалуйста, повторите попытку позже."

@@ -1,3 +1,62 @@
+## [101.0.3](https://github.com/dhis2/dashboard-app/compare/v101.0.2...v101.0.3) (2025-02-20)
+
+
+### Bug Fixes
+
+* report correct data statistics eventType ([#3223](https://github.com/dhis2/dashboard-app/issues/3223)) ([117d7b7](https://github.com/dhis2/dashboard-app/commit/117d7b7d6409e540cbb689a43ba91295b4f177c8))
+
+## [101.0.2](https://github.com/dhis2/dashboard-app/compare/v101.0.1...v101.0.2) (2025-02-18)
+
+
+### Bug Fixes
+
+* **translations:** sync translations from transifex (master) ([#3218](https://github.com/dhis2/dashboard-app/issues/3218)) ([928cdc1](https://github.com/dhis2/dashboard-app/commit/928cdc184e5cf4ea65b525f5f3a7ab7ffbbe721a))
+
+## [101.0.1](https://github.com/dhis2/dashboard-app/compare/v101.0.0...v101.0.1) (2025-02-14)
+
+
+### Bug Fixes
+
+* **translations:** sync translations from transifex (master) ([#3199](https://github.com/dhis2/dashboard-app/issues/3199)) ([f7810f4](https://github.com/dhis2/dashboard-app/commit/f7810f483e3db397e0e7e93725d9421fbcef4647))
+
+# [101.0.0](https://github.com/dhis2/dashboard-app/compare/v100.5.0...v101.0.0) (2025-02-14)
+
+
+### Features
+
+* support custom 3rd party plugins along with platform plugins ([#3184](https://github.com/dhis2/dashboard-app/issues/3184)) ([9d25bb1](https://github.com/dhis2/dashboard-app/commit/9d25bb160066b9aeff3195502153e3dd1dd5b02c))
+
+
+### BREAKING CHANGES
+
+* this version is only compatible with plugin versions ->
+* Maps plugin >= v101.0.0
+* Line Listing plugin >= v102.0.0
+* Data Visualizer plugin >= v101.0.0
+
+Implements:
+* DHIS2-17283
+Support dashboard plugins built with the App Platform
+
+* DHIS2-17268
+Visualizations render twice when loading a dashboard,
+creating a flashing effect
+
+* DHIS2-18576
+If you add a filter that results in "no data" for a chart,
+removing the filter does not reload the original chart
+
+Key features
+* Add support for 3rd party dashboard plugins
+* Add item menu on plugin items that includes fullscreen button
+
+# [100.5.0](https://github.com/dhis2/dashboard-app/compare/v100.4.2...v100.5.0) (2025-02-07)
+
+
+### Features
+
+* show user's search text in the no dashboards found message ([#3207](https://github.com/dhis2/dashboard-app/issues/3207)) ([00cd977](https://github.com/dhis2/dashboard-app/commit/00cd9770027eb90f4fc1d0811c4f5c0bc2f719b6))
+
 ## [100.4.2](https://github.com/dhis2/dashboard-app/compare/v100.4.1...v100.4.2) (2025-01-22)
 
 
