@@ -28,7 +28,7 @@
 }
 
 .filterItem .filterItemLabel .icon {
-    width: 16px;
+    inline-size: 16px;
 }
 
 
