@@ -10,12 +10,15 @@ export const acSetDashboardsStarredFilter = (value) => ({
 
 // thunks
 
-export const tSetStarredDashboard = () => async (dispatch) => {
-    try {
-        const starredValue = await apiGetStarredDashboard()
-        return dispatch(acSetDashboardsStarredFilter(starredValue))
-    } catch (error) {
-        console.log('Error (apiGetStarredDashboard): ', error)
-        return error
+export const tSetStarredDashboard =
+    () => async (dispatch, getState, dataEngine) => {
+        try {
+            const starredValue = await apiGetStarredDashboard(dataEngine)
+            return dispatch(
+                acSetDashboardsStarredFilter(starredValue === 'true')
+            )
+        } catch (error) {
+            console.log('Error (apiGetStarredDashboard): ', error)
+            return error
+        }
     }
-}

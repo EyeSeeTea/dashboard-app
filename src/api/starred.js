@@ -6,8 +6,12 @@ import {
 
 const KEY_SHOW_STARRED_DASHBOARDS = 'showStarred'
 
-export const apiGetStarredDashboard = () =>
-    apiGetUserDataStoreValue(KEY_SHOW_STARRED_DASHBOARDS, DEFAULT_STATE)
+export const apiGetStarredDashboard = (dataEngine) =>
+    apiGetUserDataStoreValue(
+        KEY_SHOW_STARRED_DASHBOARDS,
+        DEFAULT_STATE,
+        dataEngine
+    )
 
-export const apiPostStarredDashboard = (value) =>
-    apiPostUserDataStoreValue(KEY_SHOW_STARRED_DASHBOARDS, value)
+export const apiPostStarredDashboard = (value, dataEngine) =>
+    apiPostUserDataStoreValue(KEY_SHOW_STARRED_DASHBOARDS, value, dataEngine)
