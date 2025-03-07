@@ -59,7 +59,7 @@ const SaveFilterDialog = ({
             dataTest="save-filter-dialog"
             onClose={onCancel}
             small
-            position="middle"
+            position="top"
         >
             <ModalTitle>{i18n.t('Save Filter')}</ModalTitle>
             <ModalContent>

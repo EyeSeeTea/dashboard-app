@@ -150,6 +150,7 @@ export const SavedFilterActions = ({
                     <wbr />
                 </DropdownButton>
                 <ConfirmActionDialog
+                    position="top"
                     isLoading={isLoading}
                     open={dialogIsOpen}
                     title={i18n.t('Modify Saved Filter?')}
