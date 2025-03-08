@@ -55,7 +55,7 @@ export const apiDeleteFilter = async (filter, currentUser) => {
 
 export const isFilterActionAllowed = (filter, currentUser) => {
     return (
-        currentUser.authorities?.includes('ALL') ||
+        currentUser.authorities?.includes('Saved Filters Admin') ||
         filter.userId === currentUser.id
     )
 }
