@@ -7,6 +7,7 @@ import {
 } from './userDataStore.js'
 
 const KEY_SAVED_FILTERS = 'savedFilters'
+const ADMIN_ROLE = 'Saved Filters Admin'
 const DEFAULT_VALUE_SAVED_FILTERS = []
 
 export const apiGetSavedFilters = async () =>
@@ -55,7 +56,7 @@ export const apiDeleteFilter = async (filter, currentUser) => {
 
 export const isFilterActionAllowed = (filter, currentUser) => {
     return (
-        currentUser.authorities?.includes('Saved Filters Admin') ||
+        currentUser.userRoles?.some(({ name }) => name === ADMIN_ROLE) ||
         filter.userId === currentUser.id
     )
 }
