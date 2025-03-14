@@ -1,6 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
 import { colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
-import isEqual from 'lodash/isEqual.js'
 import PropTypes from 'prop-types'
 import React, { useState, useMemo, useCallback } from 'react'
 import { isFilterActionAllowed } from '../../../api/savedFilters.js'
@@ -15,7 +14,7 @@ export const SavedFilterActions = ({
     doDeleteFilter,
     doToggleFilterVisibility,
     activeFilter,
-    filters,
+    activeFilterHasChanges,
     hasActiveSavedFilter,
     currentUser,
     isLoading,
@@ -27,10 +26,6 @@ export const SavedFilterActions = ({
         () => () => {}
     )
 
-    const savedFilterHasChanges = useMemo(
-        () => hasActiveSavedFilter && !isEqual(activeFilter.values, filters),
-        [hasActiveSavedFilter, activeFilter, filters]
-    )
     const showFilterAction = isFilterActionAllowed(activeFilter, currentUser)
 
     const toggleMoreActions = () => setMoreOptionsIsOpen((prev) => !prev)
@@ -74,13 +69,13 @@ export const SavedFilterActions = ({
                 action: () => doDeleteFilter(currentUser),
             },
             {
-                show: savedFilterHasChanges && showFilterAction,
+                show: activeFilterHasChanges && showFilterAction,
                 label: i18n.t('Save'),
                 action: () => doSaveFilter(activeFilter),
                 dialogAction: 'update',
             },
             {
-                show: savedFilterHasChanges,
+                show: activeFilterHasChanges,
                 label: i18n.t('Save as new filter'),
                 action: openDialogForNewFilter,
                 skipCheck: true,
@@ -120,7 +115,7 @@ export const SavedFilterActions = ({
             </FlyoutMenu>
         )
     }, [
-        savedFilterHasChanges,
+        activeFilterHasChanges,
         showFilterAction,
         activeFilter,
         currentUser,
@@ -134,7 +129,7 @@ export const SavedFilterActions = ({
 
     return (
         hasActiveSavedFilter &&
-        (showFilterAction || savedFilterHasChanges) && (
+        (showFilterAction || activeFilterHasChanges) && (
             <>
                 <DropdownButton
                     dataTest="more-actions-button"
@@ -167,11 +162,11 @@ export const SavedFilterActions = ({
 
 SavedFilterActions.propTypes = {
     activeFilter: PropTypes.object.isRequired,
+    activeFilterHasChanges: PropTypes.bool.isRequired,
     currentUser: PropTypes.object.isRequired,
     doDeleteFilter: PropTypes.func.isRequired,
     doSaveFilter: PropTypes.func.isRequired,
     doToggleFilterVisibility: PropTypes.func.isRequired,
-    filters: PropTypes.array.isRequired,
     hasActiveSavedFilter: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool.isRequired,
     openDialogForNewFilter: PropTypes.func.isRequired,

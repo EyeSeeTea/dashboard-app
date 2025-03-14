@@ -14,6 +14,7 @@ import {
 } from '../../../actions/savedFilters.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
 import {
+    sActiveFilterHasChanges,
     sGetActiveFilter,
     sGetLoadingSavedFilters,
 } from '../../../reducers/savedFilters.js'
@@ -23,6 +24,7 @@ import { useSaveFitlerDialog } from './useSaveFilterDialog.js'
 
 const SavedFilterBlock = ({
     activeFilter,
+    activeFilterHasChanges,
     filters,
     isLoading,
     saveFilter,
@@ -82,6 +84,7 @@ const SavedFilterBlock = ({
                 doDeleteFilter={doDeleteFilter}
                 doToggleFilterVisibility={doToggleFilterVisibility}
                 activeFilter={activeFilter}
+                activeFilterHasChanges={activeFilterHasChanges}
                 filters={filters}
                 hasActiveSavedFilter={hasActiveSavedFilter}
                 currentUser={currentUser}
@@ -94,6 +97,7 @@ const SavedFilterBlock = ({
 
 SavedFilterBlock.propTypes = {
     activeFilter: PropTypes.object.isRequired,
+    activeFilterHasChanges: PropTypes.bool.isRequired,
     deleteFilter: PropTypes.func.isRequired,
     filters: PropTypes.array.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -108,6 +112,7 @@ SavedFilterBlock.defaultProps = {
 
 const mapStateToProps = (state) => ({
     activeFilter: sGetActiveFilter(state),
+    activeFilterHasChanges: sActiveFilterHasChanges(state),
     filters: sGetNamedItemFilters(state),
     isLoading: sGetLoadingSavedFilters(state),
 })

@@ -1,4 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
+import isEqual from 'lodash/isEqual.js'
+import { sGetNamedItemFilters } from './itemFilters.js'
 
 export const SET_SAVED_FILTERS = 'SET_SAVED_FILTERS'
 export const SET_ACTIVE_FILTER = 'SET_ACTIVE_FILTER'
@@ -68,3 +70,11 @@ export const sGetActiveFilter = (state) => {
 }
 
 export const sGetLoadingSavedFilters = (state) => state.savedFilters.loading
+
+export const sActiveFilterHasChanges = (state) => {
+    const activeFilters = sGetActiveFilter(state)
+    return (
+        activeFilters.id &&
+        !isEqual(activeFilters.values, sGetNamedItemFilters(state))
+    )
+}

@@ -1,59 +1,39 @@
-import { DimensionsPanel, useCachedDataQuery } from '@dhis2/analytics'
-import { useAlert, useDhis2ConnectionStatus } from '@dhis2/app-runtime'
+import { DimensionsPanel } from '@dhis2/analytics'
+import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
-import {
-    Card,
-    CenteredContent,
-    CircularLoader,
-    colors,
-    FlyoutMenu,
-    IconFilter24,
-    IconUser16,
-    Menu,
-    MenuItem,
-    Tooltip,
-} from '@dhis2/ui'
+import { Card, colors, IconFilter24 } from '@dhis2/ui'
 import isEmpty from 'lodash/isEmpty.js'
-import isEqual from 'lodash/isEqual.js'
 import PropTypes from 'prop-types'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import {
     acClearActiveModalDimension,
     acSetActiveModalDimension,
 } from '../../../actions/activeModalDimension.js'
-import {
-    tSelectSavedFilter,
-    acSetActiveFilter,
-} from '../../../actions/savedFilters.js'
 import useDimensions from '../../../modules/useDimensions.js'
 import { sGetActiveModalDimension } from '../../../reducers/activeModalDimension.js'
 import { sGetItemFiltersRoot } from '../../../reducers/itemFilters.js'
-import {
-    privateVisiblity,
-    publicVisibility,
-    sGetActiveFilter,
-    sGetLoadingSavedFilters,
-    sGetSavedFiltersVisibilityMap,
-} from '../../../reducers/savedFilters.js'
+import { sGetActiveFilter } from '../../../reducers/savedFilters.js'
+import ConfirmActionDialog from '../../ConfirmActionDialog.js'
 import DropdownButton from '../../DropdownButton/DropdownButton.js'
 import FilterDialog from './FilterDialog.js'
-import classes from './styles/FilterSelector.module.css'
-
-const failedApplyFilerMessage = i18n.t(
-    'The selected Saved Filter cannot be applied because it includes selections that the current user does not have permission to view. Please try a different filter.'
-)
+import { useSavedFilterSelector } from './useSavedFilterSelector.js'
 
 const FilterSelector = (props) => {
     const { isDisconnected: offline } = useDhis2ConnectionStatus()
-    const { currentUser, rootOrgUnits } = useCachedDataQuery()
-    const failedApplyFilterAlert = useAlert(failedApplyFilerMessage, {
-        warning: true,
-    })
 
-    const [savedFiltersIsOpen, setSavedFiltersIsOpen] = useState(false)
+    const {
+        savedFiltersIsOpen,
+        savedFilterWarningOpen,
+        toggleSavedFilterIsOpen,
+        getSavedFilters,
+        loadingSavedFilters,
+        closeWarningDialog,
+        confirmWarningAction,
+    } = useSavedFilterSelector(props)
+
     const [filterDialogIsOpen, setFilterDialogIsOpen] = useState(false)
-    const dimensions = useDimensions(filterDialogIsOpen || savedFiltersIsOpen)
+    const dimensions = useDimensions(filterDialogIsOpen)
 
     const toggleFilterDialogIsOpen = () =>
         setFilterDialogIsOpen(!filterDialogIsOpen)
@@ -91,102 +71,21 @@ const FilterSelector = (props) => {
         </Card>
     )
 
-    const handleSelectSavedFilter = (filterId) => {
-        const success = props.selectSavedFilter({
-            filterId: filterId === props.activeFilter.id ? null : filterId,
-            rootOrgUnits,
-        })
-        if (success) {
-            setSavedFiltersIsOpen(false)
-        } else {
-            failedApplyFilterAlert.show()
-        }
-    }
-
-    const renderSavedFilter = (filters, label) =>
-        filters.length > 0 && (
-            <Menu className={classes.selection}>
-                <span className={classes.selectionLabel}>{i18n.t(label)}</span>
-                {filters.map(({ id, name, userId }) => (
-                    <MenuItem
-                        className={classes.filterItem}
-                        key={id}
-                        dense
-                        active={props.activeFilter.id === id}
-                        label={
-                            <div className={classes.filterItemLabel}>
-                                <span className={classes.icon}>
-                                    {currentUser.id === userId && (
-                                        <Tooltip
-                                            content={i18n.t(
-                                                'You are the owner of this filter'
-                                            )}
-                                            placement="left"
-                                        >
-                                            <IconUser16 />
-                                        </Tooltip>
-                                    )}
-                                </span>
-                                {name}
-                            </div>
-                        }
-                        onClick={() => handleSelectSavedFilter(id)}
-                    />
-                ))}
-            </Menu>
-        )
-
-    const hasSavedFilter =
-        props.publicFilters?.length || props.privateFilters?.length
-
-    const getSavedFilters = () => (
-        <FlyoutMenu className={classes.selectionContainer}>
-            {dimensions.length === 0 ? (
-                <CenteredContent>
-                    <CircularLoader small />
-                </CenteredContent>
-            ) : (
-                <>
-                    {renderSavedFilter(props.publicFilters, 'Shared filters')}
-                    {renderSavedFilter(props.privateFilters, 'My filters')}
-
-                    {!hasSavedFilter && (
-                        <MenuItem
-                            disabled
-                            disabledWhenOffline={false}
-                            dense
-                            label={i18n.t('No saved filters available')}
-                        />
-                    )}
-                </>
-            )}
-        </FlyoutMenu>
-    )
-
-    useEffect(() => {
-        if (
-            isEqual(props.initiallySelectedItems, {}) &&
-            props.activeFilter.id
-        ) {
-            props.updateActiveFilter(null)
-        }
-    }, [props])
-
     return props.restrictFilters && !props.allowedFilters?.length ? null : (
         <>
             <DropdownButton
-                loading={props.loadingSavedFilters}
+                loading={loadingSavedFilters}
                 dataTest="saved-filters-button"
                 disabled={offline}
                 secondary
                 small
                 open={savedFiltersIsOpen}
-                onClick={() => setSavedFiltersIsOpen(!savedFiltersIsOpen)}
+                onClick={toggleSavedFilterIsOpen}
                 icon={<IconFilter24 color={colors.grey700} />}
                 component={getSavedFilters()}
             >
                 <div>
-                    {props.loadingSavedFilters
+                    {loadingSavedFilters
                         ? i18n.t('Saving...')
                         : i18n.t('Saved filters')}
                 </div>
@@ -210,6 +109,20 @@ const FilterSelector = (props) => {
                     onClose={onCloseDialog}
                 />
             ) : null}
+
+            <ConfirmActionDialog
+                position="top"
+                open={savedFilterWarningOpen}
+                title={i18n.t('Unsaved Changes')}
+                message={i18n.t(
+                    'You have unsaved changes in the "{{ filterName }}" filter. If you proceed, your changes will be lost. Would you like to continue?',
+                    { filterName: props.activeFilter.name }
+                )}
+                cancelLabel={i18n.t('Cancel')}
+                confirmLabel={i18n.t('Yes, discard changes')}
+                onConfirm={confirmWarningAction}
+                onCancel={closeWarningDialog}
+            />
         </>
     )
 }
@@ -218,9 +131,6 @@ const mapStateToProps = (state) => ({
     activeFilter: sGetActiveFilter(state),
     dimension: sGetActiveModalDimension(state),
     initiallySelectedItems: sGetItemFiltersRoot(state),
-    loadingSavedFilters: sGetLoadingSavedFilters(state),
-    privateFilters: sGetSavedFiltersVisibilityMap(state)[privateVisiblity],
-    publicFilters: sGetSavedFiltersVisibilityMap(state)[publicVisibility],
 })
 
 FilterSelector.propTypes = {
@@ -229,18 +139,11 @@ FilterSelector.propTypes = {
     clearActiveModalDimension: PropTypes.func,
     dimension: PropTypes.object,
     initiallySelectedItems: PropTypes.object,
-    loadingSavedFilters: PropTypes.bool,
-    privateFilters: PropTypes.array,
-    publicFilters: PropTypes.array,
     restrictFilters: PropTypes.bool,
-    selectSavedFilter: PropTypes.func,
     setActiveModalDimension: PropTypes.func,
-    updateActiveFilter: PropTypes.func,
 }
 
 export default connect(mapStateToProps, {
     clearActiveModalDimension: acClearActiveModalDimension,
-    updateActiveFilter: acSetActiveFilter,
     setActiveModalDimension: acSetActiveModalDimension,
-    selectSavedFilter: tSelectSavedFilter,
 })(FilterSelector)

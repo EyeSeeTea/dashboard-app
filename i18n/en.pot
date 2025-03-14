@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-03-03T11:49:59.914Z\n"
-"PO-Revision-Date: 2025-03-03T11:49:59.914Z\n"
+"POT-Creation-Date: 2025-03-14T10:24:28.154Z\n"
+"PO-Revision-Date: 2025-03-14T10:24:28.154Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
@@ -87,21 +87,6 @@ msgstr "Cancel"
 msgid "Confirm"
 msgstr "Confirm"
 
-msgid ""
-"The selected Saved Filter cannot be applied because it includes selections "
-"that the current user does not have permission to view. Please try a "
-"different filter."
-msgstr ""
-"The selected Saved Filter cannot be applied because it includes selections "
-"that the current user does not have permission to view. Please try a "
-"different filter."
-
-msgid "You are the owner of this filter"
-msgstr "You are the owner of this filter"
-
-msgid "No saved filters available"
-msgstr "No saved filters available"
-
 msgid "Saving..."
 msgstr "Saving..."
 
@@ -110,6 +95,19 @@ msgstr "Saved filters"
 
 msgid "Filter"
 msgstr "Filter"
+
+msgid "Unsaved Changes"
+msgstr "Unsaved Changes"
+
+msgid ""
+"You have unsaved changes in the \"{{ filterName }}\" filter. If you "
+"proceed, your changes will be lost. Would you like to continue?"
+msgstr ""
+"You have unsaved changes in the \"{{ filterName }}\" filter. If you "
+"proceed, your changes will be lost. Would you like to continue?"
+
+msgid "Yes, discard changes"
+msgstr "Yes, discard changes"
 
 msgid "Failed to unstar the dashboard"
 msgstr "Failed to unstar the dashboard"
@@ -128,6 +126,27 @@ msgstr "Cannot unstar this dashboard while offline"
 
 msgid "Cannot star this dashboard while offline"
 msgstr "Cannot star this dashboard while offline"
+
+msgid ""
+"The selected Saved Filter cannot be applied because it includes selections "
+"that the current user does not have permission to view. Please try a "
+"different filter."
+msgstr ""
+"The selected Saved Filter cannot be applied because it includes selections "
+"that the current user does not have permission to view. Please try a "
+"different filter."
+
+msgid "You are the owner of this filter"
+msgstr "You are the owner of this filter"
+
+msgid "Shared filters"
+msgstr "Shared filters"
+
+msgid "My filters"
+msgstr "My filters"
+
+msgid "No saved filters available"
+msgstr "No saved filters available"
 
 msgid "No dashboards available."
 msgstr "No dashboards available."
@@ -379,9 +398,6 @@ msgstr ""
 msgid "No, stay here"
 msgstr "No, stay here"
 
-msgid "Yes, discard changes"
-msgstr "Yes, discard changes"
-
 msgid "No access"
 msgstr "No access"
 
@@ -612,16 +628,16 @@ msgid "Scope"
 msgstr "Scope"
 
 msgid ""
-"The Saved Filter you are attempting to ${\r\n"
-"                                dialogAction || label.toLowerCase()\r\n"
-"                            } was created by ${\r\n"
-"                                activeFilter.userName\r\n"
+"The Saved Filter you are attempting to ${\n"
+"                                dialogAction || label.toLowerCase()\n"
+"                            } was created by ${\n"
+"                                activeFilter.userName\n"
 "                            }. Do you still want to proceed?"
 msgstr ""
-"The Saved Filter you are attempting to ${\r\n"
-"                                dialogAction || label.toLowerCase()\r\n"
-"                            } was created by ${\r\n"
-"                                activeFilter.userName\r\n"
+"The Saved Filter you are attempting to ${\n"
+"                                dialogAction || label.toLowerCase()\n"
+"                            } was created by ${\n"
+"                                activeFilter.userName\n"
 "                            }. Do you still want to proceed?"
 
 msgid "Rename"
