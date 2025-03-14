@@ -1,6 +1,27 @@
 import i18n from '@dhis2/d2-i18n'
 import isEqual from 'lodash/isEqual.js'
-import { sGetNamedItemFilters } from './itemFilters.js'
+import { sGetDimensions } from './dimensions.js'
+import { sGetItemFiltersRoot } from './itemFilters.js'
+
+export const buildSavedFilters = (state) => {
+    const filters = sGetItemFiltersRoot(state)
+    const dimensions = sGetDimensions(state)
+
+    return Object.keys(filters).reduce((arr, id) => {
+        return [
+            ...arr,
+            {
+                id: id,
+                name: dimensions.find((dimension) => dimension.id === id).name,
+                values: filters[id].map(({ id, displayName, name, path }) => ({
+                    id,
+                    name: displayName || name,
+                    ...(path && { path }),
+                })),
+            },
+        ]
+    }, [])
+}
 
 export const SET_SAVED_FILTERS = 'SET_SAVED_FILTERS'
 export const SET_ACTIVE_FILTER = 'SET_ACTIVE_FILTER'
@@ -75,6 +96,6 @@ export const sActiveFilterHasChanges = (state) => {
     const activeFilters = sGetActiveFilter(state)
     return (
         activeFilters.id &&
-        !isEqual(activeFilters.values, sGetNamedItemFilters(state))
+        !isEqual(activeFilters.values, buildSavedFilters(state))
     )
 }

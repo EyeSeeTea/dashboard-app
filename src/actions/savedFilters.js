@@ -9,8 +9,8 @@ import {
     apiGetSavedFilters,
     apiSaveFilter,
 } from '../api/savedFilters.js'
-import { sGetNamedItemFilters } from '../reducers/itemFilters.js'
 import {
+    buildSavedFilters,
     privateVisiblity,
     publicVisibility,
     SET_ACTIVE_FILTER,
@@ -29,9 +29,8 @@ const isFilterAllowed = (orgUnitFilter, rootOrgUnits) => {
     if (!orgUnitFilter) {
         return true
     }
-
     return every(orgUnitFilter.values, ({ path }) =>
-        some(rootOrgUnits, ({ id }) => path.includes(id))
+        some(rootOrgUnits, ({ id }) => !path || path.includes(id))
     )
 }
 
@@ -64,7 +63,7 @@ export const tSelectSavedFilter =
         }
 
         const savedFilters = sGetSavedFiltersList(getState())
-        const appliedFilters = sGetNamedItemFilters(getState())
+        const appliedFilters = buildSavedFilters(getState())
         const filter = savedFilters.find(({ id }) => id === filterId) || {}
 
         if (isEqual(filter.values, appliedFilters)) {
@@ -104,7 +103,7 @@ export const tSaveFilter =
         try {
             const filterUpdate = {
                 ...filter,
-                values: sGetNamedItemFilters(getState()),
+                values: buildSavedFilters(getState()),
             }
 
             const updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
