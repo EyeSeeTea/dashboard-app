@@ -95,7 +95,8 @@ export const sGetLoadingSavedFilters = (state) => state.savedFilters.loading
 export const sActiveFilterHasChanges = (state) => {
     const activeFilters = sGetActiveFilter(state)
     return (
-        activeFilters.id &&
-        !isEqual(activeFilters.values, buildSavedFilters(state))
+        (activeFilters.id &&
+            !isEqual(activeFilters.values, buildSavedFilters(state))) ||
+        false
     )
 }

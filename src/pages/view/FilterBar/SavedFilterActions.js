@@ -7,6 +7,96 @@ import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import DropdownButton from '../../../components/DropdownButton/DropdownButton.js'
 import { privateVisiblity } from '../../../reducers/savedFilters.js'
 
+const deleteId = 'delete'
+const saveId = 'save'
+const ignoreUnsavedChangesActions = [deleteId, saveId]
+
+const getDialogText = () => {
+    return {
+        rename: {
+            actionId: 'rename',
+            label: i18n.t('Rename'),
+        },
+        [deleteId]: {
+            actionId: deleteId,
+            label: i18n.t('Delete'),
+            confirmMessage: i18n.t('Yes, delete'),
+        },
+        [saveId]: {
+            actionId: saveId,
+            label: i18n.t('Save changes'),
+            action: i18n.t('update'),
+            confirmMessage: i18n.t('Yes, update'),
+        },
+        saveAsNew: {
+            actionId: 'saveAsNew',
+            label: i18n.t('Save as new filter'),
+        },
+        makePublic: {
+            actionId: 'makePublic',
+            label: i18n.t('Make it public'),
+            action: i18n.t('make public'),
+        },
+        makePrivate: {
+            actionId: 'makePrivate',
+            label: i18n.t('Make it private'),
+            action: i18n.t('make private'),
+        },
+    }
+}
+
+const getWarningDialogMessage = ({
+    userName,
+    actionId,
+    isUserOwner,
+    activeFilterHasChanges,
+}) => {
+    const dialogText = getDialogText()[actionId]
+    const translationParams = {
+        userName,
+        action: dialogText.action || dialogText.label.toLowerCase(),
+        label: dialogText.label.toLowerCase(),
+    }
+
+    let message = ''
+    let confirmMessage =
+        dialogText.confirmMessage ||
+        i18n.t('Yes, save changes and {{ label }}', translationParams)
+    const scopeWarning =
+        !ignoreUnsavedChangesActions.includes(actionId) &&
+        activeFilterHasChanges
+            ? i18n.t(
+                  ' If you proceed, these changes will be saved along with the new scope of the filter.'
+              )
+            : ''
+
+    if (!isUserOwner) {
+        message = i18n.t(
+            activeFilterHasChanges &&
+                !ignoreUnsavedChangesActions.includes(actionId)
+                ? 'The saved filter you are trying to {{ action }} was created by {{ userName }} and has unsaved changes.'
+                : 'The saved filter you are trying to {{ action }} was created by {{ userName }}.',
+            translationParams
+        )
+        if (!activeFilterHasChanges) {
+            confirmMessage = i18n.t('Yes, {{ action }}', translationParams)
+        }
+    } else if (activeFilterHasChanges) {
+        message = i18n.t(
+            'The saved filter you are trying to {{ action }} has unsaved changes.',
+            translationParams
+        )
+    }
+    return {
+        message: [
+            message,
+            scopeWarning,
+            i18n.t('Would you like to continue?'),
+        ].join(' '),
+        confirmMessage,
+    }
+}
+
 export const SavedFilterActions = ({
     openDialogForRename,
     openDialogForNewFilter,
@@ -21,6 +111,7 @@ export const SavedFilterActions = ({
 }) => {
     const [moreOptionsIsOpen, setMoreOptionsIsOpen] = useState(false)
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
+    const [confirmDialogMessage, setConfirmDialogMessage] = useState('')
     const [dialogMessage, setDialogMessage] = useState('')
     const [confirmDialogAction, setConfirmDialogAction] = useState(
         () => () => {}
@@ -30,24 +121,34 @@ export const SavedFilterActions = ({
 
     const toggleMoreActions = () => setMoreOptionsIsOpen((prev) => !prev)
     const closeDialog = () => setDialogIsOpen(false)
+    const dialogTextMap = getDialogText()
 
     const handleAction = useCallback(
-        ({ action, label, skipCheck, dialogAction }) =>
+        ({ actionFn, actionId, skipCheck }) =>
             () => {
-                if (skipCheck || currentUser.id === activeFilter.userId) {
-                    action()
+                const isUserOwner = currentUser.id === activeFilter.userId
+                if (
+                    skipCheck ||
+                    (isUserOwner &&
+                        (!activeFilterHasChanges ||
+                            ignoreUnsavedChangesActions.includes(actionId)))
+                ) {
+                    actionFn()
                 } else {
-                    setDialogMessage(
-                        i18n.t(
-                            `The Saved Filter you are attempting to ${
-                                dialogAction || label.toLowerCase()
-                            } was created by ${
-                                activeFilter.userName
-                            }. Do you still want to proceed?`
-                        )
+                    const { message, confirmMessage } = getWarningDialogMessage(
+                        {
+                            actionId,
+                            userName: activeFilter.userName,
+                            isUserOwner,
+                            activeFilterHasChanges,
+                        }
                     )
+
+                    setDialogMessage(message)
+                    setConfirmDialogMessage(confirmMessage)
+
                     setConfirmDialogAction(() => () => {
-                        action().then(closeDialog)
+                        actionFn().then(closeDialog)
                     })
                     setDialogIsOpen(true)
                 }
@@ -60,54 +161,48 @@ export const SavedFilterActions = ({
         const actions = [
             {
                 show: showFilterAction,
-                label: i18n.t('Rename'),
-                action: () => Promise.resolve(openDialogForRename()),
+                ...dialogTextMap.rename,
+                actionFn: () => Promise.resolve(openDialogForRename()),
             },
             {
                 show: showFilterAction,
-                label: i18n.t('Delete'),
-                action: () => doDeleteFilter(currentUser),
+                ...dialogTextMap.delete,
+                actionFn: () => doDeleteFilter(currentUser),
             },
             {
                 show: activeFilterHasChanges && showFilterAction,
-                label: i18n.t('Save'),
-                action: () => doSaveFilter(activeFilter),
-                dialogAction: 'update',
+                ...dialogTextMap.save,
+                actionFn: () => doSaveFilter(activeFilter),
             },
             {
                 show: activeFilterHasChanges,
-                label: i18n.t('Save as new filter'),
-                action: openDialogForNewFilter,
+                ...dialogTextMap.saveAsNew,
+                actionFn: openDialogForNewFilter,
                 skipCheck: true,
             },
             {
                 show: showFilterAction,
-                label:
-                    activeFilter?.visibility === privateVisiblity
-                        ? i18n.t('Make it public')
-                        : i18n.t('Make it private'),
-                action: () => doToggleFilterVisibility(currentUser),
-                dialogAction:
-                    activeFilter?.visibility === privateVisiblity
-                        ? i18n.t('make public')
-                        : i18n.t('make private'),
+                ...(activeFilter?.visibility === privateVisiblity
+                    ? dialogTextMap.makePublic
+                    : dialogTextMap.makePrivate),
+
+                actionFn: () => doToggleFilterVisibility(currentUser),
             },
         ]
 
         return (
             <FlyoutMenu>
                 {actions.map(
-                    ({ show, label, action, skipCheck, dialogAction }) =>
+                    ({ show, actionFn, actionId, label, skipCheck }) =>
                         show && (
                             <MenuItem
                                 key={label}
                                 dense
                                 label={label}
                                 onClick={handleAction({
-                                    action,
-                                    label,
+                                    actionFn,
+                                    actionId,
                                     skipCheck,
-                                    dialogAction,
                                 })}
                             />
                         )
@@ -151,7 +246,7 @@ export const SavedFilterActions = ({
                     title={i18n.t('Modify Saved Filter?')}
                     message={dialogMessage}
                     cancelLabel={i18n.t('Cancel')}
-                    confirmLabel={i18n.t('Confirm')}
+                    confirmLabel={confirmDialogMessage}
                     onConfirm={confirmDialogAction}
                     onCancel={closeDialog}
                 />
