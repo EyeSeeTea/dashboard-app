@@ -1,5 +1,9 @@
+import i18n from '@dhis2/d2-i18n'
 import { generateUid } from 'd2/uid'
-import { privateVisiblity, publicVisibility } from '../reducers/savedFilters.js'
+import {
+    privateVisibility,
+    publicVisibility,
+} from '../reducers/savedFilters.js'
 import { apiGetDataStoreValue, apiPostDataStoreValue } from './dataStore.js'
 import {
     apiGetUserDataStoreValue,
@@ -9,6 +13,7 @@ import {
 const KEY_SAVED_FILTERS = 'savedFilters'
 const ADMIN_ROLE = 'Saved Filters Admin'
 const DEFAULT_VALUE_SAVED_FILTERS = []
+export const NEW_FILTER_ID = 'new'
 
 export const apiGetSavedFilters = async () =>
     Promise.all([
@@ -18,26 +23,37 @@ export const apiGetSavedFilters = async () =>
         ),
         apiGetDataStoreValue(KEY_SAVED_FILTERS, DEFAULT_VALUE_SAVED_FILTERS),
     ]).then(([privateFilters, publicFilters]) => ({
-        [privateVisiblity]: privateFilters,
+        [privateVisibility]: privateFilters,
         [publicVisibility]: publicFilters,
     }))
 
 export const apiSaveFilter = async (filter, currentUser) => {
+    if (!isFilterActionAllowed(filter, currentUser)) {
+        return Promise.reject({ error: 'User not allowed to save this filter' })
+    }
+
     const [get, save] = getDataStoreFn(filter.visibility)
     const savedFilters = await get(KEY_SAVED_FILTERS, [])
 
+    const { isValid, message } = validateFilterName(filter, savedFilters)
+    if (!isValid) {
+        return Promise.reject({ error: message, refetch: true })
+    }
+
     const { filter: updatedFilter, savedFilters: updatedFilters } =
         upsertOrInsertFilter(filter, savedFilters, currentUser)
-
-    if (!isFilterActionAllowed(updatedFilter, currentUser)) {
-        return Promise.reject('User not allowed to save this filter')
-    }
 
     await save(KEY_SAVED_FILTERS, updatedFilters)
     return updatedFilter
 }
 
 export const apiDeleteFilter = async (filter, currentUser) => {
+    if (!isFilterActionAllowed(filter, currentUser)) {
+        return Promise.reject({
+            error: i18n.t('User not allowed to delete this filter'),
+        })
+    }
+
     const [get, save] = getDataStoreFn(filter.visibility)
     const savedFilters = await get(KEY_SAVED_FILTERS, [])
     const existingFilter = savedFilters.find((f) => f.id === filter.id)
@@ -45,24 +61,51 @@ export const apiDeleteFilter = async (filter, currentUser) => {
     if (!existingFilter) {
         return true
     }
-    if (!isFilterActionAllowed(existingFilter, currentUser)) {
-        return Promise.reject('User not allowed to save this filter')
-    }
+
     const payload = savedFilters.filter((f) => f.id !== filter.id)
 
     await save(KEY_SAVED_FILTERS, payload)
     return true
 }
 
+export const validateFilterName = (filter, savedFilters) => {
+    const existingFilter = savedFilters.find((f) => f.id === filter.id)
+
+    if (
+        savedFilters.length > 0 &&
+        (filter.id === NEW_FILTER_ID ||
+            !existingFilter ||
+            filter.name !== existingFilter.name)
+    ) {
+        const isValid = savedFilters.every(
+            (savedFilter) => savedFilter.name !== filter.name
+        )
+        return {
+            isValid,
+            message: isValid
+                ? null
+                : i18n.t(
+                      'A filter with this name already exists as {{ visibility }}.  Please choose a different name.',
+                      { visibility: filter.visibility }
+                  ),
+        }
+    }
+
+    return {
+        isValid: true,
+    }
+}
+
 export const isFilterActionAllowed = (filter, currentUser) => {
     return (
+        filter.id === NEW_FILTER_ID ||
         currentUser.userRoles?.some(({ name }) => name === ADMIN_ROLE) ||
         filter.userId === currentUser.id
     )
 }
 
 const getDataStoreFn = (visibility) => {
-    return visibility === privateVisiblity
+    return visibility === privateVisibility
         ? [apiGetUserDataStoreValue, apiPostUserDataStoreValue]
         : [apiGetDataStoreValue, apiPostDataStoreValue]
 }
@@ -99,6 +142,6 @@ const upsertFilter = (filter, savedFilters, currentUser) => {
 }
 
 const upsertOrInsertFilter = (filter, savedFilters, currentUser) =>
-    filter.id
+    filter.id && filter.id !== NEW_FILTER_ID
         ? upsertFilter(filter, savedFilters, currentUser)
         : insertNewFilter(filter, savedFilters, currentUser)

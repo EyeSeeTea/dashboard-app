@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-03-14T10:24:28.154Z\n"
-"PO-Revision-Date: 2025-03-14T10:24:28.154Z\n"
+"POT-Creation-Date: 2025-03-16T02:21:38.058Z\n"
+"PO-Revision-Date: 2025-03-16T02:21:38.058Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
@@ -627,24 +627,17 @@ msgstr "Name"
 msgid "Scope"
 msgstr "Scope"
 
-msgid ""
-"The Saved Filter you are attempting to ${\n"
-"                                dialogAction || label.toLowerCase()\n"
-"                            } was created by ${\n"
-"                                activeFilter.userName\n"
-"                            }. Do you still want to proceed?"
-msgstr ""
-"The Saved Filter you are attempting to ${\n"
-"                                dialogAction || label.toLowerCase()\n"
-"                            } was created by ${\n"
-"                                activeFilter.userName\n"
-"                            }. Do you still want to proceed?"
-
 msgid "Rename"
 msgstr "Rename"
 
-msgid "Save"
-msgstr "Save"
+msgid "Yes, delete"
+msgstr "Yes, delete"
+
+msgid "update"
+msgstr "update"
+
+msgid "Yes, update"
+msgstr "Yes, update"
 
 msgid "Save as new filter"
 msgstr "Save as new filter"
@@ -652,17 +645,39 @@ msgstr "Save as new filter"
 msgid "Make it public"
 msgstr "Make it public"
 
-msgid "Make it private"
-msgstr "Make it private"
-
 msgid "make public"
 msgstr "make public"
+
+msgid "Make it private"
+msgstr "Make it private"
 
 msgid "make private"
 msgstr "make private"
 
+msgid "Yes, save changes and {{ label }}"
+msgstr "Yes, save changes and {{ label }}"
+
+msgid ""
+" If you proceed, these changes will be saved along with the new scope of "
+"the filter."
+msgstr ""
+" If you proceed, these changes will be saved along with the new scope of "
+"the filter."
+
+msgid "Yes, {{ action }}"
+msgstr "Yes, {{ action }}"
+
+msgid "The saved filter you are trying to {{ action }} has unsaved changes."
+msgstr "The saved filter you are trying to {{ action }} has unsaved changes."
+
+msgid "Would you like to continue?"
+msgstr "Would you like to continue?"
+
 msgid "Modify Saved Filter?"
 msgstr "Modify Saved Filter?"
+
+msgid "Save"
+msgstr "Save"
 
 msgid "Exit slideshow"
 msgstr "Exit slideshow"

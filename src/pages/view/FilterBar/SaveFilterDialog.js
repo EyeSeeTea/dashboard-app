@@ -12,10 +12,13 @@ import {
 } from '@dhis2/ui'
 import capitalize from 'lodash/capitalize.js'
 import PropTypes from 'prop-types'
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { validateFilterName } from '../../../api/savedFilters.js'
 import {
     filterVisibility,
-    privateVisiblity,
+    privateVisibility,
+    sGetSavedFiltersVisibilityMap,
 } from '../../../reducers/savedFilters.js'
 
 const SaveFilterDialog = ({
@@ -25,24 +28,39 @@ const SaveFilterDialog = ({
     showScope = true,
     isLoading = false,
 }) => {
-    const [visibility, setVisibility] = React.useState(
-        filter.visibility || privateVisiblity
+    const savedFilters = useSelector((state) =>
+        sGetSavedFiltersVisibilityMap(state)
     )
-    const [name, setName] = React.useState(filter.id ? filter.name : null)
+
+    const [visibility, setVisibility] = useState(
+        filter.visibility || privateVisibility
+    )
+    const [name, setName] = useState(filter.id ? filter.name : null)
     const isNameUpdated = typeof name === 'string'
 
-    const error = useMemo(
-        () =>
-            isNameUpdated && name.length < 1
-                ? {
-                      error: true,
-                      validationText: i18n.t(
-                          'Please enter a name for the filter'
-                      ),
-                  }
-                : null,
-        [name, isNameUpdated]
-    )
+    const error = useMemo(() => {
+        if (isNameUpdated) {
+            if (name.length < 1) {
+                return {
+                    error: true,
+                    validationText: i18n.t(
+                        'Please enter a name for the filter'
+                    ),
+                }
+            }
+            const { isValid, message } = validateFilterName(
+                { name, visibility, id: filter.id },
+                savedFilters[visibility]
+            )
+            if (!isValid) {
+                return {
+                    error: true,
+                    validationText: message,
+                }
+            }
+        }
+        return null
+    }, [name, isNameUpdated, visibility, savedFilters, filter])
 
     const handleVisibilityChange = ({ selected }) => {
         setVisibility(selected)
@@ -104,7 +122,7 @@ const SaveFilterDialog = ({
                         primary
                         onClick={handleConfirm}
                         loading={isLoading}
-                        disabled={error || !isNameUpdated}
+                        disabled={!!error || !isNameUpdated}
                     >
                         {isLoading ? i18n.t('Saving...') : i18n.t('Confirm')}
                     </Button>

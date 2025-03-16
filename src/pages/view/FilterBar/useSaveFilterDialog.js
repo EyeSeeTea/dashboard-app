@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react'
-
-const NEW_FILTER_ID = 'new'
+import { NEW_FILTER_ID } from '../../../api/savedFilters.js'
 
 export const useSaveFitlerDialog = ({
     activeFilter,

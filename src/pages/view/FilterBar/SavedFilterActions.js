@@ -5,7 +5,7 @@ import React, { useState, useMemo, useCallback } from 'react'
 import { isFilterActionAllowed } from '../../../api/savedFilters.js'
 import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import DropdownButton from '../../../components/DropdownButton/DropdownButton.js'
-import { privateVisiblity } from '../../../reducers/savedFilters.js'
+import { privateVisibility } from '../../../reducers/savedFilters.js'
 
 const deleteId = 'delete'
 const saveId = 'save'
@@ -154,7 +154,7 @@ export const SavedFilterActions = ({
                 }
                 setMoreOptionsIsOpen(false)
             },
-        [activeFilter, currentUser]
+        [activeFilter, currentUser, activeFilterHasChanges]
     )
 
     const savedFilterActions = useMemo(() => {
@@ -182,7 +182,7 @@ export const SavedFilterActions = ({
             },
             {
                 show: showFilterAction,
-                ...(activeFilter?.visibility === privateVisiblity
+                ...(activeFilter?.visibility === privateVisibility
                     ? dialogTextMap.makePublic
                     : dialogTextMap.makePrivate),
 
@@ -220,6 +220,7 @@ export const SavedFilterActions = ({
         handleAction,
         openDialogForNewFilter,
         openDialogForRename,
+        dialogTextMap,
     ])
 
     return (

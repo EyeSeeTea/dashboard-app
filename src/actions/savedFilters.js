@@ -8,10 +8,11 @@ import {
     apiDeleteFilter,
     apiGetSavedFilters,
     apiSaveFilter,
+    NEW_FILTER_ID,
 } from '../api/savedFilters.js'
 import {
     buildSavedFilters,
-    privateVisiblity,
+    privateVisibility,
     publicVisibility,
     SET_ACTIVE_FILTER,
     SET_LOADING_SAVED_FILTERS,
@@ -34,6 +35,19 @@ const isFilterAllowed = (orgUnitFilter, rootOrgUnits) => {
     )
 }
 
+const doFetchAndSelect = (updatedFilter) => async (dispatch) => {
+    await dispatch(tFetchSavedFilters())
+    dispatch(acSetActiveFilter(updatedFilter))
+}
+
+const handleError = (error, fnName) => async (dispatch) => {
+    const message = error.message || error.error || error
+    console.log(`Error (${fnName}): ${message}`)
+
+    if (error.refetch) {
+        await dispatch(tFetchSavedFilters())
+    }
+}
 // actions
 
 export const acSetFilters = (filters) => ({
@@ -92,7 +106,7 @@ export const tFetchSavedFilters = () => async (dispatch) => {
 
     return dispatch(
         acSetFilters({
-            [privateVisiblity]: sortBy(filters.private, 'name'),
+            [privateVisibility]: sortBy(filters.private, 'name'),
             [publicVisibility]: sortBy(filters.public, 'name'),
         })
     )
@@ -107,11 +121,10 @@ export const tSaveFilter =
             }
 
             const updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
-            await dispatch(tFetchSavedFilters())
-            dispatch(acSetActiveFilter(updatedFilter))
+            await dispatch(doFetchAndSelect(updatedFilter))
             return true
         } catch (error) {
-            console.log('Error (tSaveFilter): ', error)
+            dispatch(handleError(error, 'tSaveFilter'))
             return false
         }
     }
@@ -125,22 +138,43 @@ export const tDeleteActiveFilter =
             dispatch(tSelectSavedFilter())
             return true
         } catch (error) {
-            console.log('Error (tDeleteActiveFilter): ', error)
+            dispatch(handleError(error, 'tDeleteActiveFilter'))
             return false
         }
     }
 
 export const tToggleActiveFilterVisibility =
-    (currentUser) => async (dispatch, getState) => {
-        const filter = sGetActiveFilter(getState())
+    (currentUser, onError) => async (dispatch, getState) => {
+        try {
+            const filter = { ...sGetActiveFilter(getState()) }
 
-        await apiDeleteFilter(filter, currentUser)
+            const newVisibility =
+                filter.visibility === privateVisibility
+                    ? publicVisibility
+                    : privateVisibility
 
-        const newVisibility =
-            filter.visibility === privateVisiblity
-                ? publicVisibility
-                : privateVisiblity
-        const updatedFilter = { ...filter, visibility: newVisibility }
+            const filterUpdate = {
+                ...filter,
+                id: NEW_FILTER_ID,
+                visibility: newVisibility,
+                values: buildSavedFilters(getState()),
+            }
 
-        return dispatch(tSaveFilter(currentUser, updatedFilter))
+            // Currently, only save error that can occur is duplicate name error
+            const updatedFilter = await apiSaveFilter(
+                filterUpdate,
+                currentUser
+            ).catch((saveError) => {
+                onError()
+                throw saveError
+            })
+
+            await apiDeleteFilter(filter, currentUser)
+            await dispatch(doFetchAndSelect(updatedFilter))
+
+            return true
+        } catch (error) {
+            dispatch(handleError(error, 'tToggleActiveFilterVisibility'))
+            return false
+        }
     }

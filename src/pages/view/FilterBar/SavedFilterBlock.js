@@ -1,5 +1,5 @@
 import { useCachedDataQuery } from '@dhis2/analytics'
-import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
+import { useAlert, useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
@@ -14,6 +14,8 @@ import {
 } from '../../../actions/savedFilters.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
 import {
+    privateVisibility,
+    publicVisibility,
     sActiveFilterHasChanges,
     sGetActiveFilter,
     sGetLoadingSavedFilters,
@@ -34,6 +36,9 @@ const SavedFilterBlock = ({
 }) => {
     const { isConnected: online } = useDhis2ConnectionStatus()
     const { currentUser } = useCachedDataQuery()
+    const { show: showAlert } = useAlert(({ message }) => message, {
+        critical: true,
+    })
 
     const hasActiveSavedFilter = Boolean(activeFilter.id)
 
@@ -59,8 +64,31 @@ const SavedFilterBlock = ({
     )
 
     const doToggleFilterVisibility = useCallback(
-        () => handleFilterAction(() => toggleFilterVisibility(currentUser)),
-        [currentUser, toggleFilterVisibility, handleFilterAction]
+        () =>
+            handleFilterAction(() =>
+                toggleFilterVisibility(currentUser, () => {
+                    console.log('onError')
+                    showAlert({
+                        message: i18n.t(
+                            'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
+                            {
+                                visibility:
+                                    activeFilter.visibility ===
+                                    privateVisibility
+                                        ? publicVisibility
+                                        : privateVisibility,
+                            }
+                        ),
+                    })
+                })
+            ),
+        [
+            currentUser,
+            toggleFilterVisibility,
+            handleFilterAction,
+            showAlert,
+            activeFilter,
+        ]
     )
 
     const {

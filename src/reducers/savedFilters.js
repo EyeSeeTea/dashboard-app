@@ -27,18 +27,18 @@ export const SET_SAVED_FILTERS = 'SET_SAVED_FILTERS'
 export const SET_ACTIVE_FILTER = 'SET_ACTIVE_FILTER'
 export const SET_LOADING_SAVED_FILTERS = 'SET_LOADING_SAVED_FILTERS'
 
-export const privateVisiblity = 'private'
+export const privateVisibility = 'private'
 export const publicVisibility = 'public'
-export const filterVisibility = [privateVisiblity, publicVisibility]
+export const filterVisibility = [privateVisibility, publicVisibility]
 
 export const DEFAULT_ACTIVE_FILTER = {
     id: null,
     name: i18n.t('Saved Filters'),
-    visibility: privateVisiblity,
+    visibility: privateVisibility,
 }
 
 const DEFAULT_FILTERS = {
-    [privateVisiblity]: [],
+    [privateVisibility]: [],
     [publicVisibility]: [],
 }
 
