@@ -65,22 +65,23 @@ const SavedFilterBlock = ({
 
     const doToggleFilterVisibility = useCallback(
         () =>
-            handleFilterAction(() =>
-                toggleFilterVisibility(currentUser, () => {
-                    console.log('onError')
-                    showAlert({
-                        message: i18n.t(
-                            'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
-                            {
-                                visibility:
-                                    activeFilter.visibility ===
-                                    privateVisibility
-                                        ? publicVisibility
-                                        : privateVisibility,
-                            }
-                        ),
-                    })
-                })
+            handleFilterAction(() => toggleFilterVisibility(currentUser)).catch(
+                (error) => {
+                    if (error.type === 'save') {
+                        showAlert({
+                            message: i18n.t(
+                                'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
+                                {
+                                    visibility:
+                                        activeFilter.visibility ===
+                                        privateVisibility
+                                            ? publicVisibility
+                                            : privateVisibility,
+                                }
+                            ),
+                        })
+                    }
+                }
             ),
         [
             currentUser,

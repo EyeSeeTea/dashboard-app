@@ -144,7 +144,7 @@ export const tDeleteActiveFilter =
     }
 
 export const tToggleActiveFilterVisibility =
-    (currentUser, onError) => async (dispatch, getState) => {
+    (currentUser) => async (dispatch, getState) => {
         try {
             const filter = { ...sGetActiveFilter(getState()) }
 
@@ -160,21 +160,27 @@ export const tToggleActiveFilterVisibility =
                 values: buildSavedFilters(getState()),
             }
 
-            // Currently, only save error that can occur is duplicate name error
-            const updatedFilter = await apiSaveFilter(
-                filterUpdate,
-                currentUser
-            ).catch((saveError) => {
-                onError()
-                throw saveError
-            })
+            // Currently, only save error that can occur during toggle is duplicate name error
+            let updatedFilter
+            try {
+                updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
+            } catch (error) {
+                error.type = 'save'
+                throw error
+            }
 
-            await apiDeleteFilter(filter, currentUser)
+            try {
+                await apiDeleteFilter(filter, currentUser)
+            } catch (error) {
+                error.type = 'delete'
+                throw error
+            }
+
             await dispatch(doFetchAndSelect(updatedFilter))
 
             return true
         } catch (error) {
             dispatch(handleError(error, 'tToggleActiveFilterVisibility'))
-            return false
+            throw error
         }
     }
