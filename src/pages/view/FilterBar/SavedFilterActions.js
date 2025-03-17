@@ -71,13 +71,17 @@ const getWarningDialogMessage = ({
             : ''
 
     if (!isUserOwner) {
-        message = i18n.t(
+        message =
             activeFilterHasChanges &&
-                !ignoreUnsavedChangesActions.includes(actionId)
-                ? 'The saved filter you are trying to {{ action }} was created by {{ userName }} and has unsaved changes.'
-                : 'The saved filter you are trying to {{ action }} was created by {{ userName }}.',
-            translationParams
-        )
+            !ignoreUnsavedChangesActions.includes(actionId)
+                ? i18n.t(
+                      'The saved filter you are trying to {{ action }} was created by {{ userName }} and has unsaved changes.',
+                      translationParams
+                  )
+                : i18n.t(
+                      'The saved filter you are trying to {{ action }} was created by {{ userName }}.',
+                      translationParams
+                  )
         if (!activeFilterHasChanges) {
             confirmMessage = i18n.t('Yes, {{ action }}', translationParams)
         }

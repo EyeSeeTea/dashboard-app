@@ -5,11 +5,21 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-03-16T02:21:38.058Z\n"
-"PO-Revision-Date: 2025-03-16T02:21:38.058Z\n"
+"POT-Creation-Date: 2025-03-17T04:34:20.967Z\n"
+"PO-Revision-Date: 2025-03-17T04:34:20.967Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
+
+msgid "User not allowed to delete this filter"
+msgstr "User not allowed to delete this filter"
+
+msgid ""
+"A filter with this name already exists as {{ visibility }}.  Please choose "
+"a different name."
+msgstr ""
+"A filter with this name already exists as {{ visibility }}.  Please choose "
+"a different name."
 
 msgid "Dashboards"
 msgstr "Dashboards"
@@ -664,6 +674,20 @@ msgstr ""
 " If you proceed, these changes will be saved along with the new scope of "
 "the filter."
 
+msgid ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}} and has unsaved changes."
+msgstr ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}} and has unsaved changes."
+
+msgid ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}}."
+msgstr ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}}."
+
 msgid "Yes, {{ action }}"
 msgstr "Yes, {{ action }}"
 
@@ -675,6 +699,13 @@ msgstr "Would you like to continue?"
 
 msgid "Modify Saved Filter?"
 msgstr "Modify Saved Filter?"
+
+msgid ""
+"A filter with this name already exists as {{ visibility }}. Please rename "
+"it before changing its scope to {{ visibility }}."
+msgstr ""
+"A filter with this name already exists as {{ visibility }}. Please rename "
+"it before changing its scope to {{ visibility }}."
 
 msgid "Save"
 msgstr "Save"
