@@ -14,6 +14,7 @@ import useDimensions from '../../../modules/useDimensions.js'
 import { sGetActiveModalDimension } from '../../../reducers/activeModalDimension.js'
 import { sGetItemFiltersRoot } from '../../../reducers/itemFilters.js'
 import { sGetActiveFilter } from '../../../reducers/savedFilters.js'
+import AlertDialog from '../../AlertDialog.js'
 import ConfirmActionDialog from '../../ConfirmActionDialog.js'
 import DropdownButton from '../../DropdownButton/DropdownButton.js'
 import FilterDialog from './FilterDialog.js'
@@ -30,6 +31,8 @@ const FilterSelector = (props) => {
         loadingSavedFilters,
         closeWarningDialog,
         confirmWarningAction,
+        openFilterWarning,
+        closeFilterWarningDialog,
     } = useSavedFilterSelector(props)
 
     const [filterDialogIsOpen, setFilterDialogIsOpen] = useState(false)
@@ -122,6 +125,16 @@ const FilterSelector = (props) => {
                 confirmLabel={i18n.t('Yes, discard changes')}
                 onConfirm={confirmWarningAction}
                 onCancel={closeWarningDialog}
+            />
+            <AlertDialog
+                warning={true}
+                position="top"
+                open={openFilterWarning}
+                title={i18n.t('Warning')}
+                message={i18n.t(
+                    'The selected Saved Filter cannot be applied because it includes selections that the current user does not have permission to view. Please try a different filter.'
+                )}
+                onClose={closeFilterWarningDialog}
             />
         </>
     )

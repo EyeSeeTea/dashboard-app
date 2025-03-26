@@ -1,5 +1,4 @@
 import { useCachedDataQuery } from '@dhis2/analytics'
-import { useAlert } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import {
     CenteredContent,
@@ -25,10 +24,6 @@ import {
 } from '../../../reducers/savedFilters.js'
 import classes from './styles/FilterSelector.module.css'
 
-const failedApplyFilerMessage = i18n.t(
-    'The selected Saved Filter cannot be applied because it includes selections that the current user does not have permission to view. Please try a different filter.'
-)
-
 export const useSavedFilterSelector = ({
     activeFilter,
     initiallySelectedItems,
@@ -52,14 +47,11 @@ export const useSavedFilterSelector = ({
     const [savedFilterWarningOpen, setSavedFilterWarningOpen] = useState(false)
     const [savedFiltersIsOpen, setSavedFiltersIsOpen] = useState(false)
     const [savedFilterToBeSelected, setSavedFilterToBeSelected] = useState()
+    const [openFilterWarningAlert, setOpenFilterWarningAlert] = useState(false)
 
     const dimensions = useDimensions(savedFiltersIsOpen)
     const privateFilters = savedFilters.private
     const publicFilters = savedFilters.public
-
-    const failedApplyFilterAlert = useAlert(failedApplyFilerMessage, {
-        warning: true,
-    })
 
     const toggleSavedFilterIsOpen = () =>
         setSavedFiltersIsOpen(!savedFiltersIsOpen)
@@ -72,7 +64,7 @@ export const useSavedFilterSelector = ({
         if (success) {
             setSavedFiltersIsOpen(false)
         } else {
-            failedApplyFilterAlert.show()
+            setOpenFilterWarningAlert(true)
         }
     }
 
@@ -161,6 +153,10 @@ export const useSavedFilterSelector = ({
         setSavedFilterWarningOpen(false)
     }
 
+    const closeFilterWarningDialog = () => {
+        setOpenFilterWarningAlert(false)
+    }
+
     return {
         savedFiltersIsOpen,
         savedFilterWarningOpen,
@@ -169,5 +165,7 @@ export const useSavedFilterSelector = ({
         loadingSavedFilters,
         closeWarningDialog,
         confirmWarningAction,
+        openFilterWarning: openFilterWarningAlert,
+        closeFilterWarningDialog,
     }
 }

@@ -1,9 +1,9 @@
 import { useCachedDataQuery } from '@dhis2/analytics'
-import { useAlert, useDhis2ConnectionStatus } from '@dhis2/app-runtime'
+import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
 import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { connect } from 'react-redux'
 import {
     acSetActiveFilter,
@@ -12,6 +12,7 @@ import {
     tSaveFilter,
     tToggleActiveFilterVisibility,
 } from '../../../actions/savedFilters.js'
+import AlertDialog from '../../../components/AlertDialog.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
 import {
     privateVisibility,
@@ -36,9 +37,8 @@ const SavedFilterBlock = ({
 }) => {
     const { isConnected: online } = useDhis2ConnectionStatus()
     const { currentUser } = useCachedDataQuery()
-    const { show: showAlert } = useAlert(({ message }) => message, {
-        critical: true,
-    })
+
+    const [openFilterErrorAlert, setOpenFilterErrorAlert] = useState(false)
 
     const hasActiveSavedFilter = Boolean(activeFilter.id)
 
@@ -68,29 +68,14 @@ const SavedFilterBlock = ({
             handleFilterAction(() => toggleFilterVisibility(currentUser)).catch(
                 (error) => {
                     if (error.type === 'save') {
-                        showAlert({
-                            message: i18n.t(
-                                'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
-                                {
-                                    visibility:
-                                        activeFilter.visibility ===
-                                        privateVisibility
-                                            ? publicVisibility
-                                            : privateVisibility,
-                                }
-                            ),
-                        })
+                        setOpenFilterErrorAlert(true)
                     }
                 }
             ),
-        [
-            currentUser,
-            toggleFilterVisibility,
-            handleFilterAction,
-            showAlert,
-            activeFilter,
-        ]
+        [currentUser, toggleFilterVisibility, handleFilterAction]
     )
+
+    const closeFilterErrorAlert = () => setOpenFilterErrorAlert(false)
 
     const {
         openDialogForNewFilter,
@@ -120,6 +105,22 @@ const SavedFilterBlock = ({
                 isLoading={isLoading}
             />
             {filterDialogIsOpen && <SaveFilterDialog {...dialogProps} />}
+            <AlertDialog
+                critical={true}
+                position="top"
+                open={openFilterErrorAlert}
+                title={i18n.t('Error')}
+                message={i18n.t(
+                    'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
+                    {
+                        visibility:
+                            activeFilter.visibility === privateVisibility
+                                ? publicVisibility
+                                : privateVisibility,
+                    }
+                )}
+                onClose={closeFilterErrorAlert}
+            />
         </>
     )
 }
