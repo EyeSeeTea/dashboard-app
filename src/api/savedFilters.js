@@ -11,7 +11,8 @@ import {
 } from './userDataStore.js'
 
 const KEY_SAVED_FILTERS = 'savedFilters'
-const ADMIN_ROLE = 'Saved Filters Admin'
+const SAVED_FILTERS_ADMIN_ROLE = 'Saved Filters Admin'
+const SAVED_FILTERS_CREATE_ROLE = 'Saved Filters Create'
 const DEFAULT_VALUE_SAVED_FILTERS = []
 export const NEW_FILTER_ID = 'new'
 
@@ -98,10 +99,14 @@ export const validateFilterName = (filter, savedFilters) => {
 
 export const isFilterActionAllowed = (filter, currentUser) => {
     return (
-        filter.id === NEW_FILTER_ID ||
-        currentUser.userRoles?.some(({ name }) => name === ADMIN_ROLE) ||
-        filter.userId === currentUser.id
+        checkUserRole(currentUser, SAVED_FILTERS_ADMIN_ROLE) ||
+        (checkUserRole(currentUser, SAVED_FILTERS_CREATE_ROLE) &&
+            (filter.userId === currentUser.id || filter.id === NEW_FILTER_ID))
     )
+}
+
+const checkUserRole = (currentUser, role) => {
+    return currentUser.userRoles?.some(({ name }) => name === role)
 }
 
 const getDataStoreFn = (visibility) => {
