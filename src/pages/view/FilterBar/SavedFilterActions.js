@@ -1,5 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
-import { colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
+import { Button, colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useMemo, useCallback } from 'react'
 import { isFilterActionAllowed } from '../../../api/savedFilters.js'
@@ -121,7 +121,12 @@ export const SavedFilterActions = ({
         () => () => {}
     )
 
-    const showFilterAction = isFilterActionAllowed(activeFilter, currentUser)
+    const checkActionAllowedParams = { filter: activeFilter, currentUser }
+    const showFilterAction = isFilterActionAllowed(checkActionAllowedParams)
+    const showFilterSaveAsNew = isFilterActionAllowed({
+        ...checkActionAllowedParams,
+        saveAsNew: true,
+    })
 
     const toggleMoreActions = () => setMoreOptionsIsOpen((prev) => !prev)
     const closeDialog = () => setDialogIsOpen(false)
@@ -179,7 +184,7 @@ export const SavedFilterActions = ({
                 actionFn: () => doSaveFilter(activeFilter),
             },
             {
-                show: activeFilterHasChanges,
+                show: activeFilterHasChanges && showFilterSaveAsNew,
                 ...dialogTextMap.saveAsNew,
                 actionFn: openDialogForNewFilter,
                 skipCheck: true,
@@ -216,6 +221,7 @@ export const SavedFilterActions = ({
     }, [
         activeFilterHasChanges,
         showFilterAction,
+        showFilterSaveAsNew,
         activeFilter,
         currentUser,
         doDeleteFilter,
@@ -227,9 +233,8 @@ export const SavedFilterActions = ({
         dialogTextMap,
     ])
 
-    return (
-        hasActiveSavedFilter &&
-        (showFilterAction || activeFilterHasChanges) && (
+    if (showFilterAction || (activeFilterHasChanges && showFilterSaveAsNew)) {
+        return hasActiveSavedFilter ? (
             <>
                 <DropdownButton
                     dataTest="more-actions-button"
@@ -256,8 +261,14 @@ export const SavedFilterActions = ({
                     onCancel={closeDialog}
                 />
             </>
+        ) : (
+            <Button secondary small onClick={openDialogForNewFilter}>
+                {i18n.t('Save')}
+            </Button>
         )
-    )
+    }
+
+    return <></>
 }
 
 SavedFilterActions.propTypes = {

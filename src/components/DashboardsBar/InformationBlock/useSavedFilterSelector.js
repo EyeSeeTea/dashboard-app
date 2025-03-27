@@ -16,6 +16,7 @@ import {
     acSetActiveFilter,
     tSelectSavedFilter,
 } from '../../../actions/savedFilters.js'
+import { isFilterActionAllowed } from '../../../api/savedFilters.js'
 import useDimensions from '../../../modules/useDimensions.js'
 import {
     sActiveFilterHasChanges,
@@ -70,8 +71,14 @@ export const useSavedFilterSelector = ({
 
     const tryUpdateSelectedFilter = (filterId) => {
         setSavedFilterToBeSelected(filterId)
-
-        if (activeFilterHasChanges) {
+        if (
+            activeFilterHasChanges &&
+            isFilterActionAllowed({
+                filter: activeFilter,
+                currentUser,
+                saveAsNew: true,
+            })
+        ) {
             setSavedFilterWarningOpen(true)
         } else {
             handleSelectSavedFilter(filterId)

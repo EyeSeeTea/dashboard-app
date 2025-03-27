@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-03-26T13:17:58.181Z\n"
-"PO-Revision-Date: 2025-03-26T13:17:58.181Z\n"
+"POT-Creation-Date: 2025-03-27T08:18:40.121Z\n"
+"PO-Revision-Date: 2025-03-27T08:18:40.122Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
@@ -706,15 +706,18 @@ msgstr "Would you like to continue?"
 msgid "Modify Saved Filter?"
 msgstr "Modify Saved Filter?"
 
+msgid "Save"
+msgstr "Save"
+
+msgid "Error"
+msgstr "Error"
+
 msgid ""
 "A filter with this name already exists as {{ visibility }}. Please rename "
 "it before changing its scope to {{ visibility }}."
 msgstr ""
 "A filter with this name already exists as {{ visibility }}. Please rename "
 "it before changing its scope to {{ visibility }}."
-
-msgid "Save"
-msgstr "Save"
 
 msgid "Exit slideshow"
 msgstr "Exit slideshow"

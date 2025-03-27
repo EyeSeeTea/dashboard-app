@@ -29,7 +29,7 @@ export const apiGetSavedFilters = async () =>
     }))
 
 export const apiSaveFilter = async (filter, currentUser) => {
-    if (!isFilterActionAllowed(filter, currentUser)) {
+    if (!isFilterActionAllowed({ filter, currentUser })) {
         return Promise.reject({ error: 'User not allowed to save this filter' })
     }
 
@@ -49,7 +49,7 @@ export const apiSaveFilter = async (filter, currentUser) => {
 }
 
 export const apiDeleteFilter = async (filter, currentUser) => {
-    if (!isFilterActionAllowed(filter, currentUser)) {
+    if (!isFilterActionAllowed({ filter, currentUser })) {
         return Promise.reject({
             error: i18n.t('User not allowed to delete this filter'),
         })
@@ -97,11 +97,13 @@ export const validateFilterName = (filter, savedFilters) => {
     }
 }
 
-export const isFilterActionAllowed = (filter, currentUser) => {
+export const isFilterActionAllowed = ({ filter, currentUser, saveAsNew }) => {
     return (
         checkUserRole(currentUser, SAVED_FILTERS_ADMIN_ROLE) ||
         (checkUserRole(currentUser, SAVED_FILTERS_CREATE_ROLE) &&
-            (filter.userId === currentUser.id || filter.id === NEW_FILTER_ID))
+            (filter.userId === currentUser.id ||
+                filter.id === NEW_FILTER_ID ||
+                saveAsNew))
     )
 }
 

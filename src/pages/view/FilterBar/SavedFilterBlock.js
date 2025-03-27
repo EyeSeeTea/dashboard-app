@@ -1,7 +1,6 @@
 import { useCachedDataQuery } from '@dhis2/analytics'
 import { useDhis2ConnectionStatus } from '@dhis2/app-runtime'
 import i18n from '@dhis2/d2-i18n'
-import { Button } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useCallback, useState } from 'react'
 import { connect } from 'react-redux'
@@ -85,43 +84,40 @@ const SavedFilterBlock = ({
     } = useSaveFitlerDialog({ activeFilter, doSaveFilter, isLoading })
 
     return (
-        <>
-            {online && !hasActiveSavedFilter && (
-                <Button secondary small onClick={openDialogForNewFilter}>
-                    {i18n.t('Save')}
-                </Button>
-            )}
-            <SavedFilterActions
-                openDialogForRename={openDialogForRename}
-                openDialogForNewFilter={openDialogForNewFilter}
-                doSaveFilter={doSaveFilter}
-                doDeleteFilter={doDeleteFilter}
-                doToggleFilterVisibility={doToggleFilterVisibility}
-                activeFilter={activeFilter}
-                activeFilterHasChanges={activeFilterHasChanges}
-                filters={filters}
-                hasActiveSavedFilter={hasActiveSavedFilter}
-                currentUser={currentUser}
-                isLoading={isLoading}
-            />
-            {filterDialogIsOpen && <SaveFilterDialog {...dialogProps} />}
-            <AlertDialog
-                critical={true}
-                position="top"
-                open={openFilterErrorAlert}
-                title={i18n.t('Error')}
-                message={i18n.t(
-                    'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
-                    {
-                        visibility:
-                            activeFilter.visibility === privateVisibility
-                                ? publicVisibility
-                                : privateVisibility,
-                    }
-                )}
-                onClose={closeFilterErrorAlert}
-            />
-        </>
+        online && (
+            <>
+                <SavedFilterActions
+                    openDialogForRename={openDialogForRename}
+                    openDialogForNewFilter={openDialogForNewFilter}
+                    doSaveFilter={doSaveFilter}
+                    doDeleteFilter={doDeleteFilter}
+                    doToggleFilterVisibility={doToggleFilterVisibility}
+                    activeFilter={activeFilter}
+                    activeFilterHasChanges={activeFilterHasChanges}
+                    filters={filters}
+                    hasActiveSavedFilter={hasActiveSavedFilter}
+                    currentUser={currentUser}
+                    isLoading={isLoading}
+                />
+                {filterDialogIsOpen && <SaveFilterDialog {...dialogProps} />}
+                <AlertDialog
+                    critical={true}
+                    position="top"
+                    open={openFilterErrorAlert}
+                    title={i18n.t('Error')}
+                    message={i18n.t(
+                        'A filter with this name already exists as {{ visibility }}. Please rename it before changing its scope to {{ visibility }}.',
+                        {
+                            visibility:
+                                activeFilter.visibility === privateVisibility
+                                    ? publicVisibility
+                                    : privateVisibility,
+                        }
+                    )}
+                    onClose={closeFilterErrorAlert}
+                />
+            </>
+        )
     )
 }
 
