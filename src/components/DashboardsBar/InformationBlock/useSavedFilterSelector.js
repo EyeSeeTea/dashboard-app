@@ -58,10 +58,7 @@ export const useSavedFilterSelector = ({
         setSavedFiltersIsOpen(!savedFiltersIsOpen)
 
     const handleSelectSavedFilter = (filterId) => {
-        const success = selectSavedFilter({
-            filterId: filterId === activeFilter.id ? null : filterId,
-            rootOrgUnits,
-        })
+        const success = selectSavedFilter({ filterId, rootOrgUnits })
         if (success) {
             setSavedFiltersIsOpen(false)
         } else {
