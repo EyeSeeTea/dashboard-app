@@ -233,39 +233,47 @@ export const SavedFilterActions = ({
         dialogTextMap,
     ])
 
-    if (showFilterAction || (activeFilterHasChanges && showFilterSaveAsNew)) {
-        return hasActiveSavedFilter ? (
-            <>
-                <DropdownButton
-                    dataTest="more-actions-button"
-                    secondary
-                    small
-                    showArrow={false}
-                    open={moreOptionsIsOpen}
-                    disabledWhenOffline
-                    onClick={toggleMoreActions}
-                    icon={<IconMore16 color={colors.grey700} />}
-                    component={savedFilterActions}
-                >
-                    <wbr />
-                </DropdownButton>
-                <ConfirmActionDialog
-                    position="top"
-                    isLoading={isLoading}
-                    open={dialogIsOpen}
-                    title={i18n.t('Modify Saved Filter?')}
-                    message={dialogMessage}
-                    cancelLabel={i18n.t('Cancel')}
-                    confirmLabel={confirmDialogMessage}
-                    onConfirm={confirmDialogAction}
-                    onCancel={closeDialog}
-                />
-            </>
-        ) : (
-            <Button secondary small onClick={openDialogForNewFilter}>
-                {i18n.t('Save')}
-            </Button>
-        )
+    if (
+        showFilterAction ||
+        (showFilterSaveAsNew &&
+            (activeFilterHasChanges || !hasActiveSavedFilter))
+    ) {
+        if (hasActiveSavedFilter) {
+            return (
+                <>
+                    <DropdownButton
+                        dataTest="more-actions-button"
+                        secondary
+                        small
+                        showArrow={false}
+                        open={moreOptionsIsOpen}
+                        disabledWhenOffline
+                        onClick={toggleMoreActions}
+                        icon={<IconMore16 color={colors.grey700} />}
+                        component={savedFilterActions}
+                    >
+                        <wbr />
+                    </DropdownButton>
+                    <ConfirmActionDialog
+                        position="top"
+                        isLoading={isLoading}
+                        open={dialogIsOpen}
+                        title={i18n.t('Modify Saved Filter?')}
+                        message={dialogMessage}
+                        cancelLabel={i18n.t('Cancel')}
+                        confirmLabel={confirmDialogMessage}
+                        onConfirm={confirmDialogAction}
+                        onCancel={closeDialog}
+                    />
+                </>
+            )
+        } else {
+            return (
+                <Button secondary small onClick={openDialogForNewFilter}>
+                    {i18n.t('Save')}
+                </Button>
+            )
+        }
     }
 
     return <></>
