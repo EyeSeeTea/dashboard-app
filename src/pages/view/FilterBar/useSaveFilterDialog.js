@@ -1,10 +1,15 @@
 import { useCallback, useState } from 'react'
-import { NEW_FILTER_ID } from '../../../api/savedFilters.js'
+import {
+    NEW_FILTER_ID,
+    userFilterPermissions,
+    validVisibility,
+} from '../../../modules/savedFilters.js'
 
 export const useSaveFitlerDialog = ({
     activeFilter,
     doSaveFilter,
     isLoading,
+    currentUser,
 }) => {
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
     const [filterDialogData, setFilterDialogData] = useState(activeFilter)
@@ -33,12 +38,16 @@ export const useSaveFitlerDialog = ({
                 name,
                 visibility,
                 id,
-                ...(id === NEW_FILTER_ID && { userName: null, userId: null }),
+                ...(id === NEW_FILTER_ID && {
+                    userName: undefined,
+                    userId: undefined,
+                }),
             }).then((resp) => resp && onClose())
         },
         [activeFilter, onClose, doSaveFilter]
     )
 
+    const { permissions } = userFilterPermissions(currentUser)
     return {
         openDialogForNewFilter,
         openDialogForRename,
@@ -50,6 +59,7 @@ export const useSaveFitlerDialog = ({
             onCancel: onClose,
             onConfirm,
             isLoading,
+            filterVisibility: validVisibility[permissions?.create],
         },
     }
 }

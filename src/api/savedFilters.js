@@ -1,9 +1,11 @@
 import i18n from '@dhis2/d2-i18n'
 import { generateUid } from 'd2/uid'
 import {
+    NEW_FILTER_ID,
+    savedFilterUserPermission,
     privateVisibility,
     publicVisibility,
-} from '../reducers/savedFilters.js'
+} from '../modules/savedFilters.js'
 import { apiGetDataStoreValue, apiPostDataStoreValue } from './dataStore.js'
 import {
     apiGetUserDataStoreValue,
@@ -11,10 +13,7 @@ import {
 } from './userDataStore.js'
 
 const KEY_SAVED_FILTERS = 'savedFilters'
-const SAVED_FILTERS_ADMIN_ROLE = 'Saved Filters Admin'
-const SAVED_FILTERS_CREATE_ROLE = 'Saved Filters Create'
 const DEFAULT_VALUE_SAVED_FILTERS = []
-export const NEW_FILTER_ID = 'new'
 
 export const apiGetSavedFilters = async () =>
     Promise.all([
@@ -29,7 +28,10 @@ export const apiGetSavedFilters = async () =>
     }))
 
 export const apiSaveFilter = async (filter, currentUser) => {
-    if (!isFilterActionAllowed({ filter, currentUser })) {
+    const permissions = savedFilterUserPermission({ filter, currentUser })
+    const actionAllowed =
+        filter.id === NEW_FILTER_ID ? permissions.create : permissions.edit
+    if (!actionAllowed) {
         return Promise.reject({ error: 'User not allowed to save this filter' })
     }
 
@@ -49,7 +51,8 @@ export const apiSaveFilter = async (filter, currentUser) => {
 }
 
 export const apiDeleteFilter = async (filter, currentUser) => {
-    if (!isFilterActionAllowed({ filter, currentUser })) {
+    const permissions = savedFilterUserPermission({ filter, currentUser })
+    if (!permissions.delete) {
         return Promise.reject({
             error: i18n.t('User not allowed to delete this filter'),
         })
@@ -95,20 +98,6 @@ export const validateFilterName = (filter, savedFilters) => {
     return {
         isValid: true,
     }
-}
-
-export const isFilterActionAllowed = ({ filter, currentUser, saveAsNew }) => {
-    return (
-        checkUserRole(currentUser, SAVED_FILTERS_ADMIN_ROLE) ||
-        (checkUserRole(currentUser, SAVED_FILTERS_CREATE_ROLE) &&
-            (filter.userId === currentUser.id ||
-                filter.id === NEW_FILTER_ID ||
-                saveAsNew))
-    )
-}
-
-const checkUserRole = (currentUser, role) => {
-    return currentUser.userRoles?.some(({ name }) => name === role)
 }
 
 const getDataStoreFn = (visibility) => {

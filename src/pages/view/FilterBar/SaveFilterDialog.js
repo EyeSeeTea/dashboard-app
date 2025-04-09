@@ -15,16 +15,14 @@ import PropTypes from 'prop-types'
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { validateFilterName } from '../../../api/savedFilters.js'
-import {
-    filterVisibility,
-    privateVisibility,
-    sGetSavedFiltersVisibilityMap,
-} from '../../../reducers/savedFilters.js'
+import { privateVisibility } from '../../../modules/savedFilters.js'
+import { sGetSavedFiltersVisibilityMap } from '../../../reducers/savedFilters.js'
 
 const SaveFilterDialog = ({
     onCancel,
     onConfirm,
     filter = {},
+    filterVisibility = [privateVisibility],
     showScope = true,
     isLoading = false,
 }) => {
@@ -134,6 +132,7 @@ const SaveFilterDialog = ({
 
 SaveFilterDialog.propTypes = {
     filter: PropTypes.object,
+    filterVisibility: PropTypes.array,
     isLoading: PropTypes.bool,
     showScope: PropTypes.bool,
     onCancel: PropTypes.func,

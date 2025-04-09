@@ -16,7 +16,7 @@ import {
     acSetActiveFilter,
     tSelectSavedFilter,
 } from '../../../actions/savedFilters.js'
-import { isFilterActionAllowed } from '../../../api/savedFilters.js'
+import { savedFilterUserPermission } from '../../../modules/savedFilters.js'
 import useDimensions from '../../../modules/useDimensions.js'
 import {
     sActiveFilterHasChanges,
@@ -53,6 +53,10 @@ export const useSavedFilterSelector = ({
     const dimensions = useDimensions(savedFiltersIsOpen)
     const privateFilters = savedFilters.private
     const publicFilters = savedFilters.public
+    const userFilterPermisions = savedFilterUserPermission({
+        filter: activeFilter,
+        currentUser,
+    })
 
     const toggleSavedFilterIsOpen = () =>
         setSavedFiltersIsOpen(!savedFiltersIsOpen)
@@ -68,14 +72,7 @@ export const useSavedFilterSelector = ({
 
     const tryUpdateSelectedFilter = (filterId) => {
         setSavedFilterToBeSelected(filterId)
-        if (
-            activeFilterHasChanges &&
-            isFilterActionAllowed({
-                filter: activeFilter,
-                currentUser,
-                saveAsNew: true,
-            })
-        ) {
+        if (activeFilterHasChanges && userFilterPermisions.create) {
             setSavedFilterWarningOpen(true)
         } else {
             handleSelectSavedFilter(filterId)
@@ -171,5 +168,6 @@ export const useSavedFilterSelector = ({
         confirmWarningAction,
         openFilterWarning: openFilterWarningAlert,
         closeFilterWarningDialog,
+        showSavedFilter: userFilterPermisions.view,
     }
 }

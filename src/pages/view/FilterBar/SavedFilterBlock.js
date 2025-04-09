@@ -12,10 +12,12 @@ import {
     tToggleActiveFilterVisibility,
 } from '../../../actions/savedFilters.js'
 import AlertDialog from '../../../components/AlertDialog.js'
-import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
 import {
     privateVisibility,
     publicVisibility,
+} from '../../../modules/savedFilters.js'
+import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
+import {
     sActiveFilterHasChanges,
     sGetActiveFilter,
     sGetLoadingSavedFilters,
@@ -81,7 +83,12 @@ const SavedFilterBlock = ({
         openDialogForRename,
         filterDialogIsOpen,
         dialogProps,
-    } = useSaveFitlerDialog({ activeFilter, doSaveFilter, isLoading })
+    } = useSaveFitlerDialog({
+        activeFilter,
+        doSaveFilter,
+        isLoading,
+        currentUser,
+    })
 
     return (
         online && (

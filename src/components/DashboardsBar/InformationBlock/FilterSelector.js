@@ -33,6 +33,7 @@ const FilterSelector = (props) => {
         confirmWarningAction,
         openFilterWarning,
         closeFilterWarningDialog,
+        showSavedFilter,
     } = useSavedFilterSelector(props)
 
     const [filterDialogIsOpen, setFilterDialogIsOpen] = useState(false)
@@ -76,24 +77,25 @@ const FilterSelector = (props) => {
 
     return props.restrictFilters && !props.allowedFilters?.length ? null : (
         <>
-            <DropdownButton
-                loading={loadingSavedFilters}
-                dataTest="saved-filters-button"
-                disabled={offline}
-                secondary
-                small
-                open={savedFiltersIsOpen}
-                onClick={toggleSavedFilterIsOpen}
-                icon={<IconFilter24 color={colors.grey700} />}
-                component={getSavedFilters()}
-            >
-                <div>
-                    {loadingSavedFilters
-                        ? i18n.t('Saving...')
-                        : i18n.t('Saved filters')}
-                </div>
-            </DropdownButton>
-
+            {showSavedFilter && (
+                <DropdownButton
+                    loading={loadingSavedFilters}
+                    dataTest="saved-filters-button"
+                    disabled={offline}
+                    secondary
+                    small
+                    open={savedFiltersIsOpen}
+                    onClick={toggleSavedFilterIsOpen}
+                    icon={<IconFilter24 color={colors.grey700} />}
+                    component={getSavedFilters()}
+                >
+                    <div>
+                        {loadingSavedFilters
+                            ? i18n.t('Saving...')
+                            : i18n.t('Saved filters')}
+                    </div>
+                </DropdownButton>
+            )}
             <DropdownButton
                 secondary
                 small

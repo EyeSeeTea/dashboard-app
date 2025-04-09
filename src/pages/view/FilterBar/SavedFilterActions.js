@@ -2,10 +2,12 @@ import i18n from '@dhis2/d2-i18n'
 import { Button, colors, FlyoutMenu, IconMore16, MenuItem } from '@dhis2/ui'
 import PropTypes from 'prop-types'
 import React, { useState, useMemo, useCallback } from 'react'
-import { isFilterActionAllowed } from '../../../api/savedFilters.js'
 import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import DropdownButton from '../../../components/DropdownButton/DropdownButton.js'
-import { privateVisibility } from '../../../reducers/savedFilters.js'
+import {
+    privateVisibility,
+    savedFilterUserPermission,
+} from '../../../modules/savedFilters.js'
 
 const deleteId = 'delete'
 const saveId = 'save'
@@ -121,12 +123,10 @@ export const SavedFilterActions = ({
         () => () => {}
     )
 
-    const checkActionAllowedParams = { filter: activeFilter, currentUser }
-    const showFilterAction = isFilterActionAllowed(checkActionAllowedParams)
-    const showFilterSaveAsNew = isFilterActionAllowed({
-        ...checkActionAllowedParams,
-        saveAsNew: true,
-    })
+    const filterPermissions = useMemo(
+        () => savedFilterUserPermission({ filter: activeFilter, currentUser }),
+        [activeFilter, currentUser]
+    )
 
     const toggleMoreActions = () => setMoreOptionsIsOpen((prev) => !prev)
     const closeDialog = () => setDialogIsOpen(false)
@@ -169,28 +169,28 @@ export const SavedFilterActions = ({
     const savedFilterActions = useMemo(() => {
         const actions = [
             {
-                show: showFilterAction,
+                show: filterPermissions.edit,
                 ...dialogTextMap.rename,
                 actionFn: () => Promise.resolve(openDialogForRename()),
             },
             {
-                show: showFilterAction,
+                show: filterPermissions.delete,
                 ...dialogTextMap.delete,
                 actionFn: () => doDeleteFilter(currentUser),
             },
             {
-                show: activeFilterHasChanges && showFilterAction,
+                show: activeFilterHasChanges && filterPermissions.edit,
                 ...dialogTextMap.save,
                 actionFn: () => doSaveFilter(activeFilter),
             },
             {
-                show: activeFilterHasChanges && showFilterSaveAsNew,
+                show: activeFilterHasChanges && filterPermissions.create,
                 ...dialogTextMap.saveAsNew,
                 actionFn: openDialogForNewFilter,
                 skipCheck: true,
             },
             {
-                show: showFilterAction,
+                show: filterPermissions.toggleVisibility,
                 ...(activeFilter?.visibility === privateVisibility
                     ? dialogTextMap.makePublic
                     : dialogTextMap.makePrivate),
@@ -220,8 +220,7 @@ export const SavedFilterActions = ({
         )
     }, [
         activeFilterHasChanges,
-        showFilterAction,
-        showFilterSaveAsNew,
+        filterPermissions,
         activeFilter,
         currentUser,
         doDeleteFilter,
@@ -234,8 +233,9 @@ export const SavedFilterActions = ({
     ])
 
     if (
-        showFilterAction ||
-        (showFilterSaveAsNew &&
+        filterPermissions.delete ||
+        filterPermissions.edit ||
+        (filterPermissions.create &&
             (activeFilterHasChanges || !hasActiveSavedFilter))
     ) {
         if (hasActiveSavedFilter) {

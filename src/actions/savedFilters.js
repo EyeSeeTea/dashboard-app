@@ -8,12 +8,14 @@ import {
     apiDeleteFilter,
     apiGetSavedFilters,
     apiSaveFilter,
-    NEW_FILTER_ID,
 } from '../api/savedFilters.js'
 import {
-    buildSavedFilters,
+    NEW_FILTER_ID,
     privateVisibility,
     publicVisibility,
+} from '../modules/savedFilters.js'
+import {
+    buildSavedFilters,
     SET_ACTIVE_FILTER,
     SET_LOADING_SAVED_FILTERS,
     SET_SAVED_FILTERS,

@@ -1,5 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
 import isEqual from 'lodash/isEqual.js'
+import { privateVisibility, publicVisibility } from '../modules/savedFilters.js'
 import { sGetDimensions } from './dimensions.js'
 import { sGetItemFiltersRoot } from './itemFilters.js'
 
@@ -26,10 +27,6 @@ export const buildSavedFilters = (state) => {
 export const SET_SAVED_FILTERS = 'SET_SAVED_FILTERS'
 export const SET_ACTIVE_FILTER = 'SET_ACTIVE_FILTER'
 export const SET_LOADING_SAVED_FILTERS = 'SET_LOADING_SAVED_FILTERS'
-
-export const privateVisibility = 'private'
-export const publicVisibility = 'public'
-export const filterVisibility = [privateVisibility, publicVisibility]
 
 export const DEFAULT_ACTIVE_FILTER = {
     id: null,
