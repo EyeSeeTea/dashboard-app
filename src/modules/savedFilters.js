@@ -50,10 +50,7 @@ const SAVED_FILTERS_ROLES_PERMISSIONS = [
     },
 ]
 
-const DEFAULT_FILTER_PERMISSIONS = {
-    role: '',
-    permissions: {},
-}
+const DEFAULT_FILTER_PERMISSIONS = {}
 
 const validateVisibility = (permission, visibility) =>
     (validVisibility[permission] || []).includes(visibility)
