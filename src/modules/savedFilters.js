@@ -10,6 +10,7 @@ export const validVisibility = {
 
 //requireOwner applies to edit and delete
 //toggle visibility requires delete permission and create permission for the new visibility
+//if multiple roles are assigned, the most permissive role is used
 const SAVED_FILTERS_ROLES_PERMISSIONS = [
     {
         role: 'Saved Filters Admin',
