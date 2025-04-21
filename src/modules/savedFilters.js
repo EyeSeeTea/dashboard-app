@@ -49,6 +49,11 @@ const SAVED_FILTERS_ROLES_PERMISSIONS = [
     },
 ]
 
+const DEFAULT_FILTER_PERMISSIONS = {
+    role: '',
+    permissions: {},
+}
+
 const validateVisibility = (permission, visibility) =>
     (validVisibility[permission] || []).includes(visibility)
 
@@ -57,17 +62,19 @@ const validateOwner = ({ requireOwner, userId, filterUserId }) =>
 
 export const userFilterPermissions = (currentUser) => {
     if (!currentUser || !currentUser.userRoles) {
-        return null
+        return DEFAULT_FILTER_PERMISSIONS
     } else {
-        return SAVED_FILTERS_ROLES_PERMISSIONS.find(({ role }) =>
-            currentUser?.userRoles.some(({ name }) => name === role)
+        return (
+            SAVED_FILTERS_ROLES_PERMISSIONS.find(({ role }) =>
+                currentUser?.userRoles.some(({ name }) => name === role)
+            ) || DEFAULT_FILTER_PERMISSIONS
         )
     }
 }
 export const savedFilterUserPermission = ({ filter, currentUser }) => {
     const rolePermissions = userFilterPermissions(currentUser)
 
-    if (rolePermissions) {
+    if (rolePermissions?.permissions) {
         const {
             view,
             create,
