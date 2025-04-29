@@ -23,7 +23,7 @@ import {
     sGetLoadingSavedFilters,
     sGetSavedFiltersVisibilityMap,
 } from '../../../reducers/savedFilters.js'
-import { sGetSelectedId } from '../../../reducers/selected.js'
+import { sGetSelected } from '../../../reducers/selected.js'
 import classes from './styles/FilterSelector.module.css'
 
 export const useSavedFilterSelector = ({
@@ -45,7 +45,8 @@ export const useSavedFilterSelector = ({
     const activeFilterHasChanges = useSelector((state) =>
         sActiveFilterHasChanges(state)
     )
-    const selectedDashboardId = useSelector((state) => sGetSelectedId(state))
+    const selectedDashboard = useSelector((state) => sGetSelected(state))
+    const selectedDashboardId = selectedDashboard?.id
 
     const [savedFilterWarningOpen, setSavedFilterWarningOpen] = useState(false)
     const [savedFiltersIsOpen, setSavedFiltersIsOpen] = useState(false)
