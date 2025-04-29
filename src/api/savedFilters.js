@@ -82,7 +82,11 @@ export const validateFilterName = (filter, savedFilters) => {
             filter.name !== existingFilter.name)
     ) {
         const isValid = savedFilters.every(
-            (savedFilter) => savedFilter.name !== filter.name
+            (savedFilter) =>
+                !(
+                    savedFilter.name === filter.name &&
+                    savedFilter.dashboardId === filter.dashboardId
+                )
         )
         return {
             isValid,
