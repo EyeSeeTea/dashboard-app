@@ -23,6 +23,7 @@ import {
     sGetLoadingSavedFilters,
     sGetSavedFiltersVisibilityMap,
 } from '../../../reducers/savedFilters.js'
+import { sGetSelectedId } from '../../../reducers/selected.js'
 import classes from './styles/FilterSelector.module.css'
 
 export const useSavedFilterSelector = ({
@@ -44,6 +45,7 @@ export const useSavedFilterSelector = ({
     const activeFilterHasChanges = useSelector((state) =>
         sActiveFilterHasChanges(state)
     )
+    const selectedDashboardId = useSelector((state) => sGetSelectedId(state))
 
     const [savedFilterWarningOpen, setSavedFilterWarningOpen] = useState(false)
     const [savedFiltersIsOpen, setSavedFiltersIsOpen] = useState(false)
@@ -51,8 +53,12 @@ export const useSavedFilterSelector = ({
     const [openFilterWarningAlert, setOpenFilterWarningAlert] = useState(false)
 
     const dimensions = useDimensions(savedFiltersIsOpen)
-    const privateFilters = savedFilters.private
-    const publicFilters = savedFilters.public
+    const privateFilters = savedFilters.private.filter(
+        (privateFilter) => privateFilter.dashboardId === selectedDashboardId
+    )
+    const publicFilters = savedFilters.public.filter(
+        (publicFilter) => publicFilter.dashboardId === selectedDashboardId
+    )
     const userFilterPermisions = savedFilterUserPermission({
         filter: activeFilter,
         currentUser,
@@ -138,12 +144,6 @@ export const useSavedFilterSelector = ({
         </FlyoutMenu>
     )
 
-    useEffect(() => {
-        if (isEqual(initiallySelectedItems, {}) && activeFilter.id) {
-            updateActiveFilter(null)
-        }
-    }, [initiallySelectedItems, activeFilter.id])
-
     const closeWarningDialog = () => {
         setSavedFilterWarningOpen(false)
         setSavedFiltersIsOpen(false)
@@ -157,6 +157,12 @@ export const useSavedFilterSelector = ({
     const closeFilterWarningDialog = () => {
         setOpenFilterWarningAlert(false)
     }
+
+    useEffect(() => {
+        if (isEqual(initiallySelectedItems, {}) && activeFilter.id) {
+            updateActiveFilter(null)
+        }
+    }, [initiallySelectedItems, activeFilter.id])
 
     return {
         savedFiltersIsOpen,

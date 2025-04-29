@@ -22,6 +22,7 @@ import {
     sGetActiveFilter,
     sGetSavedFiltersList,
 } from '../reducers/savedFilters.js'
+import { sGetSelectedId } from '../reducers/selected.js'
 import {
     acClearItemFilters,
     acSetItemFilters,
@@ -116,9 +117,12 @@ export const tFetchSavedFilters = () => async (dispatch) => {
 
 export const tSaveFilter =
     (currentUser, filter) => async (dispatch, getState) => {
+        const dashboardId = sGetSelectedId(getState())
+
         try {
             const filterUpdate = {
                 ...filter,
+                dashboardId,
                 values: buildSavedFilters(getState()),
             }
 
