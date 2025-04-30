@@ -112,8 +112,6 @@ export const savedFilterUserPermission = ({ filter, currentUser }) => {
 export const validateFilterName = (filter, savedFilters) => {
     const existingFilter = savedFilters.find((f) => f.id === filter.id)
 
-    console.log(filter)
-
     if (
         savedFilters.length > 0 &&
         (filter.id === NEW_FILTER_ID ||
