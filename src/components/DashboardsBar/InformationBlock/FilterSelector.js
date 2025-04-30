@@ -13,13 +13,31 @@ import {
 import useDimensions from '../../../modules/useDimensions.js'
 import { sGetActiveModalDimension } from '../../../reducers/activeModalDimension.js'
 import { sGetItemFiltersRoot } from '../../../reducers/itemFilters.js'
+import { sGetActiveFilter } from '../../../reducers/savedFilters.js'
+import AlertDialog from '../../AlertDialog.js'
+import ConfirmActionDialog from '../../ConfirmActionDialog.js'
 import DropdownButton from '../../DropdownButton/DropdownButton.js'
 import FilterDialog from './FilterDialog.js'
+import { useSavedFilterSelector } from './useSavedFilterSelector.js'
 
 const FilterSelector = (props) => {
+    const { isDisconnected: offline } = useDhis2ConnectionStatus()
+
+    const {
+        savedFiltersIsOpen,
+        savedFilterWarningOpen,
+        toggleSavedFilterIsOpen,
+        getSavedFilters,
+        loadingSavedFilters,
+        closeWarningDialog,
+        confirmWarningAction,
+        openFilterWarning,
+        closeFilterWarningDialog,
+        showSavedFilter,
+    } = useSavedFilterSelector(props)
+
     const [filterDialogIsOpen, setFilterDialogIsOpen] = useState(false)
     const dimensions = useDimensions(filterDialogIsOpen)
-    const { isDisconnected: offline } = useDhis2ConnectionStatus()
 
     const toggleFilterDialogIsOpen = () =>
         setFilterDialogIsOpen(!filterDialogIsOpen)
@@ -59,6 +77,25 @@ const FilterSelector = (props) => {
 
     return props.restrictFilters && !props.allowedFilters?.length ? null : (
         <>
+            {showSavedFilter && (
+                <DropdownButton
+                    loading={loadingSavedFilters}
+                    dataTest="saved-filters-button"
+                    disabled={offline}
+                    secondary
+                    small
+                    open={savedFiltersIsOpen}
+                    onClick={toggleSavedFilterIsOpen}
+                    icon={<IconFilter24 color={colors.grey700} />}
+                    component={getSavedFilters()}
+                >
+                    <div>
+                        {loadingSavedFilters
+                            ? i18n.t('Saving...')
+                            : i18n.t('Saved filters')}
+                    </div>
+                </DropdownButton>
+            )}
             <DropdownButton
                 secondary
                 small
@@ -67,6 +104,7 @@ const FilterSelector = (props) => {
                 onClick={toggleFilterDialogIsOpen}
                 icon={<IconFilter24 color={colors.grey700} />}
                 component={getFilterSelector()}
+                dataTest="filter-button"
             >
                 {i18n.t('Filter')}
             </DropdownButton>
@@ -76,16 +114,42 @@ const FilterSelector = (props) => {
                     onClose={onCloseDialog}
                 />
             ) : null}
+
+            <ConfirmActionDialog
+                position="top"
+                open={savedFilterWarningOpen}
+                title={i18n.t('Unsaved Changes')}
+                message={i18n.t(
+                    'You have unsaved changes in the "{{ filterName }}" filter. If you proceed, your changes will be lost. Would you like to continue?',
+                    { filterName: props.activeFilter.name }
+                )}
+                cancelLabel={i18n.t('Cancel')}
+                confirmLabel={i18n.t('Yes, discard changes')}
+                onConfirm={confirmWarningAction}
+                onCancel={closeWarningDialog}
+            />
+            <AlertDialog
+                warning={true}
+                position="top"
+                open={openFilterWarning}
+                title={i18n.t('Warning')}
+                message={i18n.t(
+                    'The selected Saved Filter cannot be applied because it includes selections that the current user does not have permission to view. Please try a different filter.'
+                )}
+                onClose={closeFilterWarningDialog}
+            />
         </>
     )
 }
 
 const mapStateToProps = (state) => ({
+    activeFilter: sGetActiveFilter(state),
     dimension: sGetActiveModalDimension(state),
     initiallySelectedItems: sGetItemFiltersRoot(state),
 })
 
 FilterSelector.propTypes = {
+    activeFilter: PropTypes.object,
     allowedFilters: PropTypes.array,
     clearActiveModalDimension: PropTypes.func,
     dimension: PropTypes.object,

@@ -11,6 +11,7 @@ const DropdownButton = ({
     onClick,
     disabledWhenOffline,
     component,
+    showArrow = true,
     ...rest
 }) => {
     const anchorRef = useRef()
@@ -21,7 +22,9 @@ const DropdownButton = ({
             <OfflineTooltip disabledWhenOffline={disabledWhenOffline}>
                 <Button onClick={onClick} type="button" {...rest}>
                     {children}
-                    <ArrowIconComponent className={styles.arrow} />
+                    {showArrow && (
+                        <ArrowIconComponent className={styles.arrow} />
+                    )}
                 </Button>
             </OfflineTooltip>
             {open && (
@@ -41,6 +44,7 @@ DropdownButton.propTypes = {
     open: PropTypes.bool.isRequired,
     onClick: PropTypes.func.isRequired,
     disabledWhenOffline: PropTypes.bool,
+    showArrow: PropTypes.bool,
 }
 
 export default DropdownButton

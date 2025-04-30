@@ -9,10 +9,21 @@ import {
 } from '../../../actions/itemFilters.js'
 import ConfirmActionDialog from '../../../components/ConfirmActionDialog.js'
 import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
+import {
+    sActiveFilterHasChanges,
+    sGetActiveFilter,
+} from '../../../reducers/savedFilters.js'
 import FilterBadge from './FilterBadge.js'
+import SavedFiltersBlock from './SavedFilterBlock.js'
 import classes from './styles/FilterBar.module.css'
 
-const FilterBar = ({ filters, removeFilter, removeAllFilters }) => {
+const FilterBar = ({
+    filters,
+    activeFilter,
+    activeFilterHasChanges,
+    removeFilter,
+    removeAllFilters,
+}) => {
     const { isConnected: online } = useDhis2ConnectionStatus()
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
 
@@ -28,7 +39,16 @@ const FilterBar = ({ filters, removeFilter, removeAllFilters }) => {
 
     return filters.length ? (
         <>
-            <div className={classes.bar}>
+            <div className={classes.bar} style={{ alignItems: 'center' }}>
+                {activeFilter.id && (
+                    <div>
+                        {activeFilter.name}
+                        {activeFilterHasChanges && (
+                            <span style={{ fontWeight: 'bold' }}>* </span>
+                        )}
+                        :
+                    </div>
+                )}
                 {filters.map((filter) => (
                     <FilterBadge
                         key={filter.id}
@@ -36,6 +56,7 @@ const FilterBar = ({ filters, removeFilter, removeAllFilters }) => {
                         onRemove={onRemoveFilter}
                     />
                 ))}
+                <SavedFiltersBlock />
             </div>
             <ConfirmActionDialog
                 open={dialogIsOpen}
@@ -53,6 +74,8 @@ const FilterBar = ({ filters, removeFilter, removeAllFilters }) => {
 }
 
 FilterBar.propTypes = {
+    activeFilter: PropTypes.object.isRequired,
+    activeFilterHasChanges: PropTypes.bool.isRequired,
     filters: PropTypes.array.isRequired,
     removeAllFilters: PropTypes.func.isRequired,
     removeFilter: PropTypes.func.isRequired,
@@ -63,6 +86,8 @@ FilterBar.defaultProps = {
 }
 
 const mapStateToProps = (state) => ({
+    activeFilter: sGetActiveFilter(state),
+    activeFilterHasChanges: sActiveFilterHasChanges(state),
     filters: sGetNamedItemFilters(state),
 })
 

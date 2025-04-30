@@ -1,0 +1,38 @@
+.modal {
+}
+
+.title {
+    display: flex;
+    gap: 8px;
+}
+
+.content {
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.warning {
+    color: rgb(205, 158, 29);
+}
+
+.critical {
+    color: rgb(137, 21, 21);
+}
+
+.modal .warningButton {
+    border-color: rgb(185, 125, 10);
+    background: linear-gradient(rgb(255, 180, 20) 0%, rgb(230, 140, 10) 100%)
+        rgb(215, 130, 15);
+    color: rgb(111, 50, 5);
+    fill: rgb(111, 50, 5);
+    font-weight: 500;
+}
+
+.modal .criticalButton {
+    border-color: rgb(161, 11, 11);
+    background: linear-gradient(rgb(211, 47, 47) 0%, rgb(183, 28, 28) 100%)
+        rgb(185, 36, 43);
+    color: rgb(255, 255, 255);
+    fill: rgb(255, 255, 255);
+    font-weight: 500;
+}

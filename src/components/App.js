@@ -11,6 +11,7 @@ import { acClearEditDashboard } from '../actions/editDashboard.js'
 import { acClearItemActiveTypes } from '../actions/itemActiveTypes.js'
 import { acClearItemFilters } from '../actions/itemFilters.js'
 import { acClearPrintDashboard } from '../actions/printDashboard.js'
+import { tFetchSavedFilters } from '../actions/savedFilters.js'
 import { acSetSelected } from '../actions/selected.js'
 import { tSetShowDescription } from '../actions/showDescription.js'
 import { acClearVisualizations } from '../actions/visualizations.js'
@@ -31,6 +32,7 @@ const App = (props) => {
     useEffect(() => {
         props.fetchDashboards()
         props.setShowDescription()
+        props.fetchSavedFilters()
 
         // store the headerbar height for controlbar height calculations
         const headerbarHeight = document
@@ -114,6 +116,7 @@ const App = (props) => {
 
 App.propTypes = {
     fetchDashboards: PropTypes.func,
+    fetchSavedFilters: PropTypes.func,
     resetState: PropTypes.func,
     setShowDescription: PropTypes.func,
 }
@@ -121,6 +124,7 @@ App.propTypes = {
 const mapDispatchToProps = {
     fetchDashboards: tFetchDashboards,
     setShowDescription: tSetShowDescription,
+    fetchSavedFilters: tFetchSavedFilters,
     resetState: () => (dispatch) => {
         dispatch(acSetSelected({}))
         dispatch(acClearDashboardsFilter())

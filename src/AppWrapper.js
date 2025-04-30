@@ -37,7 +37,7 @@ const query = {
     currentUser: {
         resource: 'me',
         params: {
-            fields: 'id,username,displayName~rename(name),authorities,settings[keyAnalysisDisplayProperty]',
+            fields: 'id,username,displayName~rename(name),authorities,settings[keyAnalysisDisplayProperty],userRoles[name,id]',
         },
     },
 }
