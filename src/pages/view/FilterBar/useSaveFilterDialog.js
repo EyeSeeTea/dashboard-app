@@ -4,6 +4,8 @@ import {
     userFilterPermissions,
     validVisibility,
 } from '../../../modules/savedFilters.js'
+import { useSelector } from 'react-redux'
+import { sGetSelected } from '../../../reducers/selected'
 
 export const useSaveFitlerDialog = ({
     activeFilter,
@@ -11,6 +13,9 @@ export const useSaveFitlerDialog = ({
     isLoading,
     currentUser,
 }) => {
+    const selectedDashboard = useSelector((state) => sGetSelected(state))
+    const selectedDashboardId = selectedDashboard?.id
+
     const [dialogIsOpen, setDialogIsOpen] = useState(false)
     const [filterDialogData, setFilterDialogData] = useState(activeFilter)
     const [showScope, setShowScope] = useState(true)
@@ -18,10 +23,10 @@ export const useSaveFitlerDialog = ({
     const openDialogForNewFilter = useCallback(() => {
         setFilterDialogData({
             id: NEW_FILTER_ID,
-            dashboardId: activeFilter.dashboardId,
+            dashboardId: selectedDashboardId,
         })
         setDialogIsOpen(true)
-    }, [activeFilter.dashboardId])
+    }, [selectedDashboardId])
 
     const openDialogForRename = useCallback(() => {
         setShowScope(false)
