@@ -1,3 +1,5 @@
+import i18n from '@dhis2/d2-i18n'
+
 const all = 'all'
 export const privateVisibility = 'private'
 export const publicVisibility = 'public'
@@ -105,4 +107,38 @@ export const savedFilterUserPermission = ({ filter, currentUser }) => {
     }
 
     return {}
+}
+
+export const validateFilterName = (filter, savedFilters) => {
+    const existingFilter = savedFilters.find((f) => f.id === filter.id)
+
+    console.log(filter)
+
+    if (
+        savedFilters.length > 0 &&
+        (filter.id === NEW_FILTER_ID ||
+            !existingFilter ||
+            filter.name !== existingFilter.name)
+    ) {
+        const isValid = savedFilters.every(
+            (savedFilter) =>
+                !(
+                    savedFilter.name === filter.name &&
+                    savedFilter.dashboardId === filter.dashboardId
+                )
+        )
+        return {
+            isValid,
+            message: isValid
+                ? null
+                : i18n.t(
+                      'A filter with this name already exists as {{ visibility }}.  Please choose a different name.',
+                      { visibility: filter.visibility }
+                  ),
+        }
+    }
+
+    return {
+        isValid: true,
+    }
 }

@@ -16,9 +16,12 @@ export const useSaveFitlerDialog = ({
     const [showScope, setShowScope] = useState(true)
 
     const openDialogForNewFilter = useCallback(() => {
-        setFilterDialogData({ id: NEW_FILTER_ID })
+        setFilterDialogData({
+            id: NEW_FILTER_ID,
+            dashboardId: activeFilter.dashboardId,
+        })
         setDialogIsOpen(true)
-    }, [])
+    }, [activeFilter.dashboardId])
 
     const openDialogForRename = useCallback(() => {
         setShowScope(false)

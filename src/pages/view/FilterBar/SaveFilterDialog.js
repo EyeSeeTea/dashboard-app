@@ -14,8 +14,10 @@ import capitalize from 'lodash/capitalize.js'
 import PropTypes from 'prop-types'
 import React, { useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { validateFilterName } from '../../../api/savedFilters.js'
-import { privateVisibility } from '../../../modules/savedFilters.js'
+import {
+    privateVisibility,
+    validateFilterName,
+} from '../../../modules/savedFilters.js'
 import { sGetSavedFiltersVisibilityMap } from '../../../reducers/savedFilters.js'
 
 const SaveFilterDialog = ({
@@ -47,7 +49,12 @@ const SaveFilterDialog = ({
                 }
             }
             const { isValid, message } = validateFilterName(
-                { name, visibility, id: filter.id },
+                {
+                    name,
+                    visibility,
+                    id: filter.id,
+                    dashboardId: filter.dashboardId,
+                },
                 savedFilters[visibility]
             )
             if (!isValid) {

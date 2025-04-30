@@ -5,6 +5,7 @@ import {
     savedFilterUserPermission,
     privateVisibility,
     publicVisibility,
+    validateFilterName,
 } from '../modules/savedFilters.js'
 import { apiGetDataStoreValue, apiPostDataStoreValue } from './dataStore.js'
 import {
@@ -70,38 +71,6 @@ export const apiDeleteFilter = async (filter, currentUser) => {
 
     await save(KEY_SAVED_FILTERS, payload)
     return true
-}
-
-export const validateFilterName = (filter, savedFilters) => {
-    const existingFilter = savedFilters.find((f) => f.id === filter.id)
-
-    if (
-        savedFilters.length > 0 &&
-        (filter.id === NEW_FILTER_ID ||
-            !existingFilter ||
-            filter.name !== existingFilter.name)
-    ) {
-        const isValid = savedFilters.every(
-            (savedFilter) =>
-                !(
-                    savedFilter.name === filter.name &&
-                    savedFilter.dashboardId === filter.dashboardId
-                )
-        )
-        return {
-            isValid,
-            message: isValid
-                ? null
-                : i18n.t(
-                      'A filter with this name already exists as {{ visibility }}.  Please choose a different name.',
-                      { visibility: filter.visibility }
-                  ),
-        }
-    }
-
-    return {
-        isValid: true,
-    }
 }
 
 const getDataStoreFn = (visibility) => {
