@@ -8,12 +8,18 @@ import FilterSelector from '../FilterSelector.jsx'
 
 jest.mock('@dhis2/app-runtime', () => ({
     useDhis2ConnectionStatus: jest.fn(() => ({ isDisconnected: false })),
+    useAlert: jest.fn(() => ({})),
 }))
 
 jest.mock('../../../../modules/useDimensions', () => jest.fn())
 useDimensions.mockImplementation(() => ['Moomin', 'Snorkmaiden'])
 
-const baseState = { selected: {}, activeModalDimension: {}, itemFilters: {} }
+const baseState = {
+    selected: {},
+    activeModalDimension: {},
+    itemFilters: {},
+    savedFilters: { filters: { private: [], public: [] } },
+}
 const createMockStore = (state) =>
     createStore(() => ({ ...baseState, ...state }))
 
@@ -32,7 +38,7 @@ test('is disabled when offline', () => {
             <FilterSelector {...props} />
         </Provider>
     )
-    expect(getByTestId('dhis2-uicore-button')).toBeDisabled()
+    expect(getByTestId('filter-button')).toBeDisabled()
 })
 
 test('is enabled when online', () => {
@@ -50,7 +56,7 @@ test('is enabled when online', () => {
             <FilterSelector {...props} />
         </Provider>
     )
-    expect(getByTestId('dhis2-uicore-button')).toBeEnabled()
+    expect(getByTestId('filter-button')).toBeEnabled()
 })
 
 test('is null when no filters are restricted and no filters are allowed', () => {
@@ -92,7 +98,7 @@ test('shows button when filters are restricted and at least one filter is allowe
             <FilterSelector {...props} />
         </Provider>
     )
-    expect(screen.getByRole('button')).toBeVisible()
+    expect(screen.getByTestId('filter-button')).toBeVisible()
 })
 
 test('shows button when filters are not restricted', () => {
@@ -106,5 +112,5 @@ test('shows button when filters are not restricted', () => {
             <FilterSelector {...props} />
         </Provider>
     )
-    expect(screen.getByRole('button')).toBeVisible()
+    expect(screen.getByTestId('filter-button')).toBeVisible()
 })
