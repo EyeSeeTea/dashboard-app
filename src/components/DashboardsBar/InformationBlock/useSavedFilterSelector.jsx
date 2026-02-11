@@ -25,14 +25,18 @@ import {
 } from '../../../reducers/savedFilters.js'
 import { sGetSelected } from '../../../reducers/selected.js'
 import classes from './styles/FilterSelector.module.css'
+import {
+    useCurrentUser,
+    useRootOrgUnits,
+} from '../../AppDataProvider/AppDataProvider.jsx'
 
 export const useSavedFilterSelector = ({
     activeFilter,
     initiallySelectedItems,
 }) => {
     const dispatch = useDispatch()
-
-    const { currentUser, rootOrgUnits } = useCachedDataQuery()
+    const currentUser = useCurrentUser()
+    const rootOrgUnits = useRootOrgUnits()
     const updateActiveFilter = (filter) => dispatch(acSetActiveFilter(filter))
     const selectSavedFilter = (filterId) =>
         dispatch(tSelectSavedFilter(filterId))

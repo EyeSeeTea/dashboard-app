@@ -27,7 +27,7 @@ const createValue = async (dataEngine, key, value) =>
     await dataEngine.mutate({
         resource: `userDataStore/${NAMESPACE}/${key}`,
         type: 'create',
-        data: `${value}`,
+        data: value,
     })
 
 export const apiPostUserDataStoreValue = async (key, value, dataEngine) => {
@@ -39,7 +39,7 @@ export const apiPostUserDataStoreValue = async (key, value, dataEngine) => {
         return await dataEngine.mutate({
             resource: `userDataStore/${NAMESPACE}/${key}`,
             type: 'update',
-            data: `${value}`,
+            data: value,
         })
     }
 }
@@ -63,3 +63,24 @@ export const apiGetUserDataStoreValue = async (
         return defaultValue
     }
 }
+
+// import { getInstance } from 'd2'
+// import {
+//     apiGetGenericDataStoreValue,
+//     apiPostGenericDataStoreValue,
+// } from './dataStore.js'
+
+// export const apiPostUserDataStoreValue = async (key, value) => {
+//     const d2 = await getInstance()
+//     return apiPostGenericDataStoreValue(key, value, d2.currentUser.dataStore)
+// }
+
+// export const apiGetUserDataStoreValue = async (key, defaultValue) => {
+//     const d2 = await getInstance()
+//     return apiGetGenericDataStoreValue(
+//         key,
+//         defaultValue,
+//         d2.currentUser.dataStore
+//     )
+// }
+//

@@ -16,7 +16,7 @@ import {
     privateVisibility,
     publicVisibility,
 } from '../../../modules/savedFilters.js'
-import { sGetNamedItemFilters } from '../../../reducers/itemFilters.js'
+import { msGetNamedItemFilters } from '../../../reducers/itemFilters.js'
 import {
     sActiveFilterHasChanges,
     sGetActiveFilter,
@@ -25,6 +25,7 @@ import {
 import { SavedFilterActions } from './SavedFilterActions.jsx'
 import SaveFilterDialog from './SaveFilterDialog.jsx'
 import { useSaveFitlerDialog } from './useSaveFilterDialog.js'
+import { useCurrentUser } from '../../../components/AppDataProvider/AppDataProvider.jsx'
 
 const SavedFilterBlock = ({
     activeFilter,
@@ -37,7 +38,7 @@ const SavedFilterBlock = ({
     toggleFilterVisibility,
 }) => {
     const { isConnected: online } = useDhis2ConnectionStatus()
-    const { currentUser } = useCachedDataQuery()
+    const currentUser = useCurrentUser()
 
     const [openFilterErrorAlert, setOpenFilterErrorAlert] = useState(false)
 
@@ -146,7 +147,7 @@ SavedFilterBlock.defaultProps = {
 const mapStateToProps = (state) => ({
     activeFilter: sGetActiveFilter(state),
     activeFilterHasChanges: sActiveFilterHasChanges(state),
-    filters: sGetNamedItemFilters(state),
+    filters: msGetNamedItemFilters(state),
     isLoading: sGetLoadingSavedFilters(state),
 })
 

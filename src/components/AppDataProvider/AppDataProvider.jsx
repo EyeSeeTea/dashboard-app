@@ -37,6 +37,7 @@ const queryDefinition = {
                  * code below is forward looking this change. If the issue is not
                  * implemented we can remove the nested fields filter. */
                 'settings[keyDbLocale,keyUiLocale,keyAnalysisDisplayProperty]',
+                'userRoles[id,name]',
             ],
         },
     },

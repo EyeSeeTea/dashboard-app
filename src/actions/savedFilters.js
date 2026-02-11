@@ -104,19 +104,20 @@ export const tSelectSavedFilter =
         return true
     }
 
-export const tFetchSavedFilters = () => async (dispatch) => {
-    const filters = await apiGetSavedFilters()
+export const tFetchSavedFilters =
+    () => async (dispatch, _getState, dataEngine) => {
+        const filters = await apiGetSavedFilters(dataEngine)
 
-    return dispatch(
-        acSetFilters({
-            [privateVisibility]: sortBy(filters.private, 'name'),
-            [publicVisibility]: sortBy(filters.public, 'name'),
-        })
-    )
-}
+        return dispatch(
+            acSetFilters({
+                [privateVisibility]: sortBy(filters.private, 'name'),
+                [publicVisibility]: sortBy(filters.public, 'name'),
+            })
+        )
+    }
 
 export const tSaveFilter =
-    (currentUser, filter) => async (dispatch, getState) => {
+    (currentUser, filter) => async (dispatch, getState, dataEngine) => {
         const dashboardId = sGetSelectedId(getState())
 
         try {
@@ -126,7 +127,11 @@ export const tSaveFilter =
                 values: buildSavedFilters(getState()),
             }
 
-            const updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
+            const updatedFilter = await apiSaveFilter(
+                filterUpdate,
+                currentUser,
+                dataEngine
+            )
             await dispatch(doFetchAndSelect(updatedFilter))
             return true
         } catch (error) {
@@ -150,7 +155,7 @@ export const tDeleteActiveFilter =
     }
 
 export const tToggleActiveFilterVisibility =
-    (currentUser) => async (dispatch, getState) => {
+    (currentUser) => async (dispatch, getState, dataEngine) => {
         try {
             const filter = { ...sGetActiveFilter(getState()) }
 
@@ -169,7 +174,11 @@ export const tToggleActiveFilterVisibility =
             // Currently, only save error that can occur during toggle is duplicate name error
             let updatedFilter
             try {
-                updatedFilter = await apiSaveFilter(filterUpdate, currentUser)
+                updatedFilter = await apiSaveFilter(
+                    filterUpdate,
+                    currentUser,
+                    dataEngine
+                )
             } catch (error) {
                 error.type = 'save'
                 throw error

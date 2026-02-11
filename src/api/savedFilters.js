@@ -1,5 +1,5 @@
 import i18n from '@dhis2/d2-i18n'
-import { generateUid } from 'd2/uid'
+
 import {
     NEW_FILTER_ID,
     savedFilterUserPermission,
@@ -12,23 +12,29 @@ import {
     apiGetUserDataStoreValue,
     apiPostUserDataStoreValue,
 } from './userDataStore.js'
+import { generateUid } from '../modules/uid.js'
 
 const KEY_SAVED_FILTERS = 'savedFilters'
 const DEFAULT_VALUE_SAVED_FILTERS = []
 
-export const apiGetSavedFilters = async () =>
+export const apiGetSavedFilters = async (dataEngine) =>
     Promise.all([
         apiGetUserDataStoreValue(
             KEY_SAVED_FILTERS,
-            DEFAULT_VALUE_SAVED_FILTERS
+            DEFAULT_VALUE_SAVED_FILTERS,
+            dataEngine
         ),
-        apiGetDataStoreValue(KEY_SAVED_FILTERS, DEFAULT_VALUE_SAVED_FILTERS),
+        apiGetDataStoreValue(
+            KEY_SAVED_FILTERS,
+            DEFAULT_VALUE_SAVED_FILTERS,
+            dataEngine
+        ),
     ]).then(([privateFilters, publicFilters]) => ({
         [privateVisibility]: privateFilters,
         [publicVisibility]: publicFilters,
     }))
 
-export const apiSaveFilter = async (filter, currentUser) => {
+export const apiSaveFilter = async (filter, currentUser, dataEngine) => {
     const permissions = savedFilterUserPermission({ filter, currentUser })
     const actionAllowed =
         filter.id === NEW_FILTER_ID ? permissions.create : permissions.edit
@@ -36,8 +42,8 @@ export const apiSaveFilter = async (filter, currentUser) => {
         return Promise.reject({ error: 'User not allowed to save this filter' })
     }
 
-    const [get, save] = getDataStoreFn(filter.visibility)
-    const savedFilters = await get(KEY_SAVED_FILTERS, [])
+    const [get, save] = getDataStoreFn(filter.visibility, dataEngine)
+    const savedFilters = await get(KEY_SAVED_FILTERS, [], dataEngine)
 
     const { isValid, message } = validateFilterName(filter, savedFilters)
     if (!isValid) {
@@ -47,7 +53,7 @@ export const apiSaveFilter = async (filter, currentUser) => {
     const { filter: updatedFilter, savedFilters: updatedFilters } =
         upsertOrInsertFilter(filter, savedFilters, currentUser)
 
-    await save(KEY_SAVED_FILTERS, updatedFilters)
+    await save(KEY_SAVED_FILTERS, updatedFilters, dataEngine)
     return updatedFilter
 }
 
