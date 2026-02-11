@@ -57,7 +57,7 @@ export const apiSaveFilter = async (filter, currentUser, dataEngine) => {
     return updatedFilter
 }
 
-export const apiDeleteFilter = async (filter, currentUser) => {
+export const apiDeleteFilter = async (filter, currentUser, dataEngine) => {
     const permissions = savedFilterUserPermission({ filter, currentUser })
     if (!permissions.delete) {
         return Promise.reject({
@@ -65,8 +65,8 @@ export const apiDeleteFilter = async (filter, currentUser) => {
         })
     }
 
-    const [get, save] = getDataStoreFn(filter.visibility)
-    const savedFilters = await get(KEY_SAVED_FILTERS, [])
+    const [get, save] = getDataStoreFn(filter.visibility, dataEngine)
+    const savedFilters = await get(KEY_SAVED_FILTERS, [], dataEngine)
     const existingFilter = savedFilters.find((f) => f.id === filter.id)
 
     if (!existingFilter) {
@@ -75,7 +75,7 @@ export const apiDeleteFilter = async (filter, currentUser) => {
 
     const payload = savedFilters.filter((f) => f.id !== filter.id)
 
-    await save(KEY_SAVED_FILTERS, payload)
+    await save(KEY_SAVED_FILTERS, payload, dataEngine)
     return true
 }
 

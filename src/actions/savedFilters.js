@@ -141,10 +141,10 @@ export const tSaveFilter =
     }
 
 export const tDeleteActiveFilter =
-    (currentUser) => async (dispatch, getState) => {
+    (currentUser) => async (dispatch, getState, dataEngine) => {
         try {
             const filter = sGetActiveFilter(getState())
-            await apiDeleteFilter(filter, currentUser)
+            await apiDeleteFilter(filter, currentUser, dataEngine)
             await dispatch(tFetchSavedFilters())
             dispatch(tSelectSavedFilter())
             return true
@@ -185,7 +185,7 @@ export const tToggleActiveFilterVisibility =
             }
 
             try {
-                await apiDeleteFilter(filter, currentUser)
+                await apiDeleteFilter(filter, currentUser, dataEngine)
             } catch (error) {
                 error.type = 'delete'
                 throw error
