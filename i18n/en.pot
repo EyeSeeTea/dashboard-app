@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-02-11T00:21:28.623Z\n"
-"PO-Revision-Date: 2026-02-11T00:21:28.624Z\n"
+"POT-Creation-Date: 2026-08-13T06:29:25.850Z\n"
+"PO-Revision-Date: 2026-08-13T06:29:25.850Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
@@ -927,3 +927,11 @@ msgstr "2 minutes per slide"
 
 msgid "Saved Filters"
 msgstr "Saved Filters"
+
+msgctxt "Application title"
+msgid "__MANIFEST_APP_TITLE"
+msgstr "Dashboard"
+
+msgctxt "Application description"
+msgid "__MANIFEST_APP_DESCRIPTION"
+msgstr "DHIS2 Dashboard app"
