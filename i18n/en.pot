@@ -5,11 +5,14 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-10-28T16:09:41.600Z\n"
-"PO-Revision-Date: 2025-10-28T16:09:41.601Z\n"
+"POT-Creation-Date: 2026-08-13T06:29:25.850Z\n"
+"PO-Revision-Date: 2026-08-13T06:29:25.850Z\n"
 
 msgid "Untitled dashboard"
 msgstr "Untitled dashboard"
+
+msgid "User not allowed to delete this filter"
+msgstr "User not allowed to delete this filter"
 
 msgid "Could not get info from Superset gateway endpoint"
 msgstr "Could not get info from Superset gateway endpoint"
@@ -35,6 +38,9 @@ msgid ""
 msgstr ""
 "Could not get guest token from Superset Gateway for dashboard ID "
 "\"{{dashboardId}}\""
+
+msgid "Close"
+msgstr "Close"
 
 msgid "Network error"
 msgstr "Network error"
@@ -216,8 +222,39 @@ msgstr "External source"
 msgid "Confirm"
 msgstr "Confirm"
 
+msgid "Saving..."
+msgstr "Saving..."
+
+msgid "Saved filters"
+msgstr "Saved filters"
+
 msgid "Filter"
 msgstr "Filter"
+
+msgid "Unsaved Changes"
+msgstr "Unsaved Changes"
+
+msgid ""
+"You have unsaved changes in the \"{{ filterName }}\" filter. If you "
+"proceed, your changes will be lost. Would you like to continue?"
+msgstr ""
+"You have unsaved changes in the \"{{ filterName }}\" filter. If you "
+"proceed, your changes will be lost. Would you like to continue?"
+
+msgid "Yes, discard changes"
+msgstr "Yes, discard changes"
+
+msgid "Warning"
+msgstr "Warning"
+
+msgid ""
+"The selected Saved Filter cannot be applied because it includes selections "
+"that the current user does not have permission to view. Please try a "
+"different filter."
+msgstr ""
+"The selected Saved Filter cannot be applied because it includes selections "
+"that the current user does not have permission to view. Please try a "
+"different filter."
 
 msgid "Failed to unstar the dashboard"
 msgstr "Failed to unstar the dashboard"
@@ -236,6 +273,18 @@ msgstr "Cannot unstar this dashboard while offline"
 
 msgid "Cannot star this dashboard while offline"
 msgstr "Cannot star this dashboard while offline"
+
+msgid "You are the owner of this filter"
+msgstr "You are the owner of this filter"
+
+msgid "Shared filters"
+msgstr "Shared filters"
+
+msgid "My filters"
+msgstr "My filters"
+
+msgid "No saved filters available"
+msgstr "No saved filters available"
 
 msgid "No dashboards available."
 msgstr "No dashboards available."
@@ -429,6 +478,13 @@ msgstr "Apps"
 msgid "Users"
 msgstr "Users"
 
+msgid ""
+"A filter with this name already exists as {{ visibility }}.  Please choose "
+"a different name."
+msgstr ""
+"A filter with this name already exists as {{ visibility }}.  Please choose "
+"a different name."
+
 msgid "Could not update dashboard {{name}}"
 msgstr "Could not update dashboard {{name}}"
 
@@ -507,9 +563,6 @@ msgstr ""
 
 msgid "No, stay here"
 msgstr "No, stay here"
-
-msgid "Yes, discard changes"
-msgstr "Yes, discard changes"
 
 msgid "No access"
 msgstr "No access"
@@ -709,6 +762,97 @@ msgstr ""
 msgid "Yes, remove filters"
 msgstr "Yes, remove filters"
 
+msgid "Please enter a name for the filter"
+msgstr "Please enter a name for the filter"
+
+msgid "Save Filter"
+msgstr "Save Filter"
+
+msgid "Untitled filter"
+msgstr "Untitled filter"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Scope"
+msgstr "Scope"
+
+msgid "Rename"
+msgstr "Rename"
+
+msgid "Yes, delete"
+msgstr "Yes, delete"
+
+msgid "update"
+msgstr "update"
+
+msgid "Yes, update"
+msgstr "Yes, update"
+
+msgid "Save as new filter"
+msgstr "Save as new filter"
+
+msgid "Make it public"
+msgstr "Make it public"
+
+msgid "make public"
+msgstr "make public"
+
+msgid "Make it private"
+msgstr "Make it private"
+
+msgid "make private"
+msgstr "make private"
+
+msgid "Yes, save changes and {{ label }}"
+msgstr "Yes, save changes and {{ label }}"
+
+msgid ""
+" If you proceed, these changes will be saved along with the new scope of "
+"the filter."
+msgstr ""
+" If you proceed, these changes will be saved along with the new scope of "
+"the filter."
+
+msgid ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}} and has unsaved changes."
+msgstr ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}} and has unsaved changes."
+
+msgid ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}}."
+msgstr ""
+"The saved filter you are trying to {{ action }} was created by {{ userName "
+"}}."
+
+msgid "Yes, {{ action }}"
+msgstr "Yes, {{ action }}"
+
+msgid "The saved filter you are trying to {{ action }} has unsaved changes."
+msgstr "The saved filter you are trying to {{ action }} has unsaved changes."
+
+msgid "Would you like to continue?"
+msgstr "Would you like to continue?"
+
+msgid "Modify Saved Filter?"
+msgstr "Modify Saved Filter?"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Error"
+msgstr "Error"
+
+msgid ""
+"A filter with this name already exists as {{ visibility }}. Please rename "
+"it before changing its scope to {{ visibility }}."
+msgstr ""
+"A filter with this name already exists as {{ visibility }}. Please rename "
+"it before changing its scope to {{ visibility }}."
+
 msgid ""
 "There was a problem loading the embedded dashboard content from an external "
 "service"
@@ -718,9 +862,6 @@ msgstr ""
 
 msgid "Fetching external dashboard"
 msgstr "Fetching external dashboard"
-
-msgid "Error"
-msgstr "Error"
 
 msgid "Could not load Superset dashboard"
 msgstr "Could not load Superset dashboard"
@@ -783,3 +924,14 @@ msgstr "1 minute per slide"
 
 msgid "2 minutes per slide"
 msgstr "2 minutes per slide"
+
+msgid "Saved Filters"
+msgstr "Saved Filters"
+
+msgctxt "Application title"
+msgid "__MANIFEST_APP_TITLE"
+msgstr "Dashboard"
+
+msgctxt "Application description"
+msgid "__MANIFEST_APP_DESCRIPTION"
+msgstr "DHIS2 Dashboard app"

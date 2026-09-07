@@ -18,6 +18,8 @@ const ConfirmActionDialog = ({
     message,
     cancelLabel,
     confirmLabel,
+    isLoading = false,
+    position = 'middle',
 }) => {
     return (
         open && (
@@ -25,7 +27,7 @@ const ConfirmActionDialog = ({
                 dataTest="confirm-action-dialog"
                 onClose={onCancel}
                 small
-                position="middle"
+                position={position}
             >
                 <ModalTitle>{title}</ModalTitle>
                 <ModalContent>
@@ -37,7 +39,12 @@ const ConfirmActionDialog = ({
                             {cancelLabel}
                         </Button>
 
-                        <Button key="confirm" destructive onClick={onConfirm}>
+                        <Button
+                            key="confirm"
+                            destructive
+                            onClick={onConfirm}
+                            loading={isLoading}
+                        >
                             {confirmLabel}
                         </Button>
                     </ButtonStrip>
@@ -50,8 +57,10 @@ const ConfirmActionDialog = ({
 ConfirmActionDialog.propTypes = {
     cancelLabel: PropTypes.string,
     confirmLabel: PropTypes.string,
+    isLoading: PropTypes.bool,
     message: PropTypes.string,
     open: PropTypes.bool,
+    position: PropTypes.string,
     title: PropTypes.string,
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,

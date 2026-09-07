@@ -1,13 +1,13 @@
 const NAMESPACE = 'dashboard'
 
 const hasDashboardNamespace = async (dataEngine) => {
-    const userDataStore = await dataEngine.query({
-        userDataStore: {
-            resource: 'userDataStore',
+    const dataStore = await dataEngine.query({
+        dataStore: {
+            resource: 'dataStore',
         },
     })
 
-    return !!userDataStore?.userDataStore?.find((ns) => ns === NAMESPACE)
+    return !!dataStore?.dataStore?.find((ns) => ns === NAMESPACE)
 }
 
 const hasNamespaceKey = async (dataEngine, key) => {
@@ -15,7 +15,7 @@ const hasNamespaceKey = async (dataEngine, key) => {
     const keys = hasNamespace
         ? await dataEngine.query({
               keys: {
-                  resource: `userDataStore/${NAMESPACE}`,
+                  resource: `dataStore/${NAMESPACE}`,
               },
           })
         : {}
@@ -23,38 +23,35 @@ const hasNamespaceKey = async (dataEngine, key) => {
     return !!keys.keys?.find((k) => k === key)
 }
 
-const createValue = async (dataEngine, key, value) =>
-    await dataEngine.mutate({
-        resource: `userDataStore/${NAMESPACE}/${key}`,
+const createValue = async (dataEngine, key, value) => {
+    return await dataEngine.mutate({
+        resource: `dataStore/${NAMESPACE}/${key}`,
         type: 'create',
         data: value,
     })
+}
 
-export const apiPostUserDataStoreValue = async (key, value, dataEngine) => {
+export const apiPostDataStoreValue = async (key, value, dataEngine) => {
     const hasKey = await hasNamespaceKey(dataEngine, key)
 
     if (!hasKey) {
         return await createValue(dataEngine, key, value)
     } else {
         return await dataEngine.mutate({
-            resource: `userDataStore/${NAMESPACE}/${key}`,
+            resource: `dataStore/${NAMESPACE}/${key}`,
             type: 'update',
             data: value,
         })
     }
 }
 
-export const apiGetUserDataStoreValue = async (
-    key,
-    defaultValue,
-    dataEngine
-) => {
+export const apiGetDataStoreValue = async (key, defaultValue, dataEngine) => {
     const hasKey = await hasNamespaceKey(dataEngine, key)
 
     if (hasKey) {
         const result = await dataEngine.query({
             [key]: {
-                resource: `userDataStore/${NAMESPACE}/${key}`,
+                resource: `dataStore/${NAMESPACE}/${key}`,
             },
         })
         return result[key]
