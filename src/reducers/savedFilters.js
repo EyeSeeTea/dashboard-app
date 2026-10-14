@@ -1,5 +1,6 @@
 import i18n from '@dhis2/d2-i18n'
 import isEqual from 'lodash/isEqual.js'
+import { getDimensionName } from '../modules/getDimensionName.js'
 import { privateVisibility, publicVisibility } from '../modules/savedFilters.js'
 import { sGetDimensions } from './dimensions.js'
 import { sGetItemFiltersRoot } from './itemFilters.js'
@@ -13,7 +14,7 @@ export const buildSavedFilters = (state) => {
             ...arr,
             {
                 id: id,
-                name: dimensions.find((dimension) => dimension.id === id).name,
+                name: getDimensionName(dimensions, id),
                 values: filters[id].map(({ id, displayName, name, path }) => ({
                     id,
                     name: displayName || name,

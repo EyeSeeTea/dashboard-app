@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import { getDimensionName } from '../modules/getDimensionName.js'
 import { sGetDimensions } from './dimensions.js'
 
 export const CLEAR_ITEM_FILTERS = 'CLEAR_ITEM_FILTERS'
@@ -46,7 +47,7 @@ export const msGetNamedItemFilters = createSelector(
         Object.keys(filters).reduce((arr, id) => {
             arr.push({
                 id: id,
-                name: dimensions.find((dimension) => dimension.id === id).name,
+                name: getDimensionName(dimensions, id),
                 values: filters[id].map((value) => ({
                     id: value.id,
                     name: value.displayName || value.name,

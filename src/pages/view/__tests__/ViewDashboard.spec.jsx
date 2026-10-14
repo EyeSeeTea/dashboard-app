@@ -1,3 +1,7 @@
+import {
+    useCacheableSection,
+    useDhis2ConnectionStatus,
+} from '@dhis2/app-runtime'
 import { render, act } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import React from 'react'
@@ -86,6 +90,46 @@ window.HTMLElement.prototype.scroll = function () {}
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+
+test('cached offline dashboard entry skips default filter initialization', async () => {
+    useDhis2ConnectionStatus.mockReturnValue({ isConnected: false })
+    useCacheableSection.mockReturnValue({
+        isCached: true,
+        recordingState: 'default',
+    })
+    const promise = Promise.resolve({ id: dashboardId, dashboardItems: [] })
+    apiFetchDashboard.mockResolvedValue(promise)
+    const offlineStore = mockStore({ ...store, selected: { id: 'other' } })
+
+    try {
+        render(
+            <>
+                <header />
+                <Provider store={offlineStore}>
+                    <Router history={createMemoryHistory()}>
+                        <ViewDashboard requestedId={dashboardId} />
+                    </Router>
+                </Provider>
+            </>
+        )
+        await act(() => promise)
+        expect(offlineStore.getActions()).toContainEqual({
+            type: 'SET_ITEM_FILTERS',
+            filter: {},
+        })
+        expect(offlineStore.getActions()).toContainEqual({
+            type: 'SET_ACTIVE_FILTER',
+            filter: null,
+        })
+    } finally {
+        useDhis2ConnectionStatus.mockReturnValue({ isConnected: true })
+        useCacheableSection.mockReturnValue({
+            isCached: false,
+            recordingState: 'default',
+        })
+        jest.clearAllMocks()
+    }
+})
 
 test('ViewDashboard renders dashboard', async () => {
     const promise = Promise.resolve({
