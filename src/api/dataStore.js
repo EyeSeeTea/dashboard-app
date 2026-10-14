@@ -60,3 +60,13 @@ export const apiGetDataStoreValue = async (key, defaultValue, dataEngine) => {
         return defaultValue
     }
 }
+
+// Read an existing entry without creating it or querying namespace listings.
+export const apiReadDataStoreValue = async (key, dataEngine) => {
+    const result = await dataEngine.query({
+        [key]: {
+            resource: `dataStore/${NAMESPACE}/${key}`,
+        },
+    })
+    return result[key]
+}

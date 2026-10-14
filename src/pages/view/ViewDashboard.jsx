@@ -60,7 +60,7 @@ const ViewDashboard = ({
         }, 500)
 
         try {
-            await fetchDashboard(requestedId, username)
+            await fetchDashboard(requestedId, username, { online })
             setLoaded(true)
         } catch (e) {
             console.error(`Error loading dashboard with id ${requestedId}:`, e)
@@ -72,6 +72,7 @@ const ViewDashboard = ({
         }
     }, [
         fetchDashboard,
+        online,
         requestedDashboardName,
         requestedId,
         setSelectedAsOffline,

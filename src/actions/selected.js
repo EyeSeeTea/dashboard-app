@@ -1,6 +1,8 @@
+import { apiGetDefaultFilters } from '../api/defaultFilters.js'
 import { apiFetchDashboard } from '../api/fetchDashboard.js'
 import { tGetMessages } from '../components/Item/MessagesItem/actions.js'
 import { VIEW } from '../modules/dashboardModes.js'
+import { getDashboardDefaultFilters } from '../modules/defaultFilters.js'
 import { MESSAGES } from '../modules/itemTypes.js'
 import { storePreferredDashboardId } from '../modules/localStorage.js'
 import {
@@ -10,7 +12,8 @@ import {
 } from '../reducers/selected.js'
 import { acAppendDashboards } from './dashboards.js'
 import { acClearItemActiveTypes } from './itemActiveTypes.js'
-import { acClearItemFilters } from './itemFilters.js'
+import { acClearItemFilters, acSetItemFilters } from './itemFilters.js'
+import { acSetActiveFilter } from './savedFilters.js'
 import { acClearVisualizations } from './visualizations.js'
 
 // actions
@@ -26,7 +29,8 @@ export const acClearSelected = () => ({
 
 // thunks
 export const tSetSelectedDashboardById =
-    (id, username) => async (dispatch, getState, dataEngine) => {
+    (id, username, { online = true } = {}) =>
+    async (dispatch, getState, dataEngine) => {
         const dashboard = await apiFetchDashboard(dataEngine, id, {
             mode: VIEW,
         })
@@ -45,7 +49,17 @@ export const tSetSelectedDashboardById =
         }
 
         if (id !== sGetSelectedId(getState())) {
-            dispatch(acClearItemFilters())
+            // Offline recordings contain unfiltered data. Do not apply defaults
+            // from the session cache when opening a cached dashboard offline.
+            const defaults =
+                online && !dashboard.embedded
+                    ? getDashboardDefaultFilters(
+                          await apiGetDefaultFilters(dataEngine),
+                          dashboard
+                      )
+                    : {}
+            dispatch(acSetItemFilters(defaults))
+            dispatch(acSetActiveFilter(null))
             dispatch(acClearVisualizations())
             dispatch(acClearItemActiveTypes())
         }
@@ -64,6 +78,7 @@ export const tSetSelectedDashboardByIdOffline =
 
         if (id !== sGetSelectedId(getState())) {
             dispatch(acClearItemFilters())
+            dispatch(acSetActiveFilter(null))
             dispatch(acClearVisualizations())
             dispatch(acClearItemActiveTypes())
         }
